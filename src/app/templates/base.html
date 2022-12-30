@@ -25,12 +25,13 @@
 <!-- Toast notification -->
 {% with messages = get_flashed_messages() %}
         {% if messages %}
-            <div class="toast float-end m-2" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
+            <div class="toast float-right m-2" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header" style="background-color: #003265; color: #ffffff;">
                     <strong class="me-auto">Prueba</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <!-- <button type="button" data-bs-dismiss="toast" aria-label="Close"> -->
+                    <a href="" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-circle-fill" style="color: #ffffff;"></i></a>
                 </div>
-                <div class="toast-body" style="color: #fff;">
+                <div class="toast-body">
                 {% for message in messages %}
                     {{message}}
                 {% endfor %}

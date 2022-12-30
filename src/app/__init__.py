@@ -1,4 +1,5 @@
 from flask import Flask
+
 # from flask_login import LoginManager
 # Instancias de los Blueprint
 from app.login.login import login_page
