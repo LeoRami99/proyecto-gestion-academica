@@ -1,0 +1,70 @@
+{%extends "base.html"%}
+{%block title%}Login{%endblock%}
+{% block navbar %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" style="color:#ffffff;">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list" style="color: #ffffff;"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#" style="color:#ffffff;">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" style="color:#ffffff;">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" style="color:#ffffff;">Pricing</a>
+      </li>
+    </ul>
+  </div>
+</div>
+</nav>
+{% endblock %}
+{%block content%}
+<!-- container -->
+<!-- <div class="container"> -->
+  <!-- sección para alvergar una imagen -->
+  <div class="row align-items-center justify-content-between mb-5">
+    <section class="img col-md-6 mt-5 h-5" data-aos="fade-right" data-aos-duration="1000">
+      <!-- <div class="col"> -->
+        <img src="https://static-hotsites.edufindme.com/tsw-events/7f35691087624ba776d78f29dcd2b27a2b27a2f9/static/img/hub/img/img-student-5.png" alt="img" class="img-fluid">
+      <!-- </div> -->
+    </section>
+    <!-- sección para formulario -->
+    <!-- centrar contenido en la pantalla -->
+    <section class="shadow-lg col-md-6 mt-5 p-5 fondo_form_login rounded" data-aos="fade-left" data-aos-duration="1000">
+      <!-- <div class="col"> -->
+        <h3>Ingresar al sistema</h3>
+        <br>
+        <form action="/login_sistema" method="post">
+          <div class="input-group">
+            <!-- <label for="email">Email</label> -->
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
+          </div>
+          <div class="input-group mt-2">
+            <span class="input-group-text"><i class="bi bi-key"></i></span>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+          </div>
+          <div class="text-center">
+            <button type="submit" class="boton w-50 mt-2">Entrar</button>
+          </div>
+        </form>
+      <!-- </div> -->
+    </section>
+  </div>
+<!-- </div> -->
+{%endblock%}
+{%block footer%}
+
+<!-- footer -->
+<footer class="footer fixed-bottom mt-auto py-3 fondo_navbar">
+  <div class="container">
+    <span class="text-muted">prueba</span>
+  </div>
+</footer>
+{%endblock%}
