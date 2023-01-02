@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Inicio{%endblock%}
+{%block title%}Cursos{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -34,8 +34,7 @@
 </nav>
 {% endblock %}
 {%block content%}
-
-<!-- Offcanva  -->
+<!-- Offcanva -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
@@ -116,121 +115,115 @@
     </div>
   </div>
 </div>
-<section class="bienvenida">
-  <!-- Header -->
-  <div class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-auto mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="display-5 fw-bold">Bienvenido/a {{current_user.nombre}}</h1>
-    <div class="col-lg-6 mx-auto">
-      <p class="lead mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most
-        popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive
-        prebuilt components, and powerful JavaScript plugins.</p>
-      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <a href="#options" class="btn"><i class="bi bi-arrow-down-short" style="font-size: 80px;"></i></a>
-      </div>
+
+
+
+<!-- titulo -->
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar curso</h1>
     </div>
   </div>
-</section>
-<section id="options">
-  <div class="container">
-    <div class="text-center">
-      <h1>Opciones</h1>
-    </div>
-    <!-- Cards para cada apartado -->
-    <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mt-2">
-      <div class="col" data-aos="fade-right" data-aos-duration="1000">
-        <div class="card card-custom bg-white border-white border-0">
-          <div class="card-custom-img"
-            style="background-image: url(https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_960_720.jpg);">
-          </div>
-          <div class="card-custom-avatar">
-            <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/2436/2436874.png" alt="Avatar" />
-          </div>
-          <div class="card-body" style="overflow-y: auto">
-            <h4 class="card-title"><i class="bi bi-mortarboard"></i> Cursos</h4>
-            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body
-              content.
-              You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks"
-                target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
-          </div>
-          <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
-          </div>
-        </div>
-      </div>
-      <div class="col" data-aos="fade-left" data-aos-duration="1000">
-        <div class="card card-custom bg-white border-white border-0">
-          <div class="card-custom-img"
-            style="background-image: url(https://cdn.pixabay.com/photo/2017/07/31/11/21/people-2557396_960_720.jpg);">
-          </div>
-          <div class="card-custom-avatar">
-            <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/3068/3068421.png" alt="Avatar" />
-          </div>
-          <div class="card-body" style="overflow-y: auto">
-            <h4 class="card-title"><i class="bi bi-person"></i> Estudiantes</h4>
-            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body
-              content.
-              You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks"
-                target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
-          </div>
-          <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
-          </div>
-        </div>
-      </div>
-      <div class="col" data-aos="fade-right" data-aos-duration="1000">
-        <div class="card card-custom bg-white border-white border-0">
-          <div class="card-custom-img"
-            style="background-image: url(https://img.freepik.com/foto-gratis/todos-sonrien-escuchan-grupo-personas-conferencia-negocios-aula-moderna-dia_146671-16288.jpg?w=740&t=st=1672689808~exp=1672690408~hmac=7fe1d15ff7b2aa8cc435b95fb499ea2151728c623f7fd1f626be48eb52d2c85e);">
-          </div>
-          <div class="card-custom-avatar">
-            <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/3650/3650049.png" alt="Avatar" />
-          </div>
-          <div class="card-body" style="overflow-y: auto">
-            <h4 class="card-title"><i class="bi bi-people"></i> Docentes</h4>
-            <p class="card-text">
-              Gestiona los docentes a tu manera, puedes ver los docentes activos, no activos y registrar nuevos
-              docentes.
-            </p>
-          </div>
-          <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
-          </div>
-        </div>
-      </div>
-      <div class="col" data-aos="fade-left" data-aos-duration="1000">
-        <div class="card card-custom bg-white border-white border-0">
-          <div class="card-custom-img"
-            style="background-image: url(https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_960_720.jpg);">
-          </div>
-          <div class="card-custom-avatar">
-            <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/3068/3068421.png" alt="Avatar" />
-          </div>
-          <div class="card-body" style="overflow-y: auto">
-            <h4 class="card-title">Cursos</h4>
-            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body
-              content.
-              You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks"
-                target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
-          </div>
-          <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
+  <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
+  <div class="row" data-aos="fade-up" data-aos-duration="1000">
+    <div class="col-12">
+      <form action="" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="codigo_curso" class="form-label">Código del curso</label>
+                  <input type="text" class="form-control p-2" id="codigo_curso" name="codigo_curso"
+                    placeholder="Código del curso">
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="nombre_curso" class="form-label">Nombre del curso</label>
+                  <input type="text" class="form-control p-2" id="nombre_curso" name="nombre_curso"
+                    placeholder="Nombre del curso">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="decripcion_curso" class="form-label">Descripción</label>
+                  <textarea name="decripcion_curso" id="decripcion_curso" class="form-control p-2"
+                    placeholder="Descripción del curso"></textarea>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="cantidad_hora" class="form-label">Cantidad de horas</label>
+                  <input type="number" class="form-control p-2" id="cantidad_hora" name="cantidad_hora"
+                    placeholder="Cantidad de horas del curso" min="1">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="cupo_curso" class="form-label">Cupo del curso</label>
+                  <input type="number" class="form-control p-2" id="cupo_curso" name="cupo_curso"
+                    placeholder="Cupo del curso" min="1">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="fecha_inicio" class="form-label">Fecha inicio del curso</label>
+                  <input type="date" class="form-control p-2" id="fecha_inicio" name="fecha_inicio">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="fecha_final" class="form-label">Fecha final del curso</label>
+                  <input type="date" class="form-control p-2" id="fecha_final" name="fecha_final">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="fecha_final" class="form-label">Modalidad del curso</label>
+                  <select name="modalidad_curso" id="modalidad_curso" class="form-control p-2">
+                    <option value="Presencial">Presencial</option>
+                    <option value="Virtual">Virtual</option>
+
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
+                  <input type="hidden" class="form-control p-2" id="estado_matricula" name="estado_matricula"
+                    value="Con cupo">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
+                  <input type="hidden" class="form-control p-2" id="estado_curso" name="estado_curso" value="1">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
+                  <input type="hidden" class="form-control p-2" id="id_cliente" name="id_cliente"
+                    value="{{current_user.id_cliente}}">
+                </div>
+              </div>
+              <!-- Boton de enviar -->
+              <div class="col-12 mb-3 text-center">
+                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
-</section>
+</div>
+
 {%endblock%}
 {%block footer%}
+
 <!-- footer -->
 <footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
   <!-- Grid container -->

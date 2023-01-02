@@ -4,12 +4,9 @@ from flask_login import LoginManager
 # Instancias de los Blueprint
 from app.login.login import login_page
 from app.inicio.inicio import inicio
-# from app.login.form import formulario
-# from app.inicio.index import inicio
-# from app.estudiante.estudiantes import estudiantes
-# from app.profesor.profesor import profesor
-# from app.administrador.admin import admin
-# from app.jurado.jurado import jurado
+from app.cursos.cursos import cursos
+from app.clientes.clientes import clientes
+
 # inicio de sesion
 from .login.logueo import Usuario
 # from .formularios.usuario import Usuario
@@ -26,8 +23,8 @@ def createApp():
     app.secret_key = 'mysecretkey'
     # app.config['MAIL_SERVER']='smtp.gmail.com'
     # app.config['MAIL_PORT'] = 465
-    # app.config['MAIL_USERNAME'] = 'fomalhautudecproyectos@gmail.com'
-    # app.config['MAIL_PASSWORD'] = 'tcet ejwe udhe elzd'
+    # app.config['MAIL_USERNAME'] = 'correos@gmail.com'
+    # app.config['MAIL_PASSWORD'] = ''
     # app.config['MAIL_USE_TLS'] = False
     # app.config['MAIL_USE_SSL'] = True
     # mail = Mail()
@@ -41,12 +38,8 @@ def createApp():
     # Registro de los Blueprint
     app.register_blueprint(login_page)
     app.register_blueprint(inicio)
-    # app.register_blueprint(index)
-    # app.register_blueprint(inicio)
-    # app.register_blueprint(formulario)
-    # app.register_blueprint(estudiantes)
-    # app.register_blueprint(profesor)
-    # app.register_blueprint(admin)
-    # app.register_blueprint(jurado)
+    app.register_blueprint(cursos)
+    app.register_blueprint(clientes)
+
 
     return app
