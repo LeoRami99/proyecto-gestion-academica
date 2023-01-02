@@ -1,6 +1,6 @@
 from flask import Flask
 
-# from flask_login import LoginManager
+from flask_login import LoginManager
 # Instancias de los Blueprint
 from app.login.login import login_page
 # from app.login.form import formulario
@@ -17,9 +17,9 @@ from app.login.login import login_page
 
 def createApp():
     app=Flask(__name__)
-    # login_manager = LoginManager()
-    # login_manager.login_view = 'formulario.login'
-    # login_manager.init_app(app)
+    login_manager = LoginManager()
+    login_manager.login_view = 'login_page.login'
+    login_manager.init_app(app)
     app.secret_key = 'mysecretkey'
     # app.config['MAIL_SERVER']='smtp.gmail.com'
     # app.config['MAIL_PORT'] = 465
@@ -30,9 +30,9 @@ def createApp():
     # mail = Mail()
     # mail.init_app(app)
     
-    # @login_manager.user_loader
-    # def load_user(id):
-    #     return Usuario.obtener_usuario(id)
+    @login_manager.user_loader
+    def load_user(id):
+        return Usuario.obtener_usuario(id)
 
 
     # Registro de los Blueprint
