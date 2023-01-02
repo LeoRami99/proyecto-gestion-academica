@@ -1,9 +1,9 @@
-import pymsql
+from pymysql import connect
 
 def obtener_conexion():
-    return pymsql.connect(
+    return connect(
         host='localhost',
         user='root',
         password = '',
-        db='prueba',
+        db='gestionacademico_app',
     )

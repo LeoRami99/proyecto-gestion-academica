@@ -3,12 +3,15 @@ from flask import Flask
 from flask_login import LoginManager
 # Instancias de los Blueprint
 from app.login.login import login_page
+from app.inicio.inicio import inicio
 # from app.login.form import formulario
 # from app.inicio.index import inicio
 # from app.estudiante.estudiantes import estudiantes
 # from app.profesor.profesor import profesor
 # from app.administrador.admin import admin
 # from app.jurado.jurado import jurado
+# inicio de sesion
+from .login.logueo import Usuario
 # from .formularios.usuario import Usuario
 
 
@@ -31,12 +34,14 @@ def createApp():
     # mail.init_app(app)
     
     @login_manager.user_loader
-    def load_user(id):
-        return Usuario.obtener_usuario(id)
+    def load_user(nombre_usuario):
+        return Usuario.obtener_usuario(nombre_usuario)
 
 
     # Registro de los Blueprint
     app.register_blueprint(login_page)
+    app.register_blueprint(inicio)
+    # app.register_blueprint(index)
     # app.register_blueprint(inicio)
     # app.register_blueprint(formulario)
     # app.register_blueprint(estudiantes)
