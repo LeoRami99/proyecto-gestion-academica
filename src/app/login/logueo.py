@@ -16,8 +16,6 @@ class Usuario(UserMixin):
         sql="SELECT * FROM perfil_admin_academico WHERE nombre_usuario='{0}' ".format(self.nombre_usuario)
         cursor.execute(sql)
         fila=cursor.fetchone()
-        print(fila)
-        
         if fila !=  None:
             usuario= Usuario(fila[0], fila[1], check_password_hash(fila[5], self.contrasena), fila[8] ,fila[2], fila[3], fila[10])
             return usuario

@@ -36,6 +36,18 @@ def registrar_curso():
         else:
             flash('No se pudo registrar el curso')
             return redirect(url_for('cursos.index'))
+    else:
+        return redirect(url_for('cursos.index'))
+
+@cursos.route('/listar_cursos')
+@login_required
+def listar_cursos():
+    curso = Curso()
+    cursos = curso.obtener_cursos(current_user.id_cliente)
+    # Recargar cuando se haga un cambio en la base de datos
+    
+    return render_template('cursos_index.html', cursos=cursos)
+
 
 
         

@@ -92,7 +92,8 @@
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
                 <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-                filled with some actual content.</div>
+                filled with some actual content.
+              </div>
             </div>
           </div>
           <div class="accordion-item">
@@ -107,7 +108,8 @@
               <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
                 <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
                 happening here in terms of content, but just filling up the space to make it look, at least at first
-                glance, a bit more representative of how this would look in a real-world application.</div>
+                glance, a bit more representative of how this would look in a real-world application.
+              </div>
             </div>
           </div>
         </div>
@@ -119,113 +121,103 @@
 
 
 <!-- titulo -->
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar curso</h1>
+      <div class="text-center">
+        <h1 class="display-4">Cursos</h1>
+      </div>
     </div>
   </div>
-  <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
-  <div class="row" data-aos="fade-up" data-aos-duration="1000">
+  <!-- Lista de cursos en cards-->
+  <!-- Barra de busqueda para filtrar las cards -->
+  <div class="row">
     <div class="col-12">
-      <form action="{{url_for('cursos.registrar_curso')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
-        <div class="row">
-          <div class="col-12">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="codigo_curso" class="form-label">Código del curso</label>
-                  <input type="text" class="form-control p-2" id="codigo_curso" name="codigo_curso"
-                    placeholder="Código del curso" required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="nombre_curso" class="form-label">Nombre del curso</label>
-                  <input type="text" class="form-control p-2" id="nombre_curso" name="nombre_curso"
-                    placeholder="Nombre del curso" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">  
-                <div class="mb-3">
-                  <label for="decripcion_curso" class="form-label">Descripción</label>
-                  <textarea name="decripcion_curso" id="decripcion_curso" class="form-control p-2"
-                    placeholder="Descripción del curso" required></textarea>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="cantidad_hora" class="form-label">Cantidad de horas</label>
-                  <input type="number" class="form-control p-2" id="cantidad_hora" name="cantidad_hora"
-                    placeholder="Cantidad de horas del curso" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="cupo_curso" class="form-label">Cupo del curso</label>
-                  <input type="number" class="form-control p-2" id="cupo_curso" name="cupo_curso"
-                    placeholder="Cupo del curso" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="fecha_inicio" class="form-label">Fecha inicio del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_inicio" name="fecha_inicio" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="fecha_final" class="form-label">Fecha final del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_final" name="fecha_final" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="fecha_final" class="form-label">Modalidad del curso</label>
-                  <select name="modalidad_curso" id="modalidad_curso" class="form-control p-2">
-                    <option value="Presencial">Presencial</option>
-                    <option value="Virtual">Virtual</option>
+      <div class="input-group flex-nowrap mb-3 w-25 float-end">
+        <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="Buscar" placeholder="Buscar" aria-label="Buscar"
+          aria-describedby="addon-wrapping">
+      </div>
+    </div>
+  </div>
 
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="estado_matricula" name="estado_matricula"
-                    value="Con cupo">
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="estado_curso" name="estado_curso" value="1">
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="id_cliente" name="id_cliente"
-                    value="{{current_user.id_cliente}}">
-                </div>
-              </div>
-              <!-- Boton de enviar -->
-              <div class="col-12 mb-3 text-center">
-                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
-              </div>
-            </div>
+
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+    {% for curso in cursos%}
+    {% if curso[10] == 1 %}
+      <div class="col mb-5">
+        <div class="card">
+          <div class="card-header" style="background: linear-gradient(to right, #1c92d2, #f2fcfe);  ">
+            <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[2]}}</h5>
+          </div>
+          <div class="card-body">
+            <!-- List group -->
+            <ul class="list-group
+            list-group-flush">
+              <li class="list-group item">Cantidad de horas: {{curso[4]}}</li>
+              <li class="list-group item">Cupo: {{curso[5]}}</li>
+              <li class="list-group item">Fecha de inicio: {{curso[6]}}</li>
+              <li class="list-group item">Fecha de finalizacion: {{curso[7]}}</li>
+              <li class="list-group item">Modalidad: {{curso[8]}}</li>
+            </ul>
+
+          </div>
+          <div class="card-footer">
+
+            {% if curso[10] == 1 %}
+            <span class="badge rounded-pill text-bg-success card-text"><i class="bi bi-check"></i> | Activo</span>
+            {% else %}
+            <p class="card-text">No activo</p>
+            {% endif %}
           </div>
         </div>
-      </form>
+      </div>
+    {%else%}
+    {% endif %}
+    {% endfor %}
+  </div>
+  <!-- Paginacion de las cards de los cursos -->
+  <div class="container-fluid">
+    <div class="row float-end">
+      <div class="col-12">
+        <div class="holder"></div>
+      </div>
     </div>
   </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
+<script>
+  // Barra de busqueda para filtrar las cards basada en el titulo y ordenarlos en la pantalla
+  $(document).ready(function () {
+    $("#Buscar").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $(".titulo").filter(function () {
+        $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  }); 
+  // Paginacion de las cards de los cursos 
+  $(function () {
+    $("div.holder").jPages({
+      containerID: "listado",
+      perPage: 6,
+      midRange: 3,
+      startPage: 1,
+      startRange: 1,
+      endRange: 1,
+      previous: "←",
+      next: "→",
+      delay: 50,
+    });
+});
+</script>
 {%endblock%}
 {%block footer%}
 
 <!-- footer -->
-<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
+<footer class="text-center text-white fondo_navbar">
   <!-- Grid container -->
   <div class="container pt-4">
     <!-- Section: Social media -->
@@ -264,4 +256,5 @@
   </div>
   <!-- Copyright -->
 </footer>
+
 {%endblock%}

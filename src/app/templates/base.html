@@ -23,6 +23,29 @@
 {% block navbar %}
 
 {% endblock %}
+<!-- Animación de carga -->
+<!-- <div class="loader">
+  <div class="loading">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>
+</div> -->
+
+
 <!-- Toast notification -->
 <div class="container">
   {% with messages = get_flashed_messages() %}
@@ -58,6 +81,15 @@
 {% block footer %}
 
 {% endblock %}
+<!-- Script para la carga de pantalla -->
+<script type="text/javascript">
+  //  cuando la página alla completamente cargada
+  $(window).on('load', function () {
+      //  desaparecerá el loader
+      $('.loader').fadeOut();
+  });
+  
+</script>
 
 <!-- AOS js -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

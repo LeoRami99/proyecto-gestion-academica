@@ -16,3 +16,7 @@ def obtener_todo_cliente(id):
     cursor.execute(sql)
     cliente = cursor.fetchone()
     return cliente
+@inicio.route('/')
+@login_required
+def inicio_page():
+    return redirect(url_for('inicio.index'))
