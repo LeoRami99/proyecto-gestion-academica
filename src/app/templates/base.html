@@ -24,28 +24,30 @@
 
 {% endblock %}
 <!-- Toast notification -->
-{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="toast float-right m-2" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header" style="background-color: #003265; color: #ffffff;">
+<div class="container">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="toast float-end m-2" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header" style="background-color: #003265; color: #ffffff;">
                     <strong class="me-auto">Prueba</strong>
                     <!-- <button type="button" data-bs-dismiss="toast" aria-label="Close"> -->
                     <a href="" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-circle-fill" style="color: #ffffff;"></i></a>
-                </div>
-                <div class="toast-body">
-                {% for message in messages %}
+                  </div>
+                  <div class="toast-body">
+                    {% for message in messages %}
                     {{message}}
-                {% endfor %}
+                    {% endfor %}
+                  </div>
                 </div>
-            </div>
-            <script>
-                $(document).ready(function(){
+                <script>
+                  $(document).ready(function(){
                     $('.toast').toast('show');
                 });
             </script>
         {% endif %}
-{% endwith %}
-<!-- Section for content of page -->
+        {% endwith %}
+  </div>
+        <!-- Section for content of page -->
 <div class="container">
   {% block content %}
   

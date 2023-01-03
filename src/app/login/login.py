@@ -16,8 +16,6 @@ def login():
         return redirect(url_for('inicio.index'))
     else:
         return render_template('login.html')
-
-
 @login_page.route('/login_sistema', methods=['POST'])
 def login_sistem():
     conn = obtener_conexion()
@@ -26,8 +24,7 @@ def login_sistem():
         contrasena = request.form['password']
         if nombre_usuario and contrasena:
             try:
-                sql_id = "SELECT id FROM perfil_admin_academico WHERE nombre_usuario = '{0}'".format(
-                    nombre_usuario)
+                sql_id = "SELECT id FROM perfil_admin_academico WHERE nombre_usuario = '{0}'".format(nombre_usuario)
                 cursor = conn.cursor()
                 cursor.execute(sql_id)
                 consulta = cursor.fetchone()

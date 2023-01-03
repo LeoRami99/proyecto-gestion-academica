@@ -128,7 +128,7 @@
   <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
   <div class="row" data-aos="fade-up" data-aos-duration="1000">
     <div class="col-12">
-      <form action="" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+      <form action="{{url_for('cursos.registrar_curso')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
         <div class="row">
           <div class="col-12">
             <div class="row">
@@ -136,47 +136,47 @@
                 <div class="mb-3">
                   <label for="codigo_curso" class="form-label">Código del curso</label>
                   <input type="text" class="form-control p-2" id="codigo_curso" name="codigo_curso"
-                    placeholder="Código del curso">
+                    placeholder="Código del curso" required>
                 </div>
               </div>
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="nombre_curso" class="form-label">Nombre del curso</label>
                   <input type="text" class="form-control p-2" id="nombre_curso" name="nombre_curso"
-                    placeholder="Nombre del curso">
+                    placeholder="Nombre del curso" required>
                 </div>
               </div>
-              <div class="col-12 col-md-6 col-lg-4">
+              <div class="col-12 col-md-6 col-lg-4">  
                 <div class="mb-3">
                   <label for="decripcion_curso" class="form-label">Descripción</label>
                   <textarea name="decripcion_curso" id="decripcion_curso" class="form-control p-2"
-                    placeholder="Descripción del curso"></textarea>
+                    placeholder="Descripción del curso" required></textarea>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="cantidad_hora" class="form-label">Cantidad de horas</label>
                   <input type="number" class="form-control p-2" id="cantidad_hora" name="cantidad_hora"
-                    placeholder="Cantidad de horas del curso" min="1">
+                    placeholder="Cantidad de horas del curso" min="1" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="cupo_curso" class="form-label">Cupo del curso</label>
                   <input type="number" class="form-control p-2" id="cupo_curso" name="cupo_curso"
-                    placeholder="Cupo del curso" min="1">
+                    placeholder="Cupo del curso" min="1" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="fecha_inicio" class="form-label">Fecha inicio del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_inicio" name="fecha_inicio">
+                  <input type="date" class="form-control p-2" id="fecha_inicio" name="fecha_inicio" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="fecha_final" class="form-label">Fecha final del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_final" name="fecha_final">
+                  <input type="date" class="form-control p-2" id="fecha_final" name="fecha_final" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
