@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Cursos{%endblock%}
+{%block title%}Registro docentes{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -115,120 +115,108 @@
     </div>
   </div>
 </div>
-
-
+<!-- fin del offcanva -->
 
 <!-- titulo -->
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar curso</h1>
+      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar docente</h1>
     </div>
   </div>
   <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
   <div class="row" data-aos="fade-up" data-aos-duration="1000">
     <div class="col-12">
-      <form action="{{url_for('cursos.registrar_curso')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+      <form action="{{url_for('docentes.registrar')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
         <div class="row">
           <div class="col-12">
             <div class="row">
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="nombre_curso" class="form-label">Nombre del curso</label>
-                  <input type="text" class="form-control p-2" id="nombre_curso" name="nombre_curso"
-                    placeholder="Nombre del curso" required>
+                  <label for="nombre_usuario" class="form-label">Nombre de usuario</label>
+                  <input type="text" class="form-control p-2" id="nombre_usuario" name="nombre_usuario"
+                    placeholder="Nombre de usuario" required>
                 </div>
               </div>
-              <div class="col-12 col md-6 col-lg-4">
+              <!-- <div id="nombre_usuario_resultado"></div> -->
+              <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="codigo_curso" class="form-label">Código del curso</label>
-                  <input type="text" class="form-control p-2" id="codigo_curso" name="codigo_curso"
-                    placeholder="Código del curso" required>
+                  <label for="nombres" class="form-label">Nombres</label>
+                  <input type="text" class="form-control p-2" id="nombres" name="nombres"
+                    placeholder="Nombres" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="fecha_inicio" class="form-label">Fecha inicio del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_inicio" name="fecha_inicio" required>
+                  <label for="apellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control p-2" id="apellidos" name="apellidos"
+                    placeholder="Apellidos" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="fecha_final" class="form-label">Fecha final del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_final" name="fecha_final" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">  
-                <div class="mb-3">
-                  <label for="horario_curso" class="form-label">Horario del curso</label>
-                  <input type="text" class="form-control p-2" name="horario_curso" id="horario_curso" placeholder="Horario del curso">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="email" class="form-control p-2" id="correo" name="correo"
+                    placeholder="Correo" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="fecha_final" class="form-label">Modalidad del curso</label>
-                  <select name="modalidad_curso" id="modalidad_curso" class="form-control p-2">
-                    <option value="Presencial">Presencial</option>
-                    <option value="Virtual">Virtual</option>
+                  <label for="Contraseña" class="form-label">Contraseña</label>
+                  <input type="password" class="form-control p-2" id="password" name="password"
+                    placeholder="Contraseña" required>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="numero_cel" class="form-label">Número de celular</label>
+                  <input type="number" class="form-control p-2" id="numero_cel" name="numero_cel"
+                    placeholder="Número de celular" required>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="numero_tel_fijo" class="form-label">Número de teléfono fijo</label>
+                  <input type="number" class="form-control p-2" id="numero_tel_fijo" name="numero_tel_fijo"
+                    placeholder="Número de teléfono fijo" required>
+                </div>
+              </div>
+              <!-- <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3"> -->
+                  <!-- <label for="rol" class="form-label">Número de teléfono fijo</label> -->
+                  <input type="hidden" class="form-control p-2" id="rol" name="rol" value="DOC">
+                <!-- </div>
+              </div> -->
+              <!-- <div class="col-12 col-md-6 col-lg-4"> -->
+                <!-- <div class="mb-3"> -->
+                  <!-- <label for="rol" class="form-label">Número de teléfono fijo</label> -->
+                  <input type="hidden" class="form-control p-2" id="estado" name="estado" value="1">
+                <!-- </div> -->
+              <!-- </div> -->
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="tipo_doc" class="form-label">Tipo de documento</label>
+                  <select name="tipo_doc" id="" class="form-control">
+                    <option value="CC">Cédula de ciudadanía</option>
+                    <option value="CE">Cédula de extranjería</option>
+                    <option value="RC">Registro civil</option>
+                    <option value="PA">Pasaporte</option>
                   </select>
                 </div>
               </div>
-              
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="duracion_curso" class="form-label">Duración del curso</label>
-                  <input type="number" class="form-control p-2" id="duracion_curso" name="duracion_curso"
-                    placeholder="Duración del curso" min="1" required>
+                  <label for="num_doc" class="form-label">Número de documento</label>
+                  <input type="number" class="form-control p-2" id="num_doc" name="num_doc" placeholder="Número de documento" required>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="intensidad_horaria" class="form-label">Intensidad horaria</label>
-                  <input type="text" class="form-control p-2" id="intensidad_horaria" name="intensidad_horaria"
-                    placeholder="Intensidad horaria(horas/días)" required>
+                  <label for="profesion" class="form-label">Profesión</label>
+                  <input type="text" class="form-control p-2" id="profesion" name="profesion" placeholder="Profesión" required>
                 </div>
               </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="cantidad_sesiones" class="form-label">Cantidad de sesiones</label>
-                  <input type="number" class="form-control p-2" id="cantidad_sesiones" name="cantidad_sesiones"
-                    placeholder="Cantidad de sesiones" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="cupo_curso" class="form-label">Cupo del curso</label>
-                  <input type="number" class="form-control p-2" id="cupo_curso" name="cupo_curso"
-                    placeholder="Cupo del curso" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="enlace_clase" class="form-label">Enlace de la clase</label>
-                  <input type="text" class="form-control p-2" id="enlace_clase" name="enlace_clase"
-                    placeholder="Enlace de la clase" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="enlace_grabaciones" class="form-label">Enlace de las grabaciones</label>
-                  <input type="text" class="form-control p-2" id="enlace_grabaciones" name="enlace_grabaciones"
-                    placeholder="Enlace de las grabaciones" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="enlace_form_asistencia" class="form-label">Enlace formulario de asistencia</label>
-                  <input type="text" class="form-control p-2" id="enlace_form_asistencia" name="enlace_form_asistencia"
-                    placeholder="Enlace del formulario de asistencias" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="estado_curso" name="estado_curso" value="1">
-                </div>
-              </div>
+
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="mb-3">
                   <!-- <label for="nombre" class="form-label">Nombre</label> -->
@@ -247,6 +235,41 @@
     </div>
   </div>
 </div>
+
+
+
+
+<!-- Función que verifica si existe el nombre de usuario y colocar con css rojo si ya existe y verde si no existe -->
+<script>
+  $(document).ready(function () {
+    $('#nombre_usuario').keyup(function () {
+      var nombre_usuario = $(this).val();
+      if (nombre_usuario != '') {
+        $.ajax({
+          url: "{{url_for('docentes.consultar_usuario')}}",
+          method: "POST",
+          data: {
+            nombre_usuario: nombre_usuario
+          },
+          success: function (data) {
+            if (data == 'Este nombre de usuario ya existe') {
+              $('#nombre_usuario').css("border-color", "#F90A0A");
+              // Añadir el mensaje de error
+              $('#nombre_usuario').after('<span class="text-danger">' + data + '</span>');
+
+            } else {
+              $('#nombre_usuario').css("border-color", "#34F458");
+              // Eliminar el mensaje de error
+              $('.text-danger').remove();
+            }
+          }
+        });
+      }
+    });
+  });
+</script>
+
+
 
 {%endblock%}
 {%block footer%}

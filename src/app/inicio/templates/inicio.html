@@ -116,6 +116,7 @@
     </div>
   </div>
 </div>
+
 <section class="bienvenida">
   <!-- Header -->
   <div class="px-4 py-5 my-5 text-center">
@@ -199,9 +200,9 @@
             </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
+            <a href="{{url_for('docentes.index')}}" class="btn btn-card"><i class="bi bi-check-circle"></i> Docentes</a>
+            <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Docentes no activos</a> -->
+            <a href="{{url_for('docentes.registroDocentes')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
           </div>
         </div>
       </div>

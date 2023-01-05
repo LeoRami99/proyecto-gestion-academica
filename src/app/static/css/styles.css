@@ -111,14 +111,7 @@
   height: 100px;
 }
 
-.card-img-overlay {
-  transition: ease-in 0.1s;
-}
-.card-img-overlay:hover{
-  /* Blur */
-  backdrop-filter: blur(5px);
-  
-}
+
 
 .parallax__container {
 	clip: rect(0, auto, auto, 0);
@@ -144,6 +137,63 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+}
+
+.spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 9px solid #868ce8;
+  animation: spinner-bulqg1 0.8s infinite linear alternate,
+       spinner-oaa3wk 1.6s infinite linear;
+}
+
+@keyframes spinner-bulqg1 {
+  0% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+
+  12.5% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+  }
+
+  25% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
+  }
+
+  50% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  62.5% {
+     clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  75% {
+     clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  100% {
+     clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
+  }
+}
+
+@keyframes spinner-oaa3wk {
+  0% {
+     transform: scaleY(1) rotate(0deg);
+  }
+
+  49.99% {
+     transform: scaleY(1) rotate(135deg);
+  }
+
+  50% {
+     transform: scaleY(-1) rotate(0deg);
+  }
+
+  100% {
+     transform: scaleY(-1) rotate(-135deg);
+  }
 }
 
 
@@ -291,6 +341,35 @@
   color: #fff; 
   text-shadow: 0 1px 0 #ddd, 0 2px 0 #ccc, 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 0 #acacac, 0 6px 1px rgba(0,0,0,0.1), 0 0 5px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.3), 0 3px 5px rgba(0,0,0,0.2), 0 5px 10px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.2), 0 20px 20px rgba(0,0,0,0.15);
   }
+
+.card-header{
+  background: 
+      linear-gradient(145deg,#92bec6 10%,#d5e6e9 10.5% 19%,#0000 19.5% 80.5%,#d5e6e9 81% 89.5%,#53939f 90%), 
+      linear-gradient(145deg,#92bec6 10%,#d5e6e9 10.5% 19%,#0000 19.5% 80.5%,#d5e6e9 81% 89.5%,#53939f 90%) calc(89px) 178px,
+      linear-gradient(35deg,#92bec6 10%,#d5e6e9 10.5% 19%,#0000 19.5% 80.5%,#d5e6e9 81% 89.5%,#53939f 90%), 
+      linear-gradient( 35deg,#92bec6 10%,#d5e6e9 10.5% 19%,#0000 19.5% 80.5%,#d5e6e9 81% 89.5%,#53939f 90%) calc(89px) 178px,
+      conic-gradient(from -90deg at 37.5% 50%,#0000 75%,#92bec6 0) calc(89px/4) 0,
+      conic-gradient(from -90deg at 37.5% 50%,#0000 75%,#53939f 0) calc(89px) 0,
+      linear-gradient(90deg,#53939f 38%,#92bec6 0 50%,#53939f 0 62%,#92bec6 0);
+background-size: 178px calc(2*178px/3);
+
+
+}
+.titulo{
+  color: #ffffff;
+}
+
+/* estilos globales para la tabla */
+.table{
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #000000;
+  border-collapse: collapse;
+  width: 100%;
+}
+
 
 
 

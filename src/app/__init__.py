@@ -6,6 +6,8 @@ from app.login.login import login_page
 from app.inicio.inicio import inicio
 from app.cursos.cursos import cursos
 from app.clientes.clientes import clientes
+from app.estudiantes.estudiantes import estudiantes
+from app.docentes.docentes import docentes
 
 # inicio de sesion
 from .login.logueo import Usuario
@@ -40,6 +42,7 @@ def createApp():
     app.register_blueprint(inicio)
     app.register_blueprint(cursos)
     app.register_blueprint(clientes)
-
+    app.register_blueprint(estudiantes)
+    app.register_blueprint(docentes)
 
     return app

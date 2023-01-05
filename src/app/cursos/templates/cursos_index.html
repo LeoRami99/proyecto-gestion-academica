@@ -144,36 +144,49 @@
 
 
 
-<div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
     {% for curso in cursos%}
-    {% if curso[10] == 1 %}
-      <div class="col mb-5">
-        <div class="card">
-          <div class="card-header" style="background: linear-gradient(to right, #1c92d2, #f2fcfe);  ">
-            <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[2]}}</h5>
-          </div>
-          <div class="card-body">
-            <!-- List group -->
-            <ul class="list-group
-            list-group-flush">
-              <li class="list-group item">Cantidad de horas: {{curso[4]}}</li>
-              <li class="list-group item">Cupo: {{curso[5]}}</li>
-              <li class="list-group item">Fecha de inicio: {{curso[6]}}</li>
-              <li class="list-group item">Fecha de finalizacion: {{curso[7]}}</li>
-              <li class="list-group item">Modalidad: {{curso[8]}}</li>
-            </ul>
-
-          </div>
-          <div class="card-footer">
-
-            {% if curso[10] == 1 %}
-            <span class="badge rounded-pill text-bg-success card-text"><i class="bi bi-check"></i> | Activo</span>
-            {% else %}
-            <p class="card-text">No activo</p>
-            {% endif %}
-          </div>
+    {% if curso[14] == 1 %}
+    <div class="col mb-5">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}}</h5>
+        </div>
+        <div class="card-body">
+          <!-- List group -->
+            <b>Código del curso:</b> {{curso[2]}}
+            <br>
+            <b>Fecha inicio:</b> {{curso[3]}}
+            <br>
+            <b>Fecha finalización:</b> {{curso[4]}}
+            <br>
+            <b>Horario:</b> {{curso[5]}}
+            <br>
+            <b>Modalidad:</b> {{curso[6]}}
+            <br>
+            <b>Duración:</b> {{curso[7]}}
+            <br>
+            <b>Intensidad horaria:</b> {{curso[8]}}
+            <br>
+            <b>Cantidad de sesiones:</b> {{curso[9]}}
+            <br>
+            <b>Cupo:</b> {{curso[10]}}
+            <br>
+            <b>Enlace de la clase:</b> {{curso[11]}}
+            <br>
+            <b>Enlace de las grabaciones:</b> {{curso[12]}}
+            <br>
+            <b>Enlaces formulario asistencia:</b> {{curso[13]}}
+        </div>
+        <div class="card-footer">
+          {% if curso[14] == 1 %}
+          <span class="badge rounded-pill text-bg-success card-text"><i class="bi bi-check"></i> | Activo</span>
+          {% else %}
+          <p class="card-text">No activo</p>
+          {% endif %}
         </div>
       </div>
+    </div>
     {%else%}
     {% endif %}
     {% endfor %}
@@ -187,7 +200,8 @@
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
 <script>
   // Barra de busqueda para filtrar las cards basada en el titulo y ordenarlos en la pantalla
   $(document).ready(function () {
@@ -197,7 +211,7 @@
         $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
     });
-  }); 
+  });
   // Paginacion de las cards de los cursos 
   $(function () {
     $("div.holder").jPages({
@@ -211,7 +225,12 @@
       next: "→",
       delay: 50,
     });
-});
+  });
+  
+  
+
+
+
 </script>
 {%endblock%}
 {%block footer%}

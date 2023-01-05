@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Cursos{%endblock%}
+{%block title%}Docentes{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -92,7 +92,8 @@
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
                 <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-                filled with some actual content.</div>
+                filled with some actual content.
+              </div>
             </div>
           </div>
           <div class="accordion-item">
@@ -107,7 +108,8 @@
               <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
                 <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
                 happening here in terms of content, but just filling up the space to make it look, at least at first
-                glance, a bit more representative of how this would look in a real-world application.</div>
+                glance, a bit more representative of how this would look in a real-world application.
+              </div>
             </div>
           </div>
         </div>
@@ -119,140 +121,166 @@
 
 
 <!-- titulo -->
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar curso</h1>
+      <div class="text-center">
+        <h1 class="display-4">Docentes</h1>
+      </div>
     </div>
   </div>
-  <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
-  <div class="row" data-aos="fade-up" data-aos-duration="1000">
-    <div class="col-12">
-      <form action="{{url_for('cursos.registrar_curso')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
-        <div class="row">
-          <div class="col-12">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="nombre_curso" class="form-label">Nombre del curso</label>
-                  <input type="text" class="form-control p-2" id="nombre_curso" name="nombre_curso"
-                    placeholder="Nombre del curso" required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="codigo_curso" class="form-label">Código del curso</label>
-                  <input type="text" class="form-control p-2" id="codigo_curso" name="codigo_curso"
-                    placeholder="Código del curso" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="fecha_inicio" class="form-label">Fecha inicio del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_inicio" name="fecha_inicio" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="fecha_final" class="form-label">Fecha final del curso</label>
-                  <input type="date" class="form-control p-2" id="fecha_final" name="fecha_final" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">  
-                <div class="mb-3">
-                  <label for="horario_curso" class="form-label">Horario del curso</label>
-                  <input type="text" class="form-control p-2" name="horario_curso" id="horario_curso" placeholder="Horario del curso">
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="fecha_final" class="form-label">Modalidad del curso</label>
-                  <select name="modalidad_curso" id="modalidad_curso" class="form-control p-2">
-                    <option value="Presencial">Presencial</option>
-                    <option value="Virtual">Virtual</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="duracion_curso" class="form-label">Duración del curso</label>
-                  <input type="number" class="form-control p-2" id="duracion_curso" name="duracion_curso"
-                    placeholder="Duración del curso" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="intensidad_horaria" class="form-label">Intensidad horaria</label>
-                  <input type="text" class="form-control p-2" id="intensidad_horaria" name="intensidad_horaria"
-                    placeholder="Intensidad horaria(horas/días)" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="cantidad_sesiones" class="form-label">Cantidad de sesiones</label>
-                  <input type="number" class="form-control p-2" id="cantidad_sesiones" name="cantidad_sesiones"
-                    placeholder="Cantidad de sesiones" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="cupo_curso" class="form-label">Cupo del curso</label>
-                  <input type="number" class="form-control p-2" id="cupo_curso" name="cupo_curso"
-                    placeholder="Cupo del curso" min="1" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="enlace_clase" class="form-label">Enlace de la clase</label>
-                  <input type="text" class="form-control p-2" id="enlace_clase" name="enlace_clase"
-                    placeholder="Enlace de la clase" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="enlace_grabaciones" class="form-label">Enlace de las grabaciones</label>
-                  <input type="text" class="form-control p-2" id="enlace_grabaciones" name="enlace_grabaciones"
-                    placeholder="Enlace de las grabaciones" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="enlace_form_asistencia" class="form-label">Enlace formulario de asistencia</label>
-                  <input type="text" class="form-control p-2" id="enlace_form_asistencia" name="enlace_form_asistencia"
-                    placeholder="Enlace del formulario de asistencias" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="estado_curso" name="estado_curso" value="1">
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="id_cliente" name="id_cliente"
-                    value="{{current_user.id_cliente}}">
-                </div>
-              </div>
-              <!-- Boton de enviar -->
-              <div class="col-12 mb-3 text-center">
-                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
+
+
+  <!-- Tabla de docentes -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12" data-aos="zoom-in" data-aos-duration="1000">
+        <table class="table table-hover" id="tabla_docentes">
+          <thead>
+            <tr>
+              <th scope="col">Número de documento</th>
+              <th scope="col">Nombre de Usuario</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Teléfono</th>
+              <th scope="col">Teléfono fijo</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Profesión</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for docente in docentes%}
+            <tr>
+              <td>{{docente[8]}} {{docente[9]}}</td>
+              <td>{{docente[1]}}</td>
+              <td>{{docente[2]}}</td>
+              <td>{{docente[3]}}</td>
+              <td>{{docente[4]}}</td>
+              <td>{{docente[5]}}</td>
+              <td>{{docente[6]}}</td>
+              <td>
+                {%if docente[7] == 1%}
+                  <span class="alert alert-success">Activo</span>
+                {%else%}
+                  <span class="alert alert-danger">Inactivo</span>
+                {%endif%}
+              </td>
+              <td>{{docente[10]}}</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_docente" data-bs-whateve="{{docente[0]}}"><i class="bi bi-pencil-square"></i> Editar</button>
+                  <a href="{{url_for('docentes.eliminar', id_docente=docente[0])}}" class="btn btn-outline-danger" onclick="return confirm('¿Seguro/a quieres eliminar a este docente?')"><i class="bi bi-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_docente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar docente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/docentes/editar" method="POST">
+          <div class="mb-3">
+            <label for="numero_documento" class="form-label">Número de documento</label>
+            <input type="text" class="form-control" id="numero_documento" name="numero_documento" placeholder="Número de documento">
+          </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
+          </div>
+          <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido">
+          </div>
+          <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo">
+          </div>
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono">
+          </div>
+          <div class="mb-3">
+            <label for="telefono_fijo" class="form-label ">Teléfono fijo</label>
+            <input type="text" class="form-control" id="telefono_fijo" name="telefono_fijo" placeholder="Teléfono fijo">
+          </div>
+          <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-select" aria-label="Default select example" id="estado" name="estado">
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="profesion" class="form-label">Profesión</label>
+            <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesión">
+          </div>
+          <div class="mb-3">
+            <!-- <label for="id_docente" class="form-label">ID</label> -->
+            <input type="hidden" class="form-control" id="id_docente" name="id_docente" placeholder="ID">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary" onclick="return confirm('¿Seguro/a que desea guardar los cambios?')">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script  -->
+<!--petición ajax para rellenar los otros campos del modal-->
+<script>
+  $('#modal_docente').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('bs-whateve') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    // modal.find('.modal-title').text('Editar docente ' + recipient)
+    modal.find('.modal-body input#id_docente').val(recipient)
+    $.ajax({
+      url: '/docentes/datos/modal',
+      type: 'POST',
+      data: {
+        id_docente: recipient
+      },
+      success: function (data) {
+        modal.find('.modal-body input#numero_documento').val(data.num_doc)
+        modal.find('.modal-body input#nombre').val(data.nombres)
+        modal.find('.modal-body input#apellido').val(data.apellidos)
+        modal.find('.modal-body input#correo').val(data.correo)
+        modal.find('.modal-body input#telefono').val(data.numero_cel)
+        modal.find('.modal-body input#telefono_fijo').val(data.numero_tel_fijo)
+        modal.find('.modal-body input#profesion').val(data.profesion)
+        modal.find('.modal-body input#id_docente').val(data.id_usuario)
+      }
+    })
+  })
+</script>
+
+
+
+
 
 {%endblock%}
 {%block footer%}
 
 <!-- footer -->
-<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
+<footer class="text-center text-white fondo_navbar">
   <!-- Grid container -->
   <div class="container pt-4">
     <!-- Section: Social media -->
@@ -291,4 +319,5 @@
   </div>
   <!-- Copyright -->
 </footer>
+
 {%endblock%}

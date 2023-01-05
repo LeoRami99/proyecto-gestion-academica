@@ -13,38 +13,43 @@ def index():
 @login_required
 def registrar_curso():
     if request.method == 'POST':
+        nombre_curso= request.form['nombre_curso']
         codigo_curso = request.form['codigo_curso']
-        nombre_curso = request.form['nombre_curso']
-        descripcion_curso = request.form['decripcion_curso']
-        cantidad_hora = request.form['cantidad_hora']
-        cupo_curso = request.form['cupo_curso']
         fecha_inicio = request.form['fecha_inicio']
-        fecha_final = request.form['fecha_final']
+        fecha_fin = request.form['fecha_final']
+        horario = request.form['horario_curso']
         modalidad_curso = request.form['modalidad_curso']
-        estado_matricula = request.form['estado_matricula']
+        duracion_curso = request.form['duracion_curso']
+        intensidad_horaria = request.form['intensidad_horaria']
+        cantidad_sesion = request.form['cantidad_sesiones']
+        cupo_curso = request.form['cupo_curso']
+        enlace_clase = request.form['enlace_clase']
+        enlace_grabaciones = request.form['enlace_grabaciones']
+        enlace_form_asistencia = request.form['enlace_form_asistencia']
         estado_curso = request.form['estado_curso']
         id_cliente = request.form['id_cliente']
-        if codigo_curso and nombre_curso and descripcion_curso and cantidad_hora and cupo_curso and fecha_inicio and fecha_final and modalidad_curso and estado_matricula and estado_curso and id_cliente:
-            curso = Curso(codigo_curso, nombre_curso, descripcion_curso, cantidad_hora, cupo_curso, fecha_inicio, fecha_final, modalidad_curso, estado_matricula, estado_curso, id_cliente)
-            # curso.guardar_curso()
-            if curso.guardar_curso() == True:
+        print(nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente) 
+        if nombre_curso and codigo_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
+            curso = Curso(nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
+            if curso.guardar_curso():
                 flash('Curso registrado correctamente')
-                return redirect(url_for('cursos.index'))
+                return redirect(url_for('cursos.listar_cursos'))
             else:
-                flash('No se pudo registrar el curso')
+                flash('Error al registrar curso')
                 return redirect(url_for('cursos.index'))
         else:
-            flash('No se pudo registrar el curso')
+            flash('Por favor, complete los campos')
             return redirect(url_for('cursos.index'))
     else:
+        flash('Error al registrar curso')
         return redirect(url_for('cursos.index'))
+        
 
 @cursos.route('/listar_cursos')
 @login_required
 def listar_cursos():
     curso = Curso()
     cursos = curso.obtener_cursos(current_user.id_cliente)
-    # Recargar cuando se haga un cambio en la base de datos
     
     return render_template('cursos_index.html', cursos=cursos)
 

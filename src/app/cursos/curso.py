@@ -6,23 +6,26 @@ cursor = conn.cursor()
 if conn is None:
     exit()
 class Curso():
-    def __init__(self, codigo_curso=None, nombre_curso=None, descripcion=None, cantidad_horas=None, cupo_curso=None, fecha_inicio=None, fecha_fin=None, modalidad=None, estado_matricula=None, estado=None, id_cliente=None):
-        self.codigo_curso = codigo_curso
+    def __init__(self, nombre_curso=None, codigo_curso=None, fecha_incio=None, fecha_fin=None, horario=None, modalidad=None, duracion=None, intensidad_horaria=None, cantidad_sesiones=None, cupo_curso=None, enlace_clase=None, enlace_grabaciones=None, enlace_form_asistencia=None, estado=None, id_cliente=None):
         self.nombre_curso = nombre_curso
-        self.descripcion = descripcion
-        self.cantidad_horas = cantidad_horas
-        self.cupo_curso = cupo_curso
-        self.fecha_inicio = fecha_inicio
+        self.codigo_curso = codigo_curso
+        self.fecha_incio = fecha_incio
         self.fecha_fin = fecha_fin
+        self.horario = horario
         self.modalidad = modalidad
-        self.estado_matricula = estado_matricula
+        self.duracion = duracion
+        self.intensidad_horaria = intensidad_horaria
+        self.cantidad_sesiones = cantidad_sesiones
+        self.cupo_curso = cupo_curso
+        self.enlace_clase = enlace_clase
+        self.enlace_grabaciones = enlace_grabaciones
+        self.enlace_form_asistencia = enlace_form_asistencia
         self.estado = estado
         self.id_cliente = id_cliente
-
     def guardar_curso(self):
         try:
-            sql = """INSERT INTO curso (codigo_curso, nombre_curso, descripcion, cantidad_horas, cupo_curso, fecha_inicio, fecha_fin, modalidad, estado_matricula, estado, id_cliente) 
-            VALUES ('{0}', '{1}', '{2}', {3}, {4}, '{5}', '{6}', '{7}', '{8}', '{9}', {10})""".format(self.codigo_curso, self.nombre_curso, self.descripcion, self.cantidad_horas, self.cupo_curso, self.fecha_inicio, self.fecha_fin, self.modalidad, self.estado_matricula, self.estado, self.id_cliente)
+            sql = """INSERT INTO curso (nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad, duracion, intensidad_horaria, cantidad_sesiones, cupo_curso, enlace_clase, enlace_grabaciones, formulario_asistencia, estado_curso, id_cliente) 
+            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}')""".format(self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, self.id_cliente)
             cursor.execute(sql)
             conn.commit()
             return True
@@ -31,25 +34,25 @@ class Curso():
             return False
     def obtener_cursos(self, id_cliente):
         try:
-            sql = "SELECT * FROM curso WHERE id_cliente={0}".format(id_cliente)
+            sql = "SELECT * FROM curso where id_cliente = {0}".format(id_cliente)
             cursor.execute(sql)
             cursos = cursor.fetchall()
             return cursos
         except Exception as e:
             print(e)
-            return None
-    # def obtener_curso(self, id_cliente):
-    #     try:
-    #         sql = "SELECT * FROM curso WHERE id_cliente={0}".format(id)
-    #         cursor.execute(sql)
-    #         curso = cursor.fetchone()
-    #         return curso
-    #     except Exception as e:
-    #         print(e)
-    #         return None
+            return False
+    def obtener_curso(self, id):
+        try:
+            sql = "SELECT * FROM curso where id = {0}".format(id)
+            cursor.execute(sql)
+            curso = cursor.fetchone()
+            return curso
+        except Exception as e:
+            print(e)
+            return False
     def actualizar_curso(self, id):
         try:
-            sql = """UPDATE curso SET codigo_curso='{0}', nombre_curso='{1}', descripcion='{2}', cantidad_horas={3}, cupo_curso={4}, fecha_inicio='{5}', fecha_fin='{6}', modalidad='{7}', estado_matricula='{8}', estado='{9}', id_cliente={10} WHERE id={11}""".format(self.codigo_curso, self.nombre_curso, self.descripcion, self.cantidad_horas, self.cupo_curso, self.fecha_inicio, self.fecha_fin, self.modalidad, self.estado_matricula, self.estado, self.id_cliente, id)
+            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_incio = '{2}', fecha_fin = '{3}', horario = '{4}', modalidad = '{5}', duracion = '{6}', intensidad_horaria = '{7}', cantidad_sesiones = '{8}', cupo_curso = '{9}', enlace_clase = '{10}', enlace_grabaciones = '{11}', formulario_asistencia = '{12}', estado = '{13}' WHERE id = {14}""".format(self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, id)
             cursor.execute(sql)
             conn.commit()
             return True
@@ -58,13 +61,13 @@ class Curso():
             return False
     def eliminar_curso(self, id):
         try:
-            sql = "DELETE FROM curso WHERE id={0}".format(id)
+            sql = "DELETE FROM curso WHERE id = {0}".format(id)
             cursor.execute(sql)
             conn.commit()
             return True
         except Exception as e:
             print(e)
             return False
-
-        
+    
+    
        

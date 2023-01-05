@@ -7,11 +7,12 @@
   <title>{%block title%}{%endblock%}</title>
   <!-- Jquery -->
   <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Bootstrap link css -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <!-- Icons Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <!-- Link de data tables css -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.css"/>
   <!-- animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- Styles base  -->
@@ -25,24 +26,7 @@
 {% endblock %}
 <!-- Animación de carga -->
 <!-- <div class="loader">
-  <div class="loading">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-  </div>
+  <div class="spinner"></div>
 </div> -->
 
 
@@ -52,7 +36,7 @@
   {% if messages %}
   <div class="toast float-end m-2" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header" style="background-color: #003265; color: #ffffff;">
-                    <strong class="me-auto">Prueba</strong>
+                    <strong class="me-auto">Nombre del sistema</strong>
                     <!-- <button type="button" data-bs-dismiss="toast" aria-label="Close"> -->
                     <a href="" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-circle-fill" style="color: #ffffff;"></i></a>
                   </div>
@@ -70,7 +54,7 @@
         {% endif %}
         {% endwith %}
   </div>
-        <!-- Section for content of page -->
+<!-- Section for content of page -->
 <div class="container">
   {% block content %}
   
@@ -82,15 +66,18 @@
 
 {% endblock %}
 <!-- Script para la carga de pantalla -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   //  cuando la página alla completamente cargada
   $(window).on('load', function () {
       //  desaparecerá el loader
       $('.loader').fadeOut();
   });
   
-</script>
-
+</script> -->
+<!-- link js datatables -->
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.js"></script>
+<!-- Scripts del sistema -->
+<script src="{{url_for('static', filename='js/main.js')}}"></script>
 <!-- AOS js -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
