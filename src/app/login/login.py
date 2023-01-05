@@ -7,6 +7,7 @@ from conection_mysql import obtener_conexion
 
 # blueprint de login
 login_page = Blueprint('login_page', __name__, template_folder='templates', url_prefix='/')
+conn = obtener_conexion()
 
 
 @login_page.route('/login')
@@ -17,12 +18,11 @@ def login():
         return render_template('login.html')
 @login_page.route('/login_sistema', methods=['POST'])
 def login_sistem():
-    conn = obtener_conexion()
-    if request.method == 'POST':
-        nombre_usuario = request.form['usuario']
-        contrasena = request.form['password']
-        if nombre_usuario and contrasena:
-            try:
+    try:
+        if request.method == 'POST':
+            nombre_usuario = request.form['usuario']
+            contrasena = request.form['password']
+            if nombre_usuario and contrasena:
                 sql_id = "SELECT id FROM usuarios WHERE nombre_usuario = '{0}'".format(nombre_usuario)
                 cursor = conn.cursor()
                 cursor.execute(sql_id)
@@ -39,14 +39,15 @@ def login_sistem():
                 else:
                     flash('Usuario o contraseña incorrectos')
                     return redirect(url_for('login_page.login'))
-            except Exception as e:
-                flash('Usuario o contraseña incorrectos')
+                
+            else:
+                flash('Por favor, complete los campos')
                 return redirect(url_for('login_page.login'))
         else:
             flash('Por favor, complete los campos')
             return redirect(url_for('login_page.login'))
-    else:
-        flash('Por favor, complete los campos')
+    except Exception as e:
+        flash('Error al iniciar sesión')
         return redirect(url_for('login_page.login'))
 
 

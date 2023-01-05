@@ -7,7 +7,10 @@ cursos = Blueprint('cursos', __name__, template_folder='templates', url_prefix='
 @cursos.route('/registro_curso')
 @login_required
 def index():
-    return render_template('cursos.html')  
+    if current_user.rol == 'AD':
+        return render_template('cursos.html')
+    else:
+        return redirect(url_for('inicio.index'))
 
 @cursos.route('/registrar_curso', methods=['POST', 'GET'])
 @login_required

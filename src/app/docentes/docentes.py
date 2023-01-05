@@ -14,7 +14,11 @@ docentes = Blueprint('docentes', __name__, template_folder='templates', url_pref
 @docentes.route('/docentes-registro')
 @login_required
 def registroDocentes():
-    return render_template('docentes_registro.html')
+    if current_user.rol == 'AD':
+        return render_template('docentes_registro.html')
+    else:
+        return redirect(url_for('inicio.index'))
+    
 
 @docentes.route('/docentes/registrar', methods=['POST'])
 @login_required
@@ -90,7 +94,7 @@ def eliminar(id_docente):
             return redirect(url_for('docentes.index'))
     else:
         return redirect(url_for('docentes.index'))
-        
+
 # ruta donde se listan los docentes por cliente
 @docentes.route('/docentes')
 @login_required

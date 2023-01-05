@@ -1,72 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{%block title%}{%endblock%}</title>
   <!-- Jquery -->
-  <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
   <!-- Bootstrap link css -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <!-- Icons Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
   <!-- Link de data tables css -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.css" />
   <!-- animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Animte css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Styles base  -->
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
 </head>
+
 <body class="fondo-pagina d-flex flex-column h-100">
 
-<!-- Section to navbar -->
-{% block navbar %}
+  <!-- Section to navbar -->
+  {% block navbar %}
 
-{% endblock %}
-<!-- Animación de carga -->
-<!-- <div class="loader">
+  {% endblock %}
+  <!-- Animación de carga -->
+  <!-- <div class="loader">
   <div class="spinner"></div>
 </div> -->
 
 
-<!-- Toast notification -->
-<div class="container">
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <div class="toast float-end m-2" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header" style="background-color: #003265; color: #ffffff;">
-                    <strong class="me-auto">Nombre del sistema</strong>
-                    <!-- <button type="button" data-bs-dismiss="toast" aria-label="Close"> -->
-                    <a href="" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-circle-fill" style="color: #ffffff;"></i></a>
-                  </div>
-                  <div class="toast-body">
-                    {% for message in messages %}
-                    {{message}}
-                    {% endfor %}
-                  </div>
-                </div>
-                <script>
-                  $(document).ready(function(){
-                    $('.toast').toast('show');
-                });
-            </script>
-        {% endif %}
-        {% endwith %}
+  <!-- Toast notification -->
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="toast float-end m-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header" style="background-color: #003265; color: #ffffff;">
+          <strong class="me-auto">Nombre del sistema</strong>
+          <!-- <button type="button" data-bs-dismiss="toast" aria-label="Close"> -->
+          <a href="" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-circle-fill"
+              style="color: #ffffff;"></i></a>
+        </div>
+        <div class="toast-body">
+          {% for message in messages %}
+          {{message}}
+          {% endfor %}
+        </div>
+      </div>
+    <script>
+      $(document).ready(function () {
+        $('.toast').toast('show');
+      });
+    </script>
+    {% endif %}
+    {% endwith %}
   </div>
-<!-- Section for content of page -->
-<div class="container">
-  {% block content %}
-  
+  <!-- Section for content of page -->
+  <div class="container">
+    {% block content %}
+
+    {% endblock %}
+  </div>
+
+  <!-- Section for footer -->
+  {% block footer %}
+
   {% endblock %}
-</div>
-
-<!-- Section for footer -->
-{% block footer %}
-
-{% endblock %}
-<!-- Script para la carga de pantalla -->
-<!-- <script type="text/javascript">
+  <!-- Script para la carga de pantalla -->
+  <!-- <script type="text/javascript">
   //  cuando la página alla completamente cargada
   $(window).on('load', function () {
       //  desaparecerá el loader
@@ -74,24 +81,25 @@
   });
   
 </script> -->
-<!-- link js datatables -->
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.js"></script>
-<!-- Scripts del sistema -->
-<script src="{{url_for('static', filename='js/main.js')}}"></script>
-<!-- AOS js -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
-<!-- Bootstrap modules -->
-<!-- Bootstrap toast -->
-<script type="module">
-  import * as boostrap from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
+  <!-- link js datatables -->
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.js"></script>
+  <!-- Scripts del sistema -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  <!-- AOS js -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <!-- Bootstrap modules -->
+  <!-- Bootstrap toast -->
+  <script type="module">
+    import * as boostrap from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-</script>
-<!-- Bootstrap link js -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
+    })
+  </script>
+  <!-- Bootstrap link js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
 </body>
+
 </html>

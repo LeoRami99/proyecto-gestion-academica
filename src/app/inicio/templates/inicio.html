@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#" style="color:#ffffff;">Nombre del sistema sistema | {{current_user.nombre}}</a>
+    <a class="navbar-brand" href="#" style="color:#ffffff;">Nombre del sistema sistema | {{current_user.rol}}</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -127,7 +127,7 @@
         popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive
         prebuilt components, and powerful JavaScript plugins.</p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <a href="#options" class="btn"><i class="bi bi-arrow-down-short" style="font-size: 80px;"></i></a>
+        <a href="#options" class="btn animate__animated animate__bounce animate__infinite animate__slower"><i class="bi bi-arrow-down-short" style="font-size: 80px;"></i></a>
       </div>
     </div>
   </div>
@@ -139,6 +139,8 @@
     </div>
     <!-- Cards para cada apartado -->
     <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mt-2">
+      <!-- Card de cursos  -->
+      
       <div class="col" data-aos="fade-right" data-aos-duration="1000">
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img"
@@ -149,19 +151,22 @@
           </div>
           <div class="card-body" style="overflow-y: auto">
             <h4 class="card-title"><i class="bi bi-mortarboard"></i> Cursos</h4>
-            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body
-              content.
-              You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks"
-                target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
+            <p class="card-text">
+              Gestiona los cursos que impartes, crea nuevos cursos, edita los cursos que ya tienes, 
+              elimina cursos que ya no impartes.
+            </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-check-circle"></i> Cursos activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a>
+            <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-check-circle"></i> Cursos </a>
+            <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
+            {%if current_user.rol== "AD"%}
             <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar curso</a>
+            {%endif%}
             
           </div>
         </div>
       </div>
+      <!-- Card de Estudiantes -->
       <div class="col" data-aos="fade-left" data-aos-duration="1000">
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img"
@@ -184,6 +189,8 @@
           </div>
         </div>
       </div>
+      <!-- Card de Docentes -->
+      {%if current_user.rol== "AD"%}
       <div class="col" data-aos="fade-right" data-aos-duration="1000">
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img"
@@ -206,6 +213,9 @@
           </div>
         </div>
       </div>
+      {%endif%}
+
+      <!-- Card para opción adicional -->
       <div class="col" data-aos="fade-left" data-aos-duration="1000">
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img"
