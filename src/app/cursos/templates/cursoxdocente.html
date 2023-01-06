@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Registro docentes{%endblock%}
+{%block title%}Docente Curso {%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -92,7 +92,8 @@
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
                 <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-                filled with some actual content.</div>
+                filled with some actual content.
+              </div>
             </div>
           </div>
           <div class="accordion-item">
@@ -107,7 +108,8 @@
               <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
                 <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
                 happening here in terms of content, but just filling up the space to make it look, at least at first
-                glance, a bit more representative of how this would look in a real-world application.</div>
+                glance, a bit more representative of how this would look in a real-world application.
+              </div>
             </div>
           </div>
         </div>
@@ -115,167 +117,107 @@
     </div>
   </div>
 </div>
-<!-- fin del offcanva -->
+
+
 
 <!-- titulo -->
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar docente</h1>
+      <div class="text-center">
+        <h1 class="display-4">Cursos x Docente</h1>
+      </div>
     </div>
   </div>
-  <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
-  <div class="row" data-aos="fade-up" data-aos-duration="1000">
-    <div class="col-12">
-      <form action="{{url_for('docentes.registrar')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
-        <div class="row">
-          <div class="col-12">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="nombre_usuario" class="form-label">Nombre de usuario</label>
-                  <input type="text" class="form-control p-2" id="nombre_usuario" name="nombre_usuario"
-                    placeholder="Nombre de usuario" required>
-                </div>
-              </div>
-              <!-- <div id="nombre_usuario_resultado"></div> -->
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="nombres" class="form-label">Nombres</label>
-                  <input type="text" class="form-control p-2" id="nombres" name="nombres"
-                    placeholder="Nombres" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="apellidos" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control p-2" id="apellidos" name="apellidos"
-                    placeholder="Apellidos" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="correo" class="form-label">Correo</label>
-                  <input type="email" class="form-control p-2" id="correo" name="correo"
-                    placeholder="Correo" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="Contraseña" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control p-2" id="password" name="password"
-                    placeholder="Contraseña" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="numero_cel" class="form-label">Número de celular</label>
-                  <input type="number" class="form-control p-2" id="numero_cel" name="numero_cel"
-                    placeholder="Número de celular" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="numero_tel_fijo" class="form-label">Número de teléfono fijo</label>
-                  <input type="number" class="form-control p-2" id="numero_tel_fijo" name="numero_tel_fijo"
-                    placeholder="Número de teléfono fijo" required>
-                </div>
-              </div>
-              <!-- <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3"> -->
-                  <!-- <label for="rol" class="form-label">Número de teléfono fijo</label> -->
-                  <input type="hidden" class="form-control p-2" id="rol" name="rol" value="DOC">
-                <!-- </div>
-              </div> -->
-              <!-- <div class="col-12 col-md-6 col-lg-4"> -->
-                <!-- <div class="mb-3"> -->
-                  <!-- <label for="rol" class="form-label">Número de teléfono fijo</label> -->
-                  <input type="hidden" class="form-control p-2" id="estado" name="estado" value="1">
-                <!-- </div> -->
-              <!-- </div> -->
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="tipo_doc" class="form-label">Tipo de documento</label>
-                  <select name="tipo_doc" id="" class="form-control">
-                    <option value="CC">Cédula de ciudadanía</option>
-                    <option value="CE">Cédula de extranjería</option>
-                    <option value="RC">Registro civil</option>
-                    <option value="PA">Pasaporte</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="num_doc" class="form-label">Número de documento</label>
-                  <input type="number" class="form-control p-2" id="num_doc" name="num_doc" placeholder="Número de documento" required>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="profesion" class="form-label">Profesión</label>
-                  <input type="text" class="form-control p-2" id="profesion" name="profesion" placeholder="Profesión" required>
-                </div>
-              </div>
 
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
-                  <input type="hidden" class="form-control p-2" id="id_cliente" name="id_cliente"
-                    value="{{current_user.id_cliente}}">
-                </div>
-              </div>
-              <!-- Boton de enviar -->
-              <div class="col-12 mb-3 text-center">
-                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
-              </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="input-group flex-nowrap mb-3 w-25 float-end">
+        <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="Buscar" placeholder="Buscar" aria-label="Buscar"
+          aria-describedby="addon-wrapping">
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+    {% for curso in cursos%}
+      {{curso}}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-6">
+              <p class="card-text">Codigo: {{curso[1]}}</p>
+            </div>
+            <div class="col-6">
+              <p class="card-text">Estado: {{curso[2]}}</p>
             </div>
           </div>
         </div>
-      </form>
+
+        <div class="card-body">
+          <h5 class="card-title titulo">{{curso[0]}}</h5>
+          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Paginacion de las cards de los cursos -->
+  <div class="container-fluid">
+    <div class="row float-end">
+      <div class="col-12">
+        <div class="holder"></div>
+      </div>
     </div>
   </div>
 </div>
 
-
-
-
-<!-- Función que verifica si existe el nombre de usuario y colocar con css rojo si ya existe y verde si no existe -->
+<script
+  src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
 <script>
+  // Barra de busqueda para filtrar las cards basada en el titulo y ordenarlos en la pantalla
   $(document).ready(function () {
-    $('#nombre_usuario').keyup(function () {
-      var nombre_usuario = $(this).val();
-      if (nombre_usuario != '' ) {
-        $.ajax({
-          url: "{{url_for('docentes.consultar_usuario')}}",
-          method: "POST",
-          data: {
-            nombre_usuario: nombre_usuario
-          },
-          success: function (data) {
-            if (data == 'Este nombre de usuario ya existe') {
-              $('#nombre_usuario').css("border-color", "#F90A0A");
-              // Añadir el mensaje de error
-              $('#nombre_usuario').after('<span class="text-danger">' + data + '</span>');
-
-            } else {
-              $('#nombre_usuario').css("border-color", "#34F458");
-              // Eliminar el mensaje de error
-              $('.text-danger').remove();
-            }
-          }
-        });
-      }
+    $("#Buscar").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $(".titulo").filter(function () {
+        $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+  // Paginacion de las cards de los cursos 
+  $(function () {
+    $("div.holder").jPages({
+      containerID: "listado",
+      perPage: 6,
+      midRange: 3,
+      startPage: 1,
+      startRange: 1,
+      endRange: 1,
+      previous: "←",
+      next: "→",
+      delay: 50,
     });
   });
 </script>
 
 
 
+
+
+
+</div>
+
+
 {%endblock%}
 {%block footer%}
 
 <!-- footer -->
-<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
+<footer class="text-center text-white fondo_navbar">
   <!-- Grid container -->
   <div class="container pt-4">
     <!-- Section: Social media -->
@@ -314,4 +256,5 @@
   </div>
   <!-- Copyright -->
 </footer>
+
 {%endblock%}

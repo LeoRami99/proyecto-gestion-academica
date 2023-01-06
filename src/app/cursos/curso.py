@@ -68,6 +68,15 @@ class Curso():
         except Exception as e:
             print(e)
             return False
-    
+    @classmethod
+    def lista_curso_docente(self, id_curso, id_cliente):
+        try:
+            sql = "SELECT id, id_curso, id_cliente FROM asignacion_docente_curso WHERE id_curso = {0} AND id_cliente = {1}".format(id_curso, id_cliente)
+            cursor.execute(sql)
+            cursos_docente = cursor.fetchone()
+            return cursos_docente
+        except Exception as e:
+            print(e)
+            return False
     
        

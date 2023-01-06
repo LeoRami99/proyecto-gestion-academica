@@ -23,11 +23,10 @@ def login_sistem():
             nombre_usuario = request.form['usuario']
             contrasena = request.form['password']
             if nombre_usuario and contrasena:
-                sql_id = "SELECT id FROM usuarios WHERE nombre_usuario = '{0}'".format(nombre_usuario)
-                cursor = conn.cursor()
-                cursor.execute(sql_id)
-                consulta = cursor.fetchone()
-                user = Usuario(consulta[0], nombre_usuario, contrasena)
+                consulta= Usuario.id_nombreuser(nombre_usuario)
+                
+                # print('consulta', consulta)
+                user = Usuario(consulta, nombre_usuario, contrasena)
                 usuario = user.login(conn)
                 if usuario != None:
                     if usuario.contrasena is True:

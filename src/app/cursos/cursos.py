@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from .curso import Curso
+from app.docentes.docente import Docente
 
 cursos = Blueprint('cursos', __name__, template_folder='templates', url_prefix='/')
 
@@ -53,9 +54,36 @@ def registrar_curso():
 def listar_cursos():
     curso = Curso()
     cursos = curso.obtener_cursos(current_user.id_cliente)
-    
     return render_template('cursos_index.html', cursos=cursos)
 
+#Vista para asignar docente a un curso
+@cursos.route('/cursos-docente')
+@login_required
+def asignar_docente():
+    # cursos 
+    curso = Curso()
+    cursos = curso.obtener_cursos(current_user.id_cliente)
+    # docentes
+    docente = Docente()
+    docentes = docente.obtenerDocentesCliente(current_user.id_cliente)
+    # Listas para almacenar los cursos y docentes activos
+    lista_curso_activos = []
+    lista_docentes_activos = []
+    for curso_lista in cursos:
+        if curso.lista_curso_docente(curso_lista[0], current_user.id_cliente) == None:
+            if curso_lista[14] == 1:
+                lista_curso_activos.append(curso_lista)
+        else:
+            pass
+    for docente_lista in docentes:
+        if docente_lista[7] == 1:
+            lista_docentes_activos.append(docente_lista)
+        else:
+            pass
+    return render_template('cursoxdocente.html', cursos=lista_curso_activos, docentes=lista_docentes_activos)
+        
+
+        
 
 
         

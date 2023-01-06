@@ -161,6 +161,7 @@
             <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
             {%if current_user.rol== "AD"%}
             <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar curso</a>
+            <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar docente</a>
             {%endif%}
             
           </div>

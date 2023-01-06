@@ -5,6 +5,8 @@ from werkzeug.security import generate_password_hash
 
 
 
+
+
 docentes = Blueprint('docentes', __name__, template_folder='templates', url_prefix='/')
 # Habilirar cors para que se pueda hacer la consulta ajax
 # from flask_cors import CORS
@@ -113,17 +115,21 @@ def index():
 @login_required
 def consultar_usuario():
     from conection_mysql import obtener_conexion
-    if request.method == 'POST':
-        nombre_usuario = request.form['nombre_usuario']
-        conn = obtener_conexion()
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM usuarios WHERE nombre_usuario = %s', (nombre_usuario))
-        data = cursor.fetchall()
-# Devolver el datos adecuado para la consulta ajax
-        if len(data) > 0:
-            return 'Este nombre de usuario ya existe'
-        else:
-            return 'Este nombre de usuario esta disponible'
+    with obtener_conexion() as conexion:
+        with conexion.cursor() as cursor:
+            if request.method == 'POST':
+                nombre_usuario = request.form['nombre_usuario']
+                
+                cursor.execute("SELECT * FROM usuarios WHERE nombre_usuario = '{0}'".format(nombre_usuario))
+                data = cursor.fetchall()
+        # Devolver el datos adecuado para la consulta ajax
+                if len(data) > 0:
+                    return 'Este nombre de usuario ya existe'
+                else:
+                    return 'Este nombre de usuario esta disponible'
+            else:
+                return "Error en la consulta"
+        
 
 # ruta donde donde trae los datos del docente para editar /docentes/datos/modal con ajax
 @docentes.route('/docentes/datos/modal', methods=['POST'])
