@@ -153,29 +153,32 @@
           <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}}</h5>
         </div>
         <div class="card-body">
-            <b>Código del curso:</b> {{curso[2]}}
-            <br>
-            <b>Fecha inicio:</b> {{curso[3]}}
-            <br>
-            <b>Fecha finalización:</b> {{curso[4]}}
-            <br>
-            <b>Horario:</b> {{curso[5]}}
-            <br>
-            <b>Modalidad:</b> {{curso[6]}}
-            <br>
-            <b>Duración:</b> {{curso[7]}}
-            <br>
-            <b>Intensidad horaria:</b> {{curso[8]}}
-            <br>
-            <b>Cantidad de sesiones:</b> {{curso[9]}}
-            <br>
-            <b>Cupo:</b> {{curso[10]}}
-            <br>
-            <b>Enlace de la clase:</b> {{curso[11]}}
-            <br>
-            <b>Enlace de las grabaciones:</b> {{curso[12]}}
-            <br>
-            <b>Enlaces formulario asistencia:</b> {{curso[13]}}
+          <b>Código del curso:</b> {{curso[2]}}
+          <br>
+          <b>Fecha inicio:</b> {{curso[3]}}
+          <br>
+          <b>Fecha finalización:</b> {{curso[4]}}
+          <br>
+          <b>Horario:</b> {{curso[5]}}
+          <br>
+          <b>Modalidad:</b> {{curso[6]}}
+          <br>
+          <b>Duración:</b> {{curso[7]}}
+          <br>
+          <b>Intensidad horaria:</b> {{curso[8]}}
+          <br>
+          <b>Cantidad de sesiones:</b> {{curso[9]}}
+          <br>
+          <b>Cupo:</b> {{curso[10]}}
+          <br>
+          <b>Enlace de la clase:</b> {{curso[11]}}
+          <br>
+          <b>Enlace de las grabaciones:</b> {{curso[12]}}
+          <br>
+          <b>Enlaces formulario asistencia:</b> {{curso[13]}}
+          <br>
+          <b>Docente: </b> {{curso[16]}}
+          <br>
         </div>
         <div class="card-footer">
           {% if curso[14] == 1 %}
@@ -183,6 +186,11 @@
           {% else %}
           <p class="card-text">No activo</p>
           {% endif %}
+          <div class="btn-group float-end" role="group" aria-label="Botones de edición">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_curso"
+              data-bs-whateve="{{curso[0]}}"><i class="bi bi-pencil"></i></button>
+            <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
+          </div>
         </div>
       </div>
     </div>
@@ -199,6 +207,127 @@
     </div>
   </div>
 </div>
+
+<!-- Modal para editar la información del curso -->
+<div class="modal fade" id="modal_curso" tabindex="-1" aria-labelledby="modal_curso" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Curso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{url_for('cursos.actualizar_curso')}}" method="POST">
+          <input type="hidden" id="id_curso" name="id_curso">
+          <div class="mb-3">
+            <label for="nombre_curso" class="form-label">Nombre del curso</label>
+            <input type="text" class="form-control" id="nombre_curso" name="nombre_curso"
+              placeholder="Nombre del curso" required>
+          </div>
+          
+          <div class="mb-3">
+            <label for="codigo_curso" class="form-label">Código del curso</label>
+            <input type="text" class="form-control" id="codigo_curso" name="codigo_curso"
+              placeholder="Código del curso" required>
+          </div>
+          <div class="mb-3">
+            <label for="fecha_inicio" class="form-label">Fecha de inicio</label>
+            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" placeholder="Fecha de inicio">
+          </div>
+          <div class="mb-3">
+            <label for="fecha_finalizacion" class="form-label">Fecha de finalización</label>
+            <input type="date" class="form-control" id="fecha_finalizacion" name="fecha_finalizacion"
+              placeholder="Fecha de finalización" required>
+          </div>
+          <div class="mb-3">
+            <label for="horario" class="form-label">Horario</label>
+            <input type="text" class="form-control" id="horario" name="horario" placeholder="Horario" required>
+          </div>
+          <div class="mb-3">
+            <label for="duracion" class="form-label">Duración</label>
+            <input type="text" class="form-control" id="duracion" name="duracion" placeholder="Duración" required>
+          </div>
+          <div class="mb-3">
+            <label for="intensidad_horaria" class="form-label">Intensidad horaria</label>
+            <input type="text" class="form-control" id="intensidad_horaria" name="intensidad_horaria"
+              placeholder="Intensidad horaria" required>
+          </div>
+          <div class="mb-3">
+            <label for="cantidad_sesiones" class="form-label">Cantidad de sesiones</label>
+            <input type="text" class="form-control" id="cantidad_sesiones" name="cantidad_sesiones"
+              placeholder="Cantidad de sesiones" required>
+          </div>
+          <div class="mb-3">
+            <label for="cupo" class="form-label">Cupo</label>
+            <input type="text" class="form-control" id="cupo" name="cupo" placeholder="Cupo" required>
+          </div>
+          <div class="mb-3">
+            <label for="enlace_clase" class="form-label">Enlace de la clase</label>
+            <input type="text" class="form-control" id="enlace_clase" name="enlace_clase"
+              placeholder="Enlace de la clase" required>
+          </div>
+          <div class="mb-3">
+            <label for="enlace_grabacion" class="form-label">Enlace de las grabaciones</label>
+            <input type="text" class="form-control" id="enlace_grabacion" name="enlace_grabacion"
+              placeholder="Enlace de las grabaciones" required>
+          </div>
+          <div class="mb-3">
+            <label for="enlace_formulario" class="form-label">Enlace formulario asistencia</label>
+            <input type="text" class="form-control" id="enlace_formulario" name="enlace_formulario"
+              placeholder="Enlace del formulario" required>
+          </div>
+
+
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary"
+              onclick="return confirm('¿Seguro/a que desea guardar los cambios?')">Guardar cambios</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $('#modal_curso').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('bs-whateve') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    // modal.find('.modal-title').text('Editar docente ' + recipient)
+    modal.find('.modal-body input#id_curso').val(recipient)
+    // ajax petition
+    $.ajax({
+      url: '{{url_for("cursos.consultar_curso")}}',
+      type: 'POST',
+      data: {
+        id_curso: recipient
+      },
+      success: function (response) {
+        var curso = response
+        modal.find('.modal-body input#nombre_curso').val(curso.nombre_curso)
+        modal.find('.modal-body input#codigo_curso').val(curso.codigo_curso)
+        modal.find('.modal-body input#fecha_inicio').val(curso.fecha_inicio)
+        modal.find('.modal-body input#fecha_finalizacion').val(curso.fecha_fin)
+        modal.find('.modal-body input#horario').val(curso.horario)
+        modal.find('.modal-body input#duracion').val(curso.duracion)
+        modal.find('.modal-body input#intensidad_horaria').val(curso.intensidad_horaria)
+        modal.find('.modal-body input#cantidad_sesiones').val(curso.cantidad_sesiones)
+        modal.find('.modal-body input#cupo').val(curso.cupo_curso)
+        modal.find('.modal-body input#enlace_clase').val(curso.enlace_clase)
+        modal.find('.modal-body input#enlace_grabacion').val(curso.enlace_grabaciones)
+        modal.find('.modal-body input#enlace_formulario').val(curso.enlace_asistencia)
+
+      }
+
+    })
+  })
+
+</script>
+
 <script
   src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
 <script>

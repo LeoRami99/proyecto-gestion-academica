@@ -1,7 +1,7 @@
-from livereload import Server
+# from livereload import Server
 from app import createApp 
 app = createApp()
 if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0')
-    server = Server(app.wsgi_app)
-    server.serve(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
+    # server = Server(app.wsgi_app)
+    # server.serve(debug=True, host='0.0.0.0')

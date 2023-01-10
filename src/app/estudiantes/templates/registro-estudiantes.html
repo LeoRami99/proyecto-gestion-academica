@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Docentes{%endblock%}
+{%block title%}Registro de estudiantes{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -121,166 +121,152 @@
 
 
 <!-- titulo -->
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="text-center">
-        <h1 class="display-4">Docentes</h1>
-      </div>
+      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar estudiante</h1>
     </div>
   </div>
+  <!-- formulario de registro de estudiantes -->
+  <div class="row" data-aos="fade-up" data-aos-duration="1000">
+    <div class="col-12">
+      <form action="{{url_for('estudiantes.guardar_estudiante')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="nombres" class="form-label">Nombres</label>
+                  <input type="text" class="form-control p-2" id="nombres" name="nombres" placeholder="Nombres"
+                    required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="apellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control p-2" id="apellidos" name="apellidos" placeholder="Apellidos"
+                    required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="tipo_doc" class="form-label">Tipo de documento</label>
+                  <select class="form-select p-2" aria-label="Default select example" name="tipo_doc">
+                    <option selected>Seleccione</option>
+                    <option value="CC">Cedula de ciudadania</option>
+                    <option value="TI">Tarjeta de identidad</option>
+                    <option value="CE">Cedula de extranjeria</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="num_doc" class="form-label">Número de documento</label>
+                  <input type="number" class="form-control p-2" id="num_doc" name="num_doc"
+                    placeholder="Numero de documento" required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="email" class="form-control p-2" id="correo" name="correo" placeholder="Correo" required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="telefono" class="form-label">Teléfono</label>
+                  <input type="number" class="form-control p-2" id="telefono" name="telefono" placeholder="Telefono"
+                    required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="tel_fijo" class="form-label">Teléfono fijo</label>
+                  <input type="text" class="form-control p-2" id="tel_fijo" name="tel_fijo" placeholder="Teléfono fijo"
+                    required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <input type="text" class="form-control p-2" id="ciudad" name="ciudad" placeholder="Ciudad" required>
+                </div>
+              </div>
 
-
-  <!-- Tabla de docentes -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12" data-aos="zoom-in" data-aos-duration="1000">
-        <table class="table bg-light table-hover" id="tabla_docentes">
-          <thead>
-            <tr>
-              <th scope="col">Número de documento</th>
-              <th scope="col">Nombre de Usuario</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Teléfono</th>
-              <th scope="col">Teléfono fijo</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Profesión</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for docente in docentes%}
-            <tr>
-              <td>{{docente[8]}} {{docente[9]}}</td>
-              <td>{{docente[1]}}</td>
-              <td>{{docente[2]}}</td>
-              <td>{{docente[3]}}</td>
-              <td>{{docente[4]}}</td>
-              <td>{{docente[5]}}</td>
-              <td>{{docente[6]}}</td>
-              <td>
-                {%if docente[7] == 1%}
-                  <span class="alert alert-success">Activo</span>
-                {%else%}
-                  <span class="alert alert-danger">Inactivo</span>
-                {%endif%}
-              </td>
-              <td>{{docente[10]}}</td>
-              <td>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_docente" data-bs-whateve="{{docente[0]}}"><i class="bi bi-pencil-square"></i> Editar</button>
-                  <a href="{{url_for('docentes.eliminar', id_docente=docente[0])}}" class="btn btn-outline-danger" onclick="return confirm('¿Seguro/a quieres eliminar a este docente?')"><i class="bi bi-trash"></i> Eliminar</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modal_docente" tabindex="-1" aria-labelledby="modal_docente" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Editar docente</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="/docentes/editar" method="POST">
-          <div class="mb-3">
-            <label for="numero_documento" class="form-label">Número de documento</label>
-            <input type="text" class="form-control" id="numero_documento" name="numero_documento" placeholder="Número de documento">
-          </div>
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
-          </div>
-          <div class="mb-3">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido">
-          </div>
-          <div class="mb-3">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo">
-          </div>
-          <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono">
-          </div>
-          <div class="mb-3">
-            <label for="telefono_fijo" class="form-label ">Teléfono fijo</label>
-            <input type="text" class="form-control" id="telefono_fijo" name="telefono_fijo" placeholder="Teléfono fijo">
-          </div>
-          <div class="mb-3">
-            <label for="estado" class="form-label">Estado</label>
-            <select class="form-select" aria-label="Default select example" id="estado" name="estado">
-              <option value="1">Activo</option>
-              <option value="0">Inactivo</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="profesion" class="form-label">Profesión</label>
-            <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesión">
-          </div>
-          <div class="mb-3">
-            <!-- <label for="id_docente" class="form-label">ID</label> -->
-            <input type="hidden" class="form-control" id="id_docente" name="id_docente" placeholder="ID">
+              <!-- Boton de enviar -->
+              <div class="col-12 mb-3 text-center">
+                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
+              </div>
+              <!-- boton modal excel -->
+              <div class="col-12 mb-3 text-center">
+                <h6><span class="badge bg-secondary">Excel con estudiantes </span></h6>
+                <button type="button" class="btn btn-card p-2 w-25" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal">
+                  <i class="bi bi-file-earmark-excel"></i> Subir excel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary" onclick="return confirm('¿Seguro/a que desea guardar los cambios?')">Guardar cambios</button>
-          </div>
-        </form>
+      </form>
+      <!-- Boton de subir excel -->
     </div>
   </div>
 </div>
-
-<!-- Script  -->
-<!--petición ajax para rellenar los otros campos del modal-->
-<script>
-  $('#modal_docente').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var recipient = button.data('bs-whateve') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    // modal.find('.modal-title').text('Editar docente ' + recipient)
-    modal.find('.modal-body input#id_docente').val(recipient)
-    $.ajax({
-      url: '/docentes/datos/modal',
-      type: 'POST',
-      data: {
-        id_docente: recipient
-      },
-      success: function (data) {
-        modal.find('.modal-body input#numero_documento').val(data.num_doc)
-        modal.find('.modal-body input#nombre').val(data.nombres)
-        modal.find('.modal-body input#apellido').val(data.apellidos)
-        modal.find('.modal-body input#correo').val(data.correo)
-        modal.find('.modal-body input#telefono').val(data.numero_cel)
-        modal.find('.modal-body input#telefono_fijo').val(data.numero_tel_fijo)
-        modal.find('.modal-body input#profesion').val(data.profesion)
-        modal.find('.modal-body input#id_docente').val(data.id_usuario)
-      }
-    })
-  })
-</script>
-
-
-
+<!-- Modal  -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Subir excel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <form action="{{url_for('estudiantes.estudiantes_excel')}}" method="post" enctype="multipart/form-data">
+          <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
+          <div class="mb-3 table-responsive">
+            <table class="table">
+              <tr>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Tipo de documento</th>
+                <th>Numero de documento</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Telefono fijo</th>
+                <th>Ciudad</th>
+              </tr>
+              <tr>
+                <td>Juan Pablo</td>
+                <td>Perez Perez</td>
+                <td>CC</td>
+                <td>123456789</td>
+                <td>prueba@correo.com</td>
+                <td>3002100123</td>
+                <td>123456789</td>
+                <td>Bogotá</td>
+              </tr>
+            </table>
+          </div>
+          <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+            data-bs-title="En caso de que la información no este completa colocar &quot;NA&quot; en las celdas"><i class="bi bi-question-circle"></i></span>
+          <div class="mb-3">
+            <label for="formFile" class="form-label">Subir archivo</label>
+            <input class="form-control" type="file" id="formFile" name="excel" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+          </div>
+          <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {%endblock%}
 {%block footer%}
 
 <!-- footer -->
-<footer class="text-center text-white fondo_navbar">
+<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
   <!-- Grid container -->
   <div class="container pt-4">
     <!-- Section: Social media -->
@@ -319,5 +305,4 @@
   </div>
   <!-- Copyright -->
 </footer>
-
 {%endblock%}

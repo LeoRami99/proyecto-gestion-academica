@@ -154,6 +154,8 @@ def datos_modal():
             'id_cliente': docente[11]
         }
         return docente
+    else:
+        return 'Error'
         
         
 

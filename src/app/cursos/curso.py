@@ -57,7 +57,7 @@ class Curso():
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_incio = '{2}', fecha_fin = '{3}', horario = '{4}', modalidad = '{5}', duracion = '{6}', intensidad_horaria = '{7}', cantidad_sesiones = '{8}', cupo_curso = '{9}', enlace_clase = '{10}', enlace_grabaciones = '{11}', formulario_asistencia = '{12}', estado = '{13}' WHERE id = {14}""".format(self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, id)
+            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_inicio = '{2}', fecha_fin = '{3}', horario = '{4}', duracion= '{5}', intensidad_horaria = '{6}', cantidad_sesiones = '{7}', cupo_curso = '{8}', enlace_clase = '{9}', enlace_grabaciones = '{10}', formulario_asistencia = '{11}' WHERE id = {12}""".format(self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, id)
             cursor.execute(sql)
             conn.commit()
             return True
@@ -80,10 +80,22 @@ class Curso():
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = "SELECT id, id_curso, id_cliente FROM asignacion_docente_curso WHERE id_curso = {0} AND id_cliente = {1}".format(id_curso, id_cliente)
+            sql = "SELECT id, id_curso, id_cliente, id_docente FROM asignacion_docente_curso WHERE id_curso = {0} AND id_cliente = {1}".format(id_curso, id_cliente)
             cursor.execute(sql)
             cursos_docente = cursor.fetchone()
             return cursos_docente
+        except Exception as e:
+            print(e)
+            return False
+    @classmethod
+    def asignar_docente_curso(self, id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin):
+        try:
+            conn= obtener_conexion()
+            cursor = conn.cursor()
+            sql = """INSERT INTO asignacion_docente_curso (id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')""".format(id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin)
+            cursor.execute(sql)
+            conn.commit()
+            return True
         except Exception as e:
             print(e)
             return False

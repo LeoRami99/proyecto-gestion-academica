@@ -120,7 +120,7 @@
 <section class="bienvenida">
   <!-- Header -->
   <div class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-auto mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="display-5 fw-bold tuclase">Bienvenido/a {{current_user.nombre}}</h1>
     <div class="col-lg-6 mx-auto">
       <p class="lead mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most
@@ -157,11 +157,11 @@
             </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-check-circle"></i> Cursos </a>
+            <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-award"></i> Cursos </a>
             <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
             {%if current_user.rol== "AD"%}
-            <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar curso</a>
-            <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar docente</a>
+              <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar curso</a>
+              <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar docente</a>
             {%endif%}
             
           </div>
@@ -233,7 +233,7 @@
                 target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
+            <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
             <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
             <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
           </div>
@@ -243,6 +243,8 @@
   </div>
 </section>
 {%endblock%}
+
+
 {%block footer%}
 <!-- footer -->
 <footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
