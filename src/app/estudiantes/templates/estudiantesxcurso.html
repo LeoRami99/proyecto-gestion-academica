@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Registro de estudiantes{%endblock%}
+{%block title%}Estudiantes x Curso{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -119,150 +119,165 @@
 </div>
 
 
-
 <!-- titulo -->
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar estudiante</h1>
+      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Asignar estudiantes a curso</h1>
     </div>
   </div>
-  <!-- formulario de registro de estudiantes -->
-  <div class="row" data-aos="fade-up" data-aos-duration="1000">
-    <div class="col-12">
-      <form action="{{url_for('estudiantes.guardar_estudiante')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
-        <div class="row">
-          <div class="col-12">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="nombres" class="form-label">Nombres</label>
-                  <input type="text" class="form-control p-2" id="nombres" name="nombres" placeholder="Nombres"
-                    required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="apellidos" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control p-2" id="apellidos" name="apellidos" placeholder="Apellidos"
-                    required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="tipo_doc" class="form-label">Tipo de documento</label>
-                  <select class="form-select p-2" aria-label="Default select example" name="tipo_doc">
-                    <option selected>Seleccione</option>
-                    <option value="CC">Cedula de ciudadania</option>
-                    <option value="TI">Tarjeta de identidad</option>
-                    <option value="CE">Cedula de extranjeria</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="num_doc" class="form-label">Número de documento</label>
-                  <input type="number" class="form-control p-2" id="num_doc" name="num_doc"
-                    placeholder="Numero de documento" required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="correo" class="form-label">Correo</label>
-                  <input type="email" class="form-control p-2" id="correo" name="correo" placeholder="Correo" required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="telefono" class="form-label">Teléfono</label>
-                  <input type="number" class="form-control p-2" id="telefono" name="telefono" placeholder="Telefono"
-                    required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="tel_fijo" class="form-label">Teléfono fijo</label>
-                  <input type="text" class="form-control p-2" id="tel_fijo" name="tel_fijo" placeholder="Teléfono fijo"
-                    required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="ciudad" class="form-label">Ciudad</label>
-                  <input type="text" class="form-control p-2" id="ciudad" name="ciudad" placeholder="Ciudad" required>
-                </div>
-              </div>
+  
+  <!-- cards -->
+  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+    {% for curso in cursos%}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title"><i class="bi bi-mortarboard"></i> {{curso[1]}}</h5>
+        </div>
 
-              <!-- Boton de enviar -->
-              <div class="col-12 mb-3 text-center">
-                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
-              </div>
-              <!-- boton modal excel -->
-              <div class="col-12 mb-3 text-center">
-                <h6><span class="badge bg-secondary">Excel con estudiantes </span></h6>
-                <button type="button" class="btn btn-card p-2 w-25" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal">
-                  <i class="bi bi-file-earmark-excel"></i> Subir excel
-                </button>
+        <div class="card-body">
+
+          <!-- se asigna mediante un select al docente -->
+          <h5 class="titulo">
+            Código curso: {{curso[2]}}
+            <br>
+            Fecha de inicio: {{curso[3]}}
+            <br>
+            Fecha de fin: {{curso[4]}}
+            <br>
+            Cupo: {{curso[10]}}
+          </h5>
+          <form action="{{url_for('estudiantes.asignar_estudiantes')}}" method="post">
+            <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
+            <input type="hidden" name="fecha_fin" value="{{curso[4]}}">
+            <div class="accordion accordion-flush border" id="accordion-{{curso[0]}}">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#ac-{{curso[0]}}" aria-expanded="false" aria-controls="ac-{{curso[0]}}">
+                    Cupo
+                  </button>
+                </h2>
+                <div id="ac-{{curso[0]}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                      {%for inputs_indice in range(curso[10])%}
+                        <label for="">Estudiante {{inputs_indice+1}}</label>
+                        <input type="number" class="form-control" name="estudiante_{{inputs_indice+1}}" required>
+                      {%endfor%}
+                  </div>
+                </div>
               </div>
             </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-card mt-2">Asignar</button>
+            </div>
+          </form>
+          <div class="text-center">
+            <h6><span class="badge bg-secondary">Asignar estudiantes con excel</span></h6>
+            <button type="button" class="btn btn-card" data-bs-toggle="modal" data-bs-target="#modal-{{curso[0]}}">
+              Subir archivo de excel
+            </button>
           </div>
+          <!-- Boton para abrir modal -->
+          
         </div>
-      </form>
-      <!-- Boton de subir excel -->
-    </div>
-  </div>
-</div>
-<!-- Modal  -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Subir excel</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body text-center">
-        <form action="{{url_for('estudiantes.estudiantes_excel')}}" method="post" enctype="multipart/form-data">
+    </div>
+    <!-- Modal para subir archivo de excel -->
+    <div class="modal fade" id="modal-{{curso[0]}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Subir archivo de excel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
           <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
-          <div class="mb-3 table-responsive ">
-            <table class="table table-bordered">
-              <tr>
-                <th></th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Tipo de documento</th>
-                <th>Número de documento</th>
-                <th>Correo</th>
-                <th>Teléfono</th>
-                <th>Teléfono fijo</th>
-                <th>Ciudad</th>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Juan Pablo</td>
-                <td>Perez Perez</td>
-                <td>CC</td>
-                <td>123456789</td>
-                <td>prueba@correo.com</td>
-                <td>3002100123</td>
-                <td>123456789</td>
-                <td>Bogotá</td>
-              </tr>
-            </table>
-          </div>
+          
+          <table class="table table-bordered">
+            <tr>
+              <th></th>
+              <th>Número de documento</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>123456789</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>127391289</td>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </table>
           <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-            data-bs-title="En caso de que la información no este completa colocar &quot;NA&quot; en las celdas"><i class="bi bi-question-circle"></i></span>
-          <div class="mb-3">
-            <label for="formFile" class="form-label">Subir archivo</label>
-            <input class="form-control" type="file" id="formFile" name="excel" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-          </div>
-          <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
-        </form>
+          data-bs-title="Verifica la información antes de subirla"><i class="bi bi-question-circle"></i></span>
+          <form action="{{url_for('estudiantes.estudiantes_curso_excel')}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
+            <input type="hidden" name="fecha_fin" value="{{curso[4]}}">
+            <div class="mb-3">  
+              <label for="excel" class="form-label">Subir archivo</label>
+              <input class="form-control" type="file" id="excel" name="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+            <button type="submit" class="btn btn-primary">Subir</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  <!-- Fin modal -->
+    {% endfor %}
+  </div>
 
+
+
+
+
+
+
+  <div class="container-fluid">
+    <div class="row float-end">
+      <div class="col-12">
+        <div class="holder"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script
+  src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
+<script>
+  // Barra de busqueda para filtrar las cards basada en el titulo y ordenarlos en la pantalla
+  $(document).ready(function () {
+    $("#Buscar").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $(".titulo").filter(function () {
+        $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+  // Paginacion de las cards de los cursos 
+  $(function () {
+    $("div.holder").jPages({
+      containerID: "listado",
+      perPage: 6,
+      midRange: 3,
+      startPage: 1,
+      startRange: 1,
+      endRange: 1,
+      previous: "←",
+      next: "→",
+      delay: 50,
+    });
+  });
+</script>
 
 {%endblock%}
 {%block footer%}

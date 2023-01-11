@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from flask_login import LoginManager
 # Instancias de los Blueprint
@@ -19,6 +19,10 @@ from .login.logueo import Usuario
 
 def createApp():
     app=Flask(__name__)
+    # Manejo de errores
+    app.register_error_handler(404, lambda e: render_template('404.html'))
+
+    # Manejo de usuario
     login_manager = LoginManager()
     login_manager.login_view = 'login_page.login'
     login_manager.init_app(app)

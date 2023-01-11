@@ -177,15 +177,15 @@
             <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/3068/3068421.png" alt="Avatar" />
           </div>
           <div class="card-body" style="overflow-y: auto">
-            <h4 class="card-title"><i class="bi bi-person"></i> Estudiantes</h4>
+            <h4 class="card-title"><i class="bi bi-person"></i> Gestión de estudiantes</h4>
             <p class="card-text">Card has minimum height set but will expand if more space is needed for card body
               content.
               You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks"
                 target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="" class="btn btn-card"><i class="bi bi-check-circle"></i> Estudiantes activos</a>
-            <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Estudiantes no activos</a>
+            <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+            <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a>
             <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
           </div>
         </div>
@@ -217,7 +217,7 @@
       {%endif%}
 
       <!-- Card para opción adicional -->
-      <div class="col" data-aos="fade-left" data-aos-duration="1000">
+      <!-- <div class="col" data-aos="fade-left" data-aos-duration="1000">
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img"
             style="background-image: url(https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_960_720.jpg);">
@@ -238,7 +238,7 @@
             <a href="" class="btn btn-card"><i class="bi bi-plus-circle"></i> Regitrar estudiantes</a>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
