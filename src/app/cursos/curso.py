@@ -99,5 +99,18 @@ class Curso():
         except Exception as e:
             print(e)
             return False
+    @classmethod
+    def obtener_cursos_docente(self, id_docente):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql="""SELECT * FROM asignacion_docente_curso WHERE id_docente={0}""".format(id_docente)
+            cursor.execute(sql)
+            filas = cursor.fetchall()
+            return filas
+        except Exception as e:
+            return False
+
+    
     
        

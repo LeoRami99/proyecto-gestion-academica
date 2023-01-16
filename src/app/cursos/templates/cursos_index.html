@@ -186,11 +186,19 @@
           {% else %}
           <p class="card-text">No activo</p>
           {% endif %}
+          {%if current_user.rol == "AD"%}
           <div class="btn-group float-end" role="group" aria-label="Botones de edición">
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_curso"
               data-bs-whateve="{{curso[0]}}"><i class="bi bi-pencil"></i></button>
             <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
           </div>
+          <form action="{{url_for('cursos.generar_informe')}}" method="post">
+            <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            <button type="submit" class="btn btn-outline-success"><i class="bi bi-filetype-xlsx"></i></button>
+          </form>
+          {%else%}
+          {% endif %}
+
         </div>
       </div>
     </div>

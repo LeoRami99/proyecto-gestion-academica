@@ -82,8 +82,6 @@ def estudiantes_excel():
                     else:
                         flash('Ya se encuentra registrado ' + str(row[columnas[3]]))
                         pass
-
-                
                 return redirect(url_for('estudiantes.registro_estudiantes'))
         except Exception as e:
             print(e)
@@ -106,13 +104,17 @@ def estudiantes_curso():
         if estudiantes.count_usuarios_cupo(curso[0], current_user.id_cliente) == curso[10]:
             pass
         else:
-            curso_lista.append(curso)
+            # verificación del estado del curso
+            if curso[14] == 1:  
+                curso_lista.append(curso)
+            else:
+                pass
     return render_template('estudiantesxcurso.html', cursos=curso_lista)
 
 
 
 
-    return render_template('estudiantesxcurso.html', cursos=cursos)
+    # return render_template('estudiantesxcurso.html', cursos=cursos)
 
 
 # asignar estudiantes al curso
@@ -199,3 +201,172 @@ def estudiantes_curso_excel():
             print(e)
             flash('No se pudo procesar el excel, verifica el formato de las columnas')
             return redirect(url_for('estudiantes.estudiantes_curso'))
+
+#Asistencia de estudiantes
+@estudiantes.route('/asistencia-notas')
+@login_required
+def asistencia_estudiantes():
+    curso = Curso()
+    
+    cursos =curso.obtener_cursos(current_user.id_cliente)
+    # Solo va a mostrar los cursos activos
+    asig_doc = curso.obtener_cursos_docente(current_user.id)
+    lista_cursos_activos=[]
+    if current_user.rol == "AD":
+        for indice in curso.obtener_cursos(current_user.id_cliente):
+            if indice[14]==1:
+                lista_cursos_activos.append(indice)
+            else:
+                pass
+    else:
+        # mostrar al docente los cursos que tiene asignados
+       for list_curso_doc in zip(cursos, asig_doc):
+            if list_curso_doc[0][14]==1:
+                if list_curso_doc[0][0]==list_curso_doc[1][1]:
+                   lista_cursos_activos.append(list_curso_doc[0])
+                else:
+                    pass
+            else:
+                pass
+
+    return render_template('asistencia_calificacion.html', cursos=lista_cursos_activos)
+
+            
+    # return render_template('asistencia_calificacion.html', cursos=lista_cursos_activos)
+@estudiantes.route('/asistencia-estudiantes/<id_curso>')
+@login_required
+def asistencia_estudiantes_id(id_curso):
+
+    estudiante = Estudiante()
+    lista_asistencia = estudiante.obtener_asistencia_curso(id_curso, current_user.id_cliente)
+    lista_estudiante_asistencia=[]
+    for indice in lista_asistencia:
+        # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
+        estudiante_info = estudiante.obtener_estudiante(indice[1])
+        lista_estudiante_asistencia.append(estudiante_info+indice[4:34])
+    return render_template('asistencia.html', asistencia=lista_estudiante_asistencia, id_curso=id_curso)
+
+@estudiantes.route('/enviar-asistencia', methods=['POST'])
+@login_required
+def enviar_asistencia():
+    if request.method == 'POST':
+        estudiante = Estudiante()
+        id_curso = request.form['id_curso']
+        lista_asistencias = []
+        lista_asistencias.append(request.form.getlist('num_doc'))
+        for indice in range(30):
+           lista_asistencias.append(request.form.getlist('asistencia_'+str(indice+1)))
+        # se envia a la base de datos
+        estudiante = Estudiante()
+        print(lista_asistencias[0])
+        for indice in range(len(lista_asistencias[0])):
+            # Condifición con 33 datos para el envio de información
+            if estudiante.actualizar_asistencia(estudiante.estudiante_id(lista_asistencias[0][indice], current_user.id_cliente), id_curso, current_user.id_cliente, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice]) == True:
+                flash('Se actualizo la asistencia del estudiante ' + str(lista_asistencias[0][indice]))
+                pass
+            else:
+                flash('No se actualizo la asistencia del estudiante ' + str(lista_asistencias[0][indice]))
+                pass
+        return redirect(url_for('estudiantes.asistencia_estudiantes_id', id_curso=id_curso))
+    else:
+        flash('No se actualiza la asistencia')
+        return redirect(url_for('estudiantes.asistencia_estudiantes'))
+@estudiantes.route('/enviar-asistencia-excel', methods=['POST'])
+@login_required
+def enviar_asistencia_excel():
+    if request.method == 'POST':
+        id_curso = request.form['id_curso']
+        try:
+            excel = request.files['excel']
+            if not excel.filename.endswith('.xlsx'):
+                flash('No se selecciono ningun archivo, primera condición')
+                return redirect(url_for('estudiantes.asistencia_estudiantes_id', id_curso=id_curso))
+            else:
+                # se lee el archivo con las asistencias del estudiante
+                df = pd.read_excel(excel)
+                # se envia a la base de datos
+                columnas = df.columns
+                estudiante = Estudiante()
+                for indice in range(len(df)):
+                    # Condifición con 33 datos para el envio de información
+                    if estudiante.actualizar_asistencia(estudiante.estudiante_id(df[columnas[0]][indice], current_user.id_cliente), id_curso, current_user.id_cliente, df[columnas[1]][indice], df[columnas[2]][indice], df[columnas[3]][indice], df[columnas[4]][indice], df[columnas[5]][indice], df[columnas[6]][indice], df[columnas[7]][indice], df[columnas[8]][indice], df[columnas[9]][indice], df[columnas[10]][indice], df[columnas[11]][indice], df[columnas[12]][indice], df[columnas[13]][indice], df[columnas[14]][indice], df[columnas[15]][indice], df[columnas[16]][indice], df[columnas[17]][indice], df[columnas[18]][indice], df[columnas[19]][indice], df[columnas[20]][indice], df[columnas[21]][indice], df[columnas[22]][indice], df[columnas[23]][indice], df[columnas[24]][indice], df[columnas[25]][indice], df[columnas[26]][indice], df[columnas[27]][indice], df[columnas[28]][indice], df[columnas[29]][indice], df[columnas[30]][indice]) == True:
+                        flash('Se actualizo la asistencia del estudiante ' + str(df[columnas[0]][indice]))
+                        pass
+                    else:
+                        flash('No se actualizo la asistencia del estudiante ' + str(df[columnas[0]][indice]))
+                        pass
+                return redirect(url_for('estudiantes.asistencia_estudiantes_id', id_curso=id_curso))
+        except Exception as e:
+            print(e)
+            flash('No se selecciono ningun archivo, segunda condición')
+            return redirect(url_for('estudiantes.asistencia_estudiantes_id', id_curso=id_curso))
+
+
+@estudiantes.route('/calificaciones-estudiantes/<id_curso>/')
+@login_required
+def calificaciones_estudiantes_id(id_curso):
+    estudiante = Estudiante()
+    lista_calificaciones = estudiante.obtener_calificaciones_curso(id_curso, current_user.id_cliente)
+    lista_estudiante_calificaciones=[]
+    for indice in lista_calificaciones:
+        # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
+        estudiante_info = estudiante.obtener_estudiante(indice[0])
+        lista_estudiante_calificaciones.append(estudiante_info+indice[4:15])
+    return render_template('calificaciones.html', calificaciones=lista_estudiante_calificaciones, id_curso=id_curso)
+
+@estudiantes.route('/calificaciones-estudiantes', methods=['POST'])
+@login_required
+def calificaciones_estudiantes():
+    if request.method == 'POST':
+        estudiante = Estudiante()
+        id_curso = request.form['id_curso']
+        lista_calificaciones = []
+        lista_calificaciones.append(request.form.getlist('num_doc'))
+        for indice in range(10):
+            lista_calificaciones.append(request.form.getlist('calif_'+str(indice+1)))
+        lista_calificaciones.append(request.form.getlist('observaciones'))
+        for indice in range(len(lista_calificaciones[0])):
+            if estudiante.actualizar_calificaciones(id_curso, estudiante.estudiante_id(lista_calificaciones[0][indice], current_user.id_cliente), current_user.id_cliente, lista_calificaciones[1][indice], lista_calificaciones[2][indice], lista_calificaciones[3][indice], lista_calificaciones[4][indice], lista_calificaciones[5][indice], lista_calificaciones[6][indice], lista_calificaciones[7][indice], lista_calificaciones[8][indice], lista_calificaciones[9][indice], lista_calificaciones[10][indice], lista_calificaciones[11][indice]) == True:
+                flash('Se actualizo la calificación del estudiante ' + str(lista_calificaciones[0][indice]))
+                pass
+            else:
+                flash('No se actualizo la calificación del estudiante ' + str(lista_calificaciones[0][indice]))
+                pass
+        return redirect(url_for('estudiantes.calificaciones_estudiantes_id', id_curso=id_curso))
+    else:
+        flash('No se actualiza la calificación del estudiantes')
+        return redirect(url_for('estudiantes.calificaciones_estudiantes_id', id_curso=id_curso))
+
+@estudiantes.route('/calificaciones-estudiantes-excel', methods=['POST'])
+@login_required
+def calificaciones_estudiantes_excel():
+    if request.method == 'POST':
+        id_curso = request.form['id_curso']
+        estudiante = Estudiante()
+        excel = request.files['excel']
+            # verificar que el archivo sea un excel
+        if not excel.filename.endswith('.xlsx'):
+            flash('El archivo no es un excel')
+            return redirect(url_for('estudiantes.estudiantes_curso'))
+        else:
+            try:
+                df = pd.read_excel(excel)
+                columnas = df.columns
+                for indice in range(len(df[columnas[0]])):
+                    if estudiante.actualizar_calificaciones(id_curso, estudiante.estudiante_id(df[columnas[0]][indice], current_user.id_cliente), current_user.id_cliente, df[columnas[1]][indice], df[columnas[2]][indice], df[columnas[3]][indice], df[columnas[4]][indice], df[columnas[5]][indice], df[columnas[6]][indice], df[columnas[7]][indice], df[columnas[8]][indice], df[columnas[9]][indice], df[columnas[10]][indice], df[columnas[11]][indice]) == True:
+                        flash('Se actualizo la calificación del estudiante ' + str(df[columnas[0]][indice]))
+                        pass
+                    else:
+                        flash('No se actualizo la calificación del estudiante ' + str(df[columnas[0]][indice]))
+                        pass
+                return redirect(url_for('estudiantes.calificaciones_estudiantes_id', id_curso=id_curso))
+            except Exception as e:
+                print(e)
+                flash('No se selecciono ningun archivo')
+                return redirect(url_for('estudiantes.calificaciones_estudiantes_id', id_curso=id_curso))
+
+
+       
+
+       
+

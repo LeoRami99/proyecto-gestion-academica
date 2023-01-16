@@ -1,0 +1,261 @@
+{%extends "base.html"%}
+{%block title%}Cursos{%endblock%}
+{% block navbar %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema | {{current_user.nombre}}</a>
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" style="color:#ffffff;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:#ffffff;">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:#ffffff;">Pricing</a>
+        </li>
+      </ul> -->
+  </div>
+  <div class="d-flex">
+    <!-- <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-light me-2" role="button"
+      aria-pressed="true">Cerrar sesión</a> -->
+    <button class="btn t" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample">
+      <i class="bi bi-list" style="font-size: 30px; color: #ffffff;"></i>
+    </button>
+  </div>
+  </div>
+</nav>
+{% endblock %}
+{%block content%}
+<!-- Offcanva -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <div class="d-flex">
+        <img src="https://cdn.pixabay.com/photo/2016/11/29/09/41/bag-1868758_960_720.jpg" class="rounded-circle"
+          alt="..." height="100px" width="100px">
+        <div class="ms-3">
+          <h5>{{current_user.nombre}} {{current_user.apellido}}</h5>
+          <p>{{nombre_cliente}}</p>
+        </div>
+      </div>
+      <hr>
+      <div class="">
+        <div class="text-center">
+          <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-dark me-2" role="button"
+            aria-pressed="true">Cerrar sesión</a>
+          <hr>
+        </div>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                <i class="bi bi-mortarboard"></i>
+                <strong>
+                  Cursos
+                </strong>
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample">
+              <!-- Lista de botonos -->
+              <div class="accordion-body">
+                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
+                  <a type="button" class="btn btn-dark">Cursos activos</a>
+                  <a type="button" class="btn btn-dark">cursos no activos</a>
+                  <a type="button" class="btn btn-dark">Registrar curso</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Accordion Item #2
+              </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+              data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+                <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
+                filled with some actual content.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                Accordion Item #3
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+              data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+                <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
+                happening here in terms of content, but just filling up the space to make it look, at least at first
+                glance, a bit more representative of how this would look in a real-world application.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fin del offcanva -->
+
+ <!-- Barra de busqueda para filtrar las cards -->
+ 
+ <div class="container">
+   <div class="row">
+     <div class="col-12">
+       <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Asistencia estudiantes x curso</h1>
+      </div>
+    </div>
+    <div class="row">
+     <div class="col-12">
+       <div class="input-group flex-nowrap mb-3 w-25 float-end">
+         <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+         <input type="text" class="form-control" id="Buscar" placeholder="Buscar" aria-label="Buscar"
+           aria-describedby="addon-wrapping">
+       </div>
+     </div>
+   </div>
+
+
+  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+    {% for curso in cursos%}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}}</h5>
+        </div>
+
+        <div class="card-body">
+
+          <!-- se asigna mediante un select al docente -->
+          <h5 class="">
+            Código curso: {{curso[2]}}
+            <br>
+            Fecha de inicio: {{curso[3]}}
+            <br>
+            Fecha de fin: {{curso[4]}}
+          </h5>
+          
+          <!-- Redigir a la pagina de estudiantes -->
+          <div class="text-center">
+
+            <a href="{{url_for('estudiantes.asistencia_estudiantes_id', id_curso=curso[0])}}" class="btn btn-card me-2"
+            role="button" aria-pressed="true">Asistencia</a>
+            <a href="{{url_for('estudiantes.calificaciones_estudiantes_id', id_curso=curso[0])}}" class="btn btn-card me-2"
+            role="button" aria-pressed="true">Calificaciones</a>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+
+
+
+
+
+
+  <div class="container-fluid">
+    <div class="row float-end">
+      <div class="col-12">
+        <div class="holder"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script
+  src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
+<script>
+  // Barra de busqueda para filtrar las cards basada en el titulo y ordenarlos en la pantalla
+  $(document).ready(function () {
+    $("#Buscar").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $(".titulo").filter(function () {
+        $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+  // Paginacion de las cards de los cursos 
+  $(function () {
+    $("div.holder").jPages({
+      containerID: "listado",
+      perPage: 6,
+      midRange: 3,
+      startPage: 1,
+      startRange: 1,
+      endRange: 1,
+      previous: "←",
+      next: "→",
+      delay: 50,
+    });
+  });
+</script>
+{%endblock%}
+{%block footer%}
+
+<!-- footer -->
+<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
+  <!-- Grid container -->
+  <div class="container pt-4">
+    <!-- Section: Social media -->
+    <section class="mb-4">
+      <!-- Facebook -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark">
+        <i class="bi bi-facebook-f"></i></a>
+
+      <!-- Twitter -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-twitter"></i></a>
+
+      <!-- Google -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-google"></i></a>
+
+      <!-- Instagram -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-instagram"></i></a>
+
+      <!-- Linkedin -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-linkedin"></i></a>
+      <!-- Github -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-github"></i></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2020 Copyright:
+    <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+{%endblock%}

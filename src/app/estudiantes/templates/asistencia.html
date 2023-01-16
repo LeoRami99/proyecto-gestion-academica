@@ -1,0 +1,371 @@
+{%extends "base.html"%}
+{%block title%}Asistencia{%endblock%}
+{% block navbar %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema | {{current_user.nombre}}</a>
+  </div>
+  <div class="d-flex">
+    <button class="btn t" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample">
+      <i class="bi bi-list" style="font-size: 30px; color: #ffffff;"></i>
+    </button>
+  </div>
+  </div>
+</nav>
+{% endblock %}
+{%block content%}
+<!-- Offcanva -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <div class="d-flex">
+        <img src="https://cdn.pixabay.com/photo/2016/11/29/09/41/bag-1868758_960_720.jpg" class="rounded-circle"
+          alt="..." height="100px" width="100px">
+        <div class="ms-3">
+          <h5>{{current_user.nombre}} {{current_user.apellido}}</h5>
+          <p>{{nombre_cliente}}</p>
+        </div>
+      </div>
+      <hr>
+      <div class="">
+        <div class="text-center">
+          <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-dark me-2" role="button"
+            aria-pressed="true">Cerrar sesión</a>
+          <hr>
+        </div>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                <i class="bi bi-mortarboard"></i>
+                <strong>
+                  Cursos
+                </strong>
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample">
+              <!-- Lista de botonos -->
+              <div class="accordion-body">
+                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
+                  <a type="button" class="btn btn-dark">Cursos activos</a>
+                  <a type="button" class="btn btn-dark">cursos no activos</a>
+                  <a type="button" class="btn btn-dark">Registrar curso</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Accordion Item #2
+              </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+              data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+                <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
+                filled with some actual content.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                Accordion Item #3
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+              data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
+                <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
+                happening here in terms of content, but just filling up the space to make it look, at least at first
+                glance, a bit more representative of how this would look in a real-world application.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fin del offcanva -->
+
+<!-- Formulario de registro de estudiantes-->
+<!-- Lista de curso -->
+
+<form action="{{url_for('estudiantes.enviar_asistencia')}}" method="post">
+  <input type="hidden" name="id_curso" value="{{id_curso}}">
+  <div class="table-responsive">
+    <table class="table table-bordered bg-light table-striped " id="tabla_asistencia_estudiante">
+      <thead>
+        <tr>
+          <th scope="col">Cedula</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Nombre</th>
+          <th>Asistencia 1</th>
+          <th>Asistencia 2</th>
+          <th>Asistencia 3</th>
+          <th>Asistencia 4</th>
+          <th>Asistencia 5</th>
+          <th>Asistencia 6</th>
+          <th>Asistencia 7</th>
+          <th>Asistencia 8</th>
+          <th>Asistencia 9</th>
+          <th>Asistencia 10</th>
+          <th>Asistencia 11</th>
+          <th>Asistencia 12</th>
+          <th>Asistencia 13</th>
+          <th>Asistencia 14</th>
+          <th>Asistencia 15</th>
+          <th>Asistencia 16</th>
+          <th>Asistencia 17</th>
+          <th>Asistencia 18</th>
+          <th>Asistencia 19</th>
+          <th>Asistencia 20</th>
+          <th>Asistencia 21</th>
+          <th>Asistencia 22</th>
+          <th>Asistencia 23</th>
+          <th>Asistencia 24</th>
+          <th>Asistencia 25</th>
+          <th>Asistencia 26</th>
+          <th>Asistencia 27</th>
+          <th>Asistencia 28</th>
+          <th>Asistencia 29</th>
+          <th>Asistencia 30</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {%for asis in asistencia%}
+        <tr>
+          <td><input type="hidden" name="num_doc" value="{{asis[2]}}">{{asis[2]}}</td>
+          <td>{{asis[1]}}</td>
+          <td>{{asis[0]}}</td>
+          <td>
+            <input type="text" name="asistencia_1" id="" value="{{asis[3]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_2" id="" value="{{asis[4]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_3" id="" value="{{asis[5]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_4" id="" value="{{asis[6]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_5" id="" value="{{asis[7]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_6" id="" value="{{asis[8]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_7" id="" value="{{asis[9]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_8" id="" value="{{asis[10]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_9" id="" value="{{asis[11]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_10" id="" value="{{asis[12]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_11" id="" value="{{asis[13]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_12" id="" value="{{asis[14]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_13" id="" value="{{asis[15]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_14" id="" value="{{asis[16]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_15" id="" value="{{asis[17]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_16" id="" value="{{asis[18]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_17" id="" value="{{asis[19]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_18" id="" value="{{asis[20]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_19" id="" value="{{asis[21]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_20" id="" value="{{asis[22]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_21" id="" value="{{asis[23]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_22" id="" value="{{asis[24]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_23" id="" value="{{asis[25]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_24" id="" value="{{asis[26]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_25" id="" value="{{asis[27]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_26" id="" value="{{asis[28]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_27" id="" value="{{asis[29]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_28" id="" value="{{asis[30]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_29" id="" value="{{asis[31]}}">
+          </td>
+          <td>
+            <input type="text" name="asistencia_30" id="" value="{{asis[32]}}">
+          </td>
+
+        </tr>
+        {%endfor%}
+
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-card"
+      onclick="return confirm('¿Seguro/a quieres actualizar las asistencias?')">Enviar</button>
+    <button type="button" class="btn btn-card" data-bs-toggle="modal" data-bs-target="#subir_excel">
+      Subir asistencia con excel
+    </button>
+</form>
+
+</div>
+
+<!-- modal subir excel -->
+<div class="modal fade" id="subir_excel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Subir Excel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <tr>
+              <th>Número de documento</th>
+              <th>Asistencia 1</th>
+              <th>Asistencia 2</th>
+              <th>Asistencia 3</th>
+              <th>Asistencia 4</th>
+              <th>Asistencia ...</th>
+              <th>Asistencia ...</th>
+              <th>Asistencia 27</th>
+              <th>Asistencia 28</th>
+              <th>Asistencia 29</th>
+              <th>Asistencia 30</th>
+            </tr>
+            <tr>
+              <td>1234567890</td>
+              <td>3</td>
+              <td>2</td>
+              <td>3</td>
+              <td>...</td>
+              <td>...</td>
+              <td>3</td>
+              <td>2</td>
+              <td>NOAP</td>
+              <td>NOAP</td>
+              <td>NOAP</td>
+            </tr>
+          </table>
+        </div>
+
+        <form action="{{url_for('estudiantes.enviar_asistencia_excel')}}" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <input type="hidden" name="id_curso" value="{{id_curso}}">
+            <label for="excel" class="form-label">Selecciona el archivo</label>
+            <input class="form-control" type="file" id="excel" name="excel">
+          </div>
+          <button type="submit" class="btn btn-card">Subir</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- realizar validación de  inputs que solo reciban el numero 0, 2, 3, 4, 0 con jquery-->
+<script>
+  $(document).ready(function () {
+    $('input').on('input', function () {
+      this.value = this.value.replace(/[^0-2-3-4-0]/g, '');
+    });
+  });
+</script>
+
+
+
+
+
+
+{%endblock%}
+{%block footer%}
+
+<!-- footer -->
+<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
+  <!-- Grid container -->
+  <div class="container pt-4">
+    <!-- Section: Social media -->
+    <section class="mb-4">
+      <!-- Facebook -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark">
+        <i class="bi bi-facebook-f"></i></a>
+
+      <!-- Twitter -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-twitter"></i></a>
+
+      <!-- Google -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-google"></i></a>
+
+      <!-- Instagram -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-instagram"></i></a>
+
+      <!-- Linkedin -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-linkedin"></i></a>
+      <!-- Github -->
+      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
+          class="bi bi-github"></i></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2020 Copyright:
+    <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+{%endblock%}
