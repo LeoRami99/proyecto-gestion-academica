@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 #Importación de la clase Curso
@@ -33,6 +34,7 @@ def guardar_estudiante():
         telefono = request.form['telefono']
         tel_fijo = request.form['tel_fijo']
         ciudad = request.form['ciudad']
+        id_curso = request.form['id_curso']
         if nombres and apellidos and tipo_doc and num_doc and correo and telefono and tel_fijo and ciudad:
             estudiante = Estudiante(nombres, apellidos, tipo_doc, num_doc, correo, telefono, tel_fijo, ciudad, current_user.id_cliente, "1")
             if Estudiante.verificacion_estudiantes(num_doc, current_user.id_cliente):
@@ -40,8 +42,28 @@ def guardar_estudiante():
                 return redirect(url_for('estudiantes.registro_estudiantes'))
             else:
                 if estudiante.guardar_estudiante():
-                    flash('Estudiante registrado correctamente')
-                    return redirect(url_for('estudiantes.registro_estudiantes'))
+                    # verificar si el estudiante se registro correctamente
+                    if Estudiante.verificacion_estudiantes(num_doc, current_user.id_cliente):
+                        # Se obtiene el id del estudiante
+                        id_estudiante = Estudiante.estudiante_id(num_doc, current_user.id_cliente)
+
+                        # Se registra el estudiante en el curso
+                        if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
+                            if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
+                                flash('El estudiante se registro correctamente')
+                                return redirect(url_for('estudiantes.registro_estudiantes'))
+                            else:
+                                flash("Ocurrio un error al registrar el estudiante")
+                                return redirect(url_for('estudiantes.registro_estudiantes'))
+                        else:
+                            flash('No se pudo registrar el estudiante')
+                            return redirect(url_for('estudiantes.registro_estudiantes'))
+
+                       
+                    else:
+                        flash('No se pudo registrar el estudiante')
+                        return redirect(url_for('estudiantes.registro_estudiantes'))
+
                 else:
                     flash('No se pudo registrar el estudiante')
                     return redirect(url_for('estudiantes.registro_estudiantes'))
@@ -59,6 +81,7 @@ def estudiantes_excel():
     if request.method == 'POST':
         # Se obtiene el excel del formulario
         excel = request.files['excel']
+        id_curso = request.form['id_curso']
         # verificar que el archivo sea un excel
         try:
             if not excel.filename.endswith('.xlsx'):
@@ -75,6 +98,22 @@ def estudiantes_excel():
                     if Estudiante().verificacion_estudiantes(row[columnas[3]], current_user.id_cliente) == False:
                         estudiante = Estudiante(row[columnas[0]], row[columnas[1]], row[columnas[2]], row[columnas[3]], row[columnas[4]], row[columnas[5]], row[columnas[6]], row[columnas[7]], current_user.id_cliente, "1")
                         if estudiante.guardar_estudiante():
+                            # verificar si el estudiante se registro correctamente
+                            if Estudiante.verificacion_estudiantes(row[columnas[3]], current_user.id_cliente):
+                                # Se obtiene el id del estudiante
+                                id_estudiante = Estudiante.estudiante_id(row[columnas[3]], current_user.id_cliente)
+
+                                # Se registra el estudiante en el curso
+                                if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
+                                    if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
+                                        pass
+                                    else:
+                                        flash("Ocurrio un error al registrar el estudiante")
+                                        return redirect(url_for('estudiantes.registro_estudiantes'))
+                                else:
+                                    flash('No se pudo registrar el estudiante')
+                                    return redirect(url_for('estudiantes.registro_estudiantes'))
+
                             flash('El estudiante ' + str(row[columnas[3]]) + ' se registro correctamente')
                             pass
                         else:
@@ -100,15 +139,15 @@ def estudiantes_curso():
     estudiantes = Estudiante()
     cursos = cursos.obtener_cursos(current_user.id_cliente)
     curso_lista = []
+    contado_estudiantes = []
     for curso in cursos:
-        if estudiantes.count_usuarios_cupo(curso[0], current_user.id_cliente) == curso[10]:
-            pass
+        if curso[14] == 1:  
+            contado_estudiantes.append(str(estudiantes.count_usuarios_cupo(curso[0], current_user.id_cliente)))
+            curso_lista.append(curso)
         else:
-            # verificación del estado del curso
-            if curso[14] == 1:  
-                curso_lista.append(curso)
-            else:
-                pass
+            pass
+    curso_lista = zip(curso_lista, contado_estudiantes)
+
     return render_template('estudiantesxcurso.html', cursos=curso_lista)
 
 
@@ -125,34 +164,33 @@ def asignar_estudiantes():
         id_curso = request.form['id_curso']
         fecha_inicio = request.form['fecha_inicio']
         fecha_fin   = request.form['fecha_fin']
+        num_doc = request.form['num_doc']
 
-        if id_curso:
+        if id_curso and num_doc:
             curso_indice = Curso()
             estudiantes = Estudiante()
             lista_estudiantes=[]
             # Se obtiene el cupo del curso  
-            for indice in range(curso_indice.obtener_curso(id_curso)[10]):
-                lista_estudiantes.append(request.form['estudiante_'+str(indice+1)])
-            for indice_estudiantes in lista_estudiantes:
-                # verificar que este en la base de datos de estudiantes
-                print(estudiantes.estudiante_id(indice_estudiantes, current_user.id_cliente))
-                if estudiantes.estudiante_id(indice_estudiantes, current_user.id_cliente) != False:
-                    if estudiantes.asignar_estudiante_curso(id_curso, estudiantes.estudiante_id(indice_estudiantes, current_user.id_cliente), current_user.id_cliente, fecha_inicio, fecha_fin):
-                        flash('Estudiante asignado correctamente')
-                        pass
+            if estudiantes.verificacion_estudiantes(num_doc, current_user.id_cliente):
+                id_estudiante = estudiantes.estudiante_id(num_doc, current_user.id_cliente)
+                if id_estudiante>0:
+                    if estudiantes.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, fecha_inicio, fecha_fin):
+                        estudiantes.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente)
+                        estudiantes.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente)
+                        flash('El estudiante se asigno correctamente')
+                        return redirect(url_for('estudiantes.estudiantes_curso'))
                     else:
                         flash('No se pudo asignar el estudiante')
-                        pass
-                else:
-                    flash('El estudiante no se encuentra registrado')
-                    pass
-            return redirect(url_for('estudiantes.estudiantes_curso'))
+                        return redirect(url_for('estudiantes.estudiantes_curso'))
+            else:
+                flash('El estudiante no se encuentra registrado')
+                return redirect(url_for('estudiantes.estudiantes_curso'))
         else:
-            flash('Todos los campos son obligatorios')
+            flash('No se pudo asignar el estudiante')
             return redirect(url_for('estudiantes.estudiantes_curso'))
     else:
         flash('No se pudo asignar el estudiante')
-        return redirect(url_for('estudiantes.estudiantes_curso'))
+        return redirect(url_for('estudiantes.estudiantes_curso'))        
 
 # Estudiantes por curso con archivo de excel
 @estudiantes.route('/estudiantes-curso-excel', methods=['POST'])
@@ -236,14 +274,15 @@ def asistencia_estudiantes():
 @estudiantes.route('/asistencia-estudiantes/<id_curso>')
 @login_required
 def asistencia_estudiantes_id(id_curso):
-
     estudiante = Estudiante()
     lista_asistencia = estudiante.obtener_asistencia_curso(id_curso, current_user.id_cliente)
     lista_estudiante_asistencia=[]
     for indice in lista_asistencia:
         # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
         estudiante_info = estudiante.obtener_estudiante(indice[1])
+        # print("id del estudiante",indice[0])
         lista_estudiante_asistencia.append(estudiante_info+indice[4:34])
+        
     return render_template('asistencia.html', asistencia=lista_estudiante_asistencia, id_curso=id_curso)
 
 @estudiantes.route('/enviar-asistencia', methods=['POST'])
@@ -258,7 +297,7 @@ def enviar_asistencia():
            lista_asistencias.append(request.form.getlist('asistencia_'+str(indice+1)))
         # se envia a la base de datos
         estudiante = Estudiante()
-        print(lista_asistencias[0])
+        # print(lista_asistencias[0])
         for indice in range(len(lista_asistencias[0])):
             # Condifición con 33 datos para el envio de información
             if estudiante.actualizar_asistencia(estudiante.estudiante_id(lista_asistencias[0][indice], current_user.id_cliente), id_curso, current_user.id_cliente, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice]) == True:
@@ -310,8 +349,9 @@ def calificaciones_estudiantes_id(id_curso):
     lista_estudiante_calificaciones=[]
     for indice in lista_calificaciones:
         # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
-        estudiante_info = estudiante.obtener_estudiante(indice[0])
+        estudiante_info = estudiante.obtener_estudiante(indice[2])
         lista_estudiante_calificaciones.append(estudiante_info+indice[4:15])
+        
     return render_template('calificaciones.html', calificaciones=lista_estudiante_calificaciones, id_curso=id_curso)
 
 @estudiantes.route('/calificaciones-estudiantes', methods=['POST'])

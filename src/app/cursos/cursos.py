@@ -1,12 +1,12 @@
 import io
-from os import sendfile
+from time import strftime
 from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash, Response, send_file
 from flask_login import login_required, current_user
 from .curso import Curso
 from app.docentes.docente import Docente
 from app.estudiantes.estudiante import Estudiante
-from openpyxl import Workbook
-import xlsxwriter
+import xlwt
+
 
 cursos = Blueprint('cursos', __name__, template_folder='templates', url_prefix='/')
 
@@ -62,6 +62,9 @@ def listar_cursos():
         # Datos del docente
         docente = Docente()
         docentes = docente.obtenerDocentesCliente(current_user.id_cliente)
+        # contador de estudiantes por curso
+        estudiante = Estudiante()
+        
         # Condición para verificar si se asigno el docente al curso
         lista_cursos = []
         for curso_lista in cursos:
@@ -69,10 +72,13 @@ def listar_cursos():
                 # Se agrega el curso + el nombre del docente
                 cursoxdocente = docente.obtenerDocente(curso.lista_curso_docente(curso_lista[0], current_user.id_cliente)[3])
                 docente_nombre_apellido = cursoxdocente[2] + ' ' + cursoxdocente[3] 
-                lista_cursos.append(curso_lista + (docente_nombre_apellido,))
+                # agregar el contador de estudiantes por curso
+                contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
+                lista_cursos.append(curso_lista + (docente_nombre_apellido, contador_estudiantes))
             else:
+                contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
                 # Se agrega el curso + sin asignar
-                lista_cursos.append(curso_lista + ('Sin asignar',))
+                lista_cursos.append(curso_lista + ('Sin asignar', contador_estudiantes))
         return render_template('cursos_index.html', cursos=lista_cursos, docentes=docentes)
     elif current_user.rol == 'DOC':
         #Solo listar los cursos que se le fueron asignados a el docente
@@ -216,95 +222,178 @@ def consultar_curso():
 @cursos.route('/generar-informe', methods=['POST'])
 def generar_informe():
     if request.method == 'POST':
-        salida = io.BytesIO()
-        id_curso = request.form['id_curso']
-        curso = Curso()
-        curso = curso.obtener_curso(id_curso)
-        # obtener la asistencia de los estudiantes y las calificaciones
-        estudiante=Estudiante()
-        #se obtiene las asistencuas y calificaciones de los estudiantes
-        # se obtiene el id del estudiante y se envia como parametro para obtener la asistencia y calificaciones
-        asistencia=estudiante.obtener_asistencia(id_curso)
-        calificaciones=estudiante.obtener_calificacion(id_curso)
-    #    Obtener numero de documento y nombre del estudiante
-        estudiantes=estudiante.obtener_estudiantes(id_curso)
-        # se crea el archivo excel
-        workbook = xlsxwriter.Workbook(salida)
-        # se crea una hoja de calculo
-        worksheet = workbook.add_worksheet()
-        # se crea un formato para las celdas
-        formato_celda = workbook.add_format(
-            {'bold': True, 'font_color': 'white', 'bg_color': '#1E90FF', 'align': 'center', 'valign': 'vcenter', 'border': 1})
+        try:
+            salida = io.BytesIO()
+            libro = xlwt.Workbook()
+            id_curso = request.form['id_curso']
+            curso = Curso()
+            curso = curso.obtener_curso(id_curso)
+            # colocar información del curso en la hoja
+            nombre_curso = curso[1]
+            codigo_curso = curso[2]
+            fecha_inicio = curso[3].strftime("%d/%m/%Y")
+            fecha_fin = curso[4].strftime("%d/%m/%Y")
+            horario = str(curso[5])
+            modalidad = str(curso[6])
+            duracion = str(curso[7])
+            intensidad_horaria = str(curso[8])
+            cantidad_sesiones = str(curso[9])
+            cupo_curso = str(curso[10])
+            enlace_clase = str(curso[11])
+            enlace_grabaciones = str(curso[12])
+            enlace_asistencia = str(curso[13])
+            #estilo_inf_curso de fecha
+            
 
-        # se agrega la información
-        worksheet.write('A1', 'Nombre del curso', formato_celda)
-        worksheet.write('B1', curso[1], formato_celda)
-        worksheet.write('A2', 'Codigo del curso', formato_celda)
-        worksheet.write('B2', curso[2], formato_celda)
-        worksheet.write('A3', 'Fecha de inicio', formato_celda)
-        worksheet.write('B3', curso[3], formato_celda)
-        worksheet.write('A4', 'Fecha de finalización', formato_celda)
-        worksheet.write('B4', curso[4], formato_celda)
-        worksheet.write('A5', 'Horario', formato_celda)
-        worksheet.write('B5', curso[5], formato_celda)
-        worksheet.write('A6', 'Modalidad', formato_celda)
-        worksheet.write('B6', curso[6], formato_celda)
-        worksheet.write('A7', 'Duración', formato_celda)
-        worksheet.write('B7', curso[7], formato_celda)
-        worksheet.write('A8', 'Intensidad horaria', formato_celda)
-        worksheet.write('B8', curso[8], formato_celda)
-        worksheet.write('A9', 'Cantidad de sesiones', formato_celda)
-        worksheet.write('B9', curso[9], formato_celda)
-        worksheet.write('A10', 'Cupo del curso', formato_celda)
-        worksheet.write('B10', curso[10], formato_celda)
-        worksheet.write('A11', 'Enlace de la clase', formato_celda)
-        worksheet.write('B11', curso[11], formato_celda)
-        worksheet.write('A12', 'Enlace de las grabaciones', formato_celda)
-        worksheet.write('B12', curso[12], formato_celda)
-        worksheet.write('A13', 'Enlace de asistencia', formato_celda)
-        worksheet.write('B13', curso[13], formato_celda)
-        worksheet.write('A14', 'Número de documento', formato_celda)
-        worksheet.write('B14', 'Nombre del estudiante', formato_celda)
-        worksheet.write('C14', 'Asistencia', formato_celda)
-        worksheet.write('D14', 'Calificación', formato_celda)
-        # se agregan los estudiantes
-        fila = 15
-        for estudiante in estudiantes:
-            worksheet.write('A' + str(fila), estudiante[0], formato_celda)
-            worksheet.write('B' + str(fila + 1), estudiante[1], formato_celda)
-            fila += 1
-        # se agregan las asistencias
-        fila = 15
-        for asistencia in asistencia:
-            worksheet.write('C' + str(fila), asistencia[0], formato_celda)
-            fila += 1
-        # se agregan las calificaciones
-        fila = 15
-        for calificacion in calificaciones:
-            worksheet.write('D' + str(fila), calificacion[0], formato_celda)
-            fila += 1
-        # se cierra el archivo
-        workbook.close()
-        # se retorna el archivo
-        salida.seek(0)
-        return Response(salida, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            # Obtener información de los estudiantes
+            # Agregar formato de tabla a la hoja de excel con la información del curso y agregar todos los bordes a las celdas y fondo de color gris
+
+            estilo_inf_curso = xlwt.easyxf('font: bold 1, color black; align: wrap on, vert centre, horiz center; pattern: pattern solid, fore_colour gray25; borders: left thin, right thin, top thin, bottom thin;')
+            # Colocar todos los bordes a las celdas y centrar el texto
+            estilo_texto = xlwt.easyxf('align: wrap on, vert centre, horiz center; borders: left thin, right thin, top thin, bottom thin;')
+
+            hoja = libro.add_sheet(nombre_curso)
+            hoja.write(0, 0, 'Nombre del curso', estilo_inf_curso)
+            hoja.write(0, 1, nombre_curso, estilo_texto)
+            hoja.write(1, 0, 'Código del curso', estilo_inf_curso)
+            hoja.write(1, 1, codigo_curso, estilo_texto)
+            hoja.write(2, 0, 'Fecha de inicio', estilo_inf_curso)
+            hoja.write(2, 1, fecha_inicio, estilo_texto)
+            hoja.write(3, 0, 'Fecha de finalización', estilo_inf_curso)
+            hoja.write(3, 1, fecha_fin, estilo_texto)
+            hoja.write(4, 0, 'Horario', estilo_inf_curso)
+            hoja.write(4, 1, horario, estilo_texto)
+            hoja.write(5, 0, 'Modalidad', estilo_inf_curso)
+            hoja.write(5, 1, modalidad, estilo_texto)
+            hoja.write(6, 0, 'Duración', estilo_inf_curso)
+            hoja.write(6, 1, duracion, estilo_texto)
+            hoja.write(7, 0, 'Intensidad horaria', estilo_inf_curso)
+            hoja.write(7, 1, intensidad_horaria, estilo_texto)
+            hoja.write(8, 0, 'Cantidad de sesiones', estilo_inf_curso)
+            hoja.write(8, 1, cantidad_sesiones, estilo_texto)
+            hoja.write(9, 0, 'Cupo del curso', estilo_inf_curso)
+            hoja.write(9, 1, cupo_curso, estilo_texto)
+            hoja.write(10, 0, 'Enlace de la clase', estilo_inf_curso)
+            hoja.write(10, 1, enlace_clase, estilo_texto)
+            hoja.write(11, 0, 'Enlace de las grabaciones', estilo_inf_curso)
+            hoja.write(11, 1, enlace_grabaciones, estilo_texto)
+            hoja.write(12, 0, 'Enlace del formulario de asistencia', estilo_inf_curso)
+            hoja.write(12, 1, enlace_asistencia, estilo_texto)
+
+            # estilo de formato de tabla con las calificaciones y asistencias
+            estilo_tabla = xlwt.easyxf('align: wrap on, vert centre, horiz center; borders: left thin, right thin, top thin, bottom thin;')
+            hoja.write(14, 0, '#', estilo_tabla)
+            hoja.write(14, 1, 'Número de documento', estilo_tabla)
+            hoja.write(14, 2, 'Nombres', estilo_tabla)
+            hoja.write(14, 3, 'Apellidos', estilo_tabla)
+            hoja.write(14, 4, 'Calificación 1', estilo_tabla)
+            hoja.write(14, 5, 'Calificación 2', estilo_tabla)
+            hoja.write(14, 6, 'Calificación 3', estilo_tabla)
+            hoja.write(14, 7, 'Calificación 4', estilo_tabla)
+            hoja.write(14, 8, 'Calificación 5', estilo_tabla)
+            hoja.write(14, 9, 'Calificación 6', estilo_tabla)
+            hoja.write(14, 10, 'Calificación 7', estilo_tabla)
+            hoja.write(14, 11, 'Calificación 8', estilo_tabla)
+            hoja.write(14, 12, 'Calificación 9', estilo_tabla)
+            hoja.write(14, 13, 'Calificación final', estilo_tabla)
+            hoja.write(14, 14, 'Observaciones', estilo_tabla)
+            hoja.write(14, 15, 'Asistencia 1', estilo_tabla)
+            hoja.write(14, 16, 'Asistencia 2', estilo_tabla)
+            hoja.write(14, 17, 'Asistencia 3', estilo_tabla)
+            hoja.write(14, 18, 'Asistencia 4', estilo_tabla)
+            hoja.write(14, 19, 'Asistencia 5', estilo_tabla)
+            hoja.write(14, 20, 'Asistencia 6', estilo_tabla)
+            hoja.write(14, 21, 'Asistencia 7', estilo_tabla)
+            hoja.write(14, 22, 'Asistencia 8', estilo_tabla)
+            hoja.write(14, 23, 'Asistencia 9', estilo_tabla)
+            hoja.write(14, 24, 'Asistencia 10', estilo_tabla)
+            hoja.write(14, 25, 'Asistencia 11', estilo_tabla)
+            hoja.write(14, 26, 'Asistencia 12', estilo_tabla)
+            hoja.write(14, 27, 'Asistencia 13', estilo_tabla)
+            hoja.write(14, 28, 'Asistencia 14', estilo_tabla)
+            hoja.write(14, 29, 'Asistencia 15', estilo_tabla)
+            hoja.write(14, 30, 'Asistencia 16', estilo_tabla)
+            hoja.write(14, 31, 'Asistencia 17', estilo_tabla)
+            hoja.write(14, 32, 'Asistencia 18', estilo_tabla)
+            hoja.write(14, 33, 'Asistencia 19', estilo_tabla)
+            hoja.write(14, 34, 'Asistencia 20', estilo_tabla)
+            hoja.write(14, 35, 'Asistencia 21', estilo_tabla)
+            hoja.write(14, 36, 'Asistencia 22', estilo_tabla)
+            hoja.write(14, 37, 'Asistencia 23', estilo_tabla)
+            hoja.write(14, 38, 'Asistencia 24', estilo_tabla)
+            hoja.write(14, 39, 'Asistencia 25', estilo_tabla)
+            hoja.write(14, 40, 'Asistencia 26', estilo_tabla)
+            hoja.write(14, 41, 'Asistencia 27', estilo_tabla)
+            hoja.write(14, 42, 'Asistencia 28', estilo_tabla)
+            hoja.write(14, 43, 'Asistencia 29', estilo_tabla)
+            hoja.write(14, 44, 'Asistencia 30', estilo_tabla)
+
+            calificacion = Estudiante().obtener_calificacion(id_curso)
+            asistencia = Estudiante().obtener_asistencia(id_curso)
+
+            matriz_calificacion_asistencia = []
+            for indice in zip(calificacion, asistencia):
+                matriz_calificacion_asistencia.append(indice)
+            
+            
+            for fila, (calificacion, asistencia) in enumerate(matriz_calificacion_asistencia):
+                hoja.write(fila+15, 0, fila+1, estilo_tabla)
+                hoja.write(fila+15, 1, str(calificacion[0]), estilo_tabla)
+                hoja.write(fila+15, 2, str(calificacion[1]), estilo_tabla)
+                hoja.write(fila+15, 3, str(calificacion[2]), estilo_tabla)
+                hoja.write(fila+15, 4, str(calificacion[3]), estilo_tabla)
+                hoja.write(fila+15, 5, str(calificacion[4]), estilo_tabla)
+                hoja.write(fila+15, 6, str(calificacion[5]), estilo_tabla)
+                hoja.write(fila+15, 7, str(calificacion[6]), estilo_tabla)
+                hoja.write(fila+15, 8, str(calificacion[7]), estilo_tabla)
+                hoja.write(fila+15, 9, str(calificacion[8]), estilo_tabla)
+                hoja.write(fila+15, 10, str(calificacion[9]), estilo_tabla)
+                hoja.write(fila+15, 11, str(calificacion[10]), estilo_tabla)
+                hoja.write(fila+15, 12, str(calificacion[11]), estilo_tabla)
+                hoja.write(fila+15, 13, str(calificacion[12]), estilo_tabla)
+                hoja.write(fila+15, 14, str(calificacion[13]), estilo_tabla)
+                hoja.write(fila+15, 15, str(asistencia[3]), estilo_tabla)
+                hoja.write(fila+15, 16, str(asistencia[4]), estilo_tabla)
+                hoja.write(fila+15, 17, str(asistencia[5]), estilo_tabla)
+                hoja.write(fila+15, 18, str(asistencia[6]), estilo_tabla)
+                hoja.write(fila+15, 19, str(asistencia[7]), estilo_tabla)
+                hoja.write(fila+15, 20, str(asistencia[8]), estilo_tabla)
+                hoja.write(fila+15, 21, str(asistencia[9]), estilo_tabla)
+                hoja.write(fila+15, 22, str(asistencia[10]), estilo_tabla)
+                hoja.write(fila+15, 23, str(asistencia[11]), estilo_tabla)
+                hoja.write(fila+15, 24, str(asistencia[12]), estilo_tabla)
+                hoja.write(fila+15, 25, str(asistencia[13]), estilo_tabla)
+                hoja.write(fila+15, 26, str(asistencia[14]), estilo_tabla)
+                hoja.write(fila+15, 27, str(asistencia[15]), estilo_tabla)
+                hoja.write(fila+15, 28, str(asistencia[16]), estilo_tabla)
+                hoja.write(fila+15, 29, str(asistencia[17]), estilo_tabla)
+                hoja.write(fila+15, 30, str(asistencia[18]), estilo_tabla)
+                hoja.write(fila+15, 31, str(asistencia[19]), estilo_tabla)
+                hoja.write(fila+15, 32, str(asistencia[20]), estilo_tabla)
+                hoja.write(fila+15, 33, str(asistencia[21]), estilo_tabla)
+                hoja.write(fila+15, 34, str(asistencia[22]), estilo_tabla)
+                hoja.write(fila+15, 35, str(asistencia[23]), estilo_tabla)
+                hoja.write(fila+15, 36, str(asistencia[24]), estilo_tabla)
+                hoja.write(fila+15, 37, str(asistencia[25]), estilo_tabla)
+                hoja.write(fila+15, 38, str(asistencia[26]), estilo_tabla)
+                hoja.write(fila+15, 39, str(asistencia[27]), estilo_tabla)
+                hoja.write(fila+15, 40, str(asistencia[28]), estilo_tabla)
+                hoja.write(fila+15, 41, str(asistencia[29]), estilo_tabla)
+                hoja.write(fila+15, 42, str(asistencia[30]), estilo_tabla)
+                hoja.write(fila+15, 43, str(asistencia[31]), estilo_tabla)
+                hoja.write(fila+15, 44, str(asistencia[32]), estilo_tabla)
+                
+            
+        
+            libro.save(salida)
+
+            salida.seek(0)
+            flash('Informe generado con exito')
+            return Response(salida, mimetype='application/vnd.ms-excel', headers={'Content-Disposition':'attachment;filename=informe_'+nombre_curso+'.xls'})
+        except Exception as e:
+            flash('Error al generar el reporte')
+            return redirect(url_for('cursos.listar_cursos'))
     else:
-        return 'Error al generar informe'
+        return redirect(url_for('cursos.listar_cursos'))
 
         
-
-
-
-
-
-
-
-        
-
-        
-
-
-        
-
-
-  

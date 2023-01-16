@@ -186,7 +186,7 @@
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             {%if current_user.rol == "AD"%}
             <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
-            <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a>
+            <!-- <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a> -->
             {%endif%}
             <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y Calificaciones</a>
           </div>

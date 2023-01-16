@@ -21,6 +21,7 @@ class Estudiante():
         sql= "INSERT INTO estudiantes (nombre, apellido, tipo_doc, numero_doc, correo, num_telefono, num_telefono_fijo, ciudad, estado, id_cliente) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}')".format(self.nombres, self.apellidos, self.tipo_doc, self.num_doc, self.correo, self.telefono, self.tel_fijo, self.ciudad, self.estado, self.id_ciente)
         cursor.execute(sql)
         conn.commit()
+        # retornar el id del estudiante
         return True
       except Exception as e:
         print(e)
@@ -198,7 +199,7 @@ class Estudiante():
       try:
         conn = obtener_conexion()
         cursor = conn.cursor()
-        sql = "SELECT * FROM asistencias WHERE id_curso = '{0}'".format(id_curso)
+        sql = "SELECT estudiantes.numero_doc, estudiantes.nombre, estudiantes.apellido, asistencias.asis_1, asistencias.asis_2, asistencias.asis_3, asistencias.asis_4, asistencias.asis_5, asistencias.asis_6, asistencias.asis_7, asistencias.asis_8, asistencias.asis_9, asistencias.asis_10, asistencias.asis_11, asistencias.asis_12, asistencias.asis_13, asistencias.asis_14, asistencias.asis_15, asistencias.asis_16, asistencias.asis_17, asistencias.asis_18, asistencias.asis_19, asistencias.asis_20, asistencias.asis_21, asistencias.asis_22, asistencias.asis_23, asistencias.asis_24, asistencias.asis_25, asistencias.asis_26, asistencias.asis_27, asistencias.asis_28, asistencias.asis_29, asistencias.asis_30 FROM estudiantes INNER JOIN asistencias ON estudiantes.id = asistencias.id_estudiante AND asistencias.id_curso='{0}'".format(id_curso)
         cursor.execute(sql)
         asistencia = cursor.fetchall()
         conn.commit()
@@ -211,7 +212,7 @@ class Estudiante():
       try:
         conn = obtener_conexion()
         cursor = conn.cursor()
-        sql = "SELECT * FROM calificaciones WHERE id_curso = '{0}'".format(id_curso)
+        sql = "SELECT estudiantes.numero_doc, estudiantes.nombre, estudiantes.apellido, calificaciones.nota1, calificaciones.nota2, calificaciones.nota3, calificaciones.nota4, calificaciones.nota5, calificaciones.nota6, calificaciones.nota7, calificaciones.nota8, calificaciones.nota9, calificaciones.nota10, calificaciones.observacion FROM estudiantes INNER JOIN calificaciones ON estudiantes.id = calificaciones.id_estudiante AND calificaciones.id_curso='{0}'".format(id_curso)
         cursor.execute(sql)
         calificacion = cursor.fetchall()
         conn.commit()
@@ -219,3 +220,4 @@ class Estudiante():
       except Exception as e:
         print(e)
         return False
+    

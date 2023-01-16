@@ -171,14 +171,27 @@
           <br>
           <b>Cupo:</b> {{curso[10]}}
           <br>
-          <b>Enlace de la clase:</b> {{curso[11]}}
+          {% if curso[11] == "No" %}
+            <b>Enlace de la clase:</b> {{curso[11]}}
+          {% else %}
+            <b>Enlace de la clase:</b> <a href="{{curso[11]}}" target="_blank">{{curso[11]}}</a>
+          {% endif %}
           <br>
-          <b>Enlace de las grabaciones:</b> {{curso[12]}}
+          {% if curso[12] == "No" %}
+            <b>Enlace de las grabaciones:</b> {{curso[12]}}
+          {% else %}
+            <b>Enlace de las grabaciones:</b> <a href="{{curso[12]}}" target="_blank">{{curso[12]}}</a>
+          {% endif %}
           <br>
-          <b>Enlaces formulario asistencia:</b> {{curso[13]}}
+          {% if curso[13] == "No" %}
+            <b>Enlace del formulario:</b> {{curso[13]}}
+          {% else %}
+            <b>Enlace del formulario:</b> <a href="{{curso[13]}}" target="_blank">{{curso[13]}}</a>
+          {% endif %}
           <br>
           <b>Docente: </b> {{curso[16]}}
           <br>
+          <b>Estudiantes: </b> {{curso[17]}}
         </div>
         <div class="card-footer">
           {% if curso[14] == 1 %}
@@ -188,17 +201,17 @@
           {% endif %}
           {%if current_user.rol == "AD"%}
           <div class="btn-group float-end" role="group" aria-label="Botones de edición">
+            <form action="{{url_for('cursos.generar_informe')}}" method="post">
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_curso"
               data-bs-whateve="{{curso[0]}}"><i class="bi bi-pencil"></i></button>
             <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
+              <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+              data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i class="bi bi-filetype-xls"></i></button>
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            </form>
           </div>
-          <form action="{{url_for('cursos.generar_informe')}}" method="post">
-            <input type="hidden" name="id_curso" value="{{curso[0]}}">
-            <button type="submit" class="btn btn-outline-success"><i class="bi bi-filetype-xlsx"></i></button>
-          </form>
           {%else%}
           {% endif %}
-
         </div>
       </div>
     </div>

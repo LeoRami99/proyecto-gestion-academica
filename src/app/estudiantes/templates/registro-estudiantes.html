@@ -192,6 +192,24 @@
                   <input type="text" class="form-control p-2" id="ciudad" name="ciudad" placeholder="Ciudad" required>
                 </div>
               </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="curso" class="form-label">Curso</label>
+                  <select name="id_curso" id="curso" class="form-select" required>
+                    <option value="">Seleccione</option>
+                    {%for curso in cursos%}
+                      <option value="{{curso[0]}}">{{curso[0]}} | {{curso[1]}} | {{curso[2]}}</option>
+                    {%endfor%}
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Si el estudiante ya se encuentra registrado dirigase al siguiente enlace">
+                    <a href="{{url_for('estudiantes.estudiantes_curso')}}">Asignar estudiante a curso</a>
+                  </span>
+                </div>
+              </div>
 
               <!-- Boton de enviar -->
               <div class="col-12 mb-3 text-center">
@@ -199,7 +217,7 @@
               </div>
               <!-- boton modal excel -->
               <div class="col-12 mb-3 text-center">
-                <h6><span class="badge bg-secondary">Excel con estudiantes </span></h6>
+                <h6><span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Si quieres registrar una lista de estudiantes al sistema y asignar el curso">Excel con estudiantes </span></h6>
                 <button type="button" class="btn btn-card p-2 w-25" data-bs-toggle="modal"
                   data-bs-target="#exampleModal">
                   <i class="bi bi-file-earmark-excel"></i> Subir excel
@@ -255,6 +273,15 @@
           <div class="mb-3">
             <label for="formFile" class="form-label">Subir archivo</label>
             <input class="form-control" type="file" id="formFile" name="excel" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+          </div>
+          <div class="mb-3">
+            <label for="curso" class="form-label">Curso</label>
+            <select name="id_curso" id="curso" class="form-select" required>
+              <option value="">Seleccione</option>
+              {%for curso in cursos%}
+                <option value="{{curso[0]}}">{{curso[0]}} | {{curso[1]}} | {{curso[2]}}</option>
+              {%endfor%}
+            </select>
           </div>
           <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
         </form>
