@@ -291,16 +291,21 @@ def enviar_asistencia():
     if request.method == 'POST':
         estudiante = Estudiante()
         id_curso = request.form['id_curso']
+        
         lista_asistencias = []
         lista_asistencias.append(request.form.getlist('num_doc'))
+        
         for indice in range(30):
            lista_asistencias.append(request.form.getlist('asistencia_'+str(indice+1)))
         # se envia a la base de datos
         estudiante = Estudiante()
         # print(lista_asistencias[0])
         for indice in range(len(lista_asistencias[0])):
+            
+
             # Condifición con 33 datos para el envio de información
-            if estudiante.actualizar_asistencia(estudiante.estudiante_id(lista_asistencias[0][indice], current_user.id_cliente), id_curso, current_user.id_cliente, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice]) == True:
+            if estudiante.actualizar_asistencia(estudiante.estudiante_id(lista_asistencias[0][indice], current_user.id_cliente), current_user.id_cliente, id_curso, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice]) == True:
+                # print((lista_asistencias[0][indice], current_user.id_cliente), id_curso, current_user.id_cliente, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice])
                 flash('Se actualizo la asistencia del estudiante ' + str(lista_asistencias[0][indice]))
                 pass
             else:
@@ -328,7 +333,7 @@ def enviar_asistencia_excel():
                 estudiante = Estudiante()
                 for indice in range(len(df)):
                     # Condifición con 33 datos para el envio de información
-                    if estudiante.actualizar_asistencia(estudiante.estudiante_id(df[columnas[0]][indice], current_user.id_cliente), id_curso, current_user.id_cliente, df[columnas[1]][indice], df[columnas[2]][indice], df[columnas[3]][indice], df[columnas[4]][indice], df[columnas[5]][indice], df[columnas[6]][indice], df[columnas[7]][indice], df[columnas[8]][indice], df[columnas[9]][indice], df[columnas[10]][indice], df[columnas[11]][indice], df[columnas[12]][indice], df[columnas[13]][indice], df[columnas[14]][indice], df[columnas[15]][indice], df[columnas[16]][indice], df[columnas[17]][indice], df[columnas[18]][indice], df[columnas[19]][indice], df[columnas[20]][indice], df[columnas[21]][indice], df[columnas[22]][indice], df[columnas[23]][indice], df[columnas[24]][indice], df[columnas[25]][indice], df[columnas[26]][indice], df[columnas[27]][indice], df[columnas[28]][indice], df[columnas[29]][indice], df[columnas[30]][indice]) == True:
+                    if estudiante.actualizar_asistencia(estudiante.estudiante_id(df[columnas[0]][indice], current_user.id_cliente), current_user.id_cliente, id_curso, df[columnas[1]][indice], df[columnas[2]][indice], df[columnas[3]][indice], df[columnas[4]][indice], df[columnas[5]][indice], df[columnas[6]][indice], df[columnas[7]][indice], df[columnas[8]][indice], df[columnas[9]][indice], df[columnas[10]][indice], df[columnas[11]][indice], df[columnas[12]][indice], df[columnas[13]][indice], df[columnas[14]][indice], df[columnas[15]][indice], df[columnas[16]][indice], df[columnas[17]][indice], df[columnas[18]][indice], df[columnas[19]][indice], df[columnas[20]][indice], df[columnas[21]][indice], df[columnas[22]][indice], df[columnas[23]][indice], df[columnas[24]][indice], df[columnas[25]][indice], df[columnas[26]][indice], df[columnas[27]][indice], df[columnas[28]][indice], df[columnas[29]][indice], df[columnas[30]][indice]) == True:
                         flash('Se actualizo la asistencia del estudiante ' + str(df[columnas[0]][indice]))
                         pass
                     else:

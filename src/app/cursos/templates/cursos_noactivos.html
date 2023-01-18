@@ -1,5 +1,5 @@
 {%extends "base.html"%}
-{%block title%}Docentes{%endblock%}
+{%block title%}Cursos no activos / finalizados{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
@@ -137,157 +137,145 @@
   <div class="row">
     <div class="col-12">
       <div class="text-center">
-        <h1 class="display-4">Docentes</h1>
+        <h1 class="display-4">Cursos no activos</h1>
+      </div>
+    </div>
+  </div>
+  <!-- Lista de cursos en cards-->
+  <!-- Barra de busqueda para filtrar las cards -->
+  <div class="row">
+    <div class="col-12">
+      <div class="input-group flex-nowrap mb-3 w-25 float-end">
+        <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="Buscar" placeholder="Buscar" aria-label="Buscar"
+          aria-describedby="addon-wrapping">
       </div>
     </div>
   </div>
 
 
-  <!-- Tabla de docentes -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12" data-aos="zoom-in" data-aos-duration="1000">
-        <table class="table bg-light table-hover" id="tabla_docentes">
-          <thead>
-            <tr>
-              <th scope="col">Número de documento</th>
-              <th scope="col">Nombre de Usuario</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Apellido</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Teléfono</th>
-              <th scope="col">Teléfono fijo</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Profesión</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for docente in docentes%}
-            <tr>
-              <td>{{docente[8]}} {{docente[9]}}</td>
-              <td>{{docente[1]}}</td>
-              <td>{{docente[2]}}</td>
-              <td>{{docente[3]}}</td>
-              <td>{{docente[4]}}</td>
-              <td>{{docente[5]}}</td>
-              <td>{{docente[6]}}</td>
-              <td>
-                {%if docente[7] == 1%}
-                  <span class="alert alert-success">Activo</span>
-                {%else%}
-                  <span class="alert alert-danger">Inactivo</span>
-                {%endif%}
-              </td>
-              <td>{{docente[10]}}</td>
-              <td>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_docente" data-bs-whateve="{{docente[0]}}"><i class="bi bi-pencil-square"></i> Editar</button>
-                  <a href="{{url_for('docentes.eliminar', id_docente=docente[0])}}" class="btn btn-outline-danger" onclick="return confirm('¿Seguro/a quieres eliminar a este docente?')"><i class="bi bi-trash"></i> Eliminar</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Modal -->
-<div class="modal fade" id="modal_docente" tabindex="-1" aria-labelledby="modal_docente" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Editar docente</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="/docentes/editar" method="POST">
-          <div class="mb-3">
-            <label for="numero_documento" class="form-label">Número de documento</label>
-            <input type="text" class="form-control" id="numero_documento" name="numero_documento" placeholder="Número de documento">
-          </div>
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
-          </div>
-          <div class="mb-3">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido">
-          </div>
-          <div class="mb-3">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo">
-          </div>
-          <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono">
-          </div>
-          <div class="mb-3">
-            <label for="telefono_fijo" class="form-label ">Teléfono fijo</label>
-            <input type="text" class="form-control" id="telefono_fijo" name="telefono_fijo" placeholder="Teléfono fijo">
-          </div>
-          <div class="mb-3">
-            <label for="estado" class="form-label">Estado</label>
-            <select class="form-select" aria-label="Default select example" id="estado" name="estado">
-              <option value="1">Activo</option>
-              <option value="0">Inactivo</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="profesion" class="form-label">Profesión</label>
-            <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesión">
-          </div>
-          <div class="mb-3">
-            <!-- <label for="id_docente" class="form-label">ID</label> -->
-            <input type="hidden" class="form-control" id="id_docente" name="id_docente" placeholder="ID">
-          </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+    {% for curso in cursos%}
+    {% if curso[14] == 0 %}
+    <div class="col mb-5">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}}</h5>
         </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary" onclick="return confirm('¿Seguro/a que desea guardar los cambios?')">Guardar cambios</button>
+        <div class="card-body">
+          <b>Código del curso:</b> {{curso[2]}}
+          <br>
+          <b>Fecha inicio:</b> {{curso[3]}}
+          <br>
+          <b>Fecha finalización:</b> {{curso[4]}}
+          <br>
+          <b>Horario:</b> {{curso[5]}}
+          <br>
+          <b>Modalidad:</b> {{curso[6]}}
+          <br>
+          <b>Duración:</b> {{curso[7]}}
+          <br>
+          <b>Intensidad horaria:</b> {{curso[8]}}
+          <br>
+          <b>Cantidad de sesiones:</b> {{curso[9]}}
+          <br>
+          <b>Cupo:</b> {{curso[10]}}
+          <br>
+          {% if curso[11] == "No" %}
+          <b>Enlace de la clase:</b> {{curso[11]}}
+          {% else %}
+          <b>Enlace de la clase:</b> <a href="{{curso[11]}}" target="_blank">{{curso[11]}}</a>
+          {% endif %}
+          <br>
+          {% if curso[12] == "No" %}
+          <b>Enlace de las grabaciones:</b> {{curso[12]}}
+          {% else %}
+          <b>Enlace de las grabaciones:</b> <a href="{{curso[12]}}" target="_blank">{{curso[12]}}</a>
+          {% endif %}
+          <br>
+          {% if curso[13] == "No" %}
+          <b>Enlace del formulario:</b> {{curso[13]}}
+          {% else %}
+          <b>Enlace del formulario:</b> <a href="{{curso[13]}}" target="_blank">{{curso[13]}}</a>
+          {% endif %}
+          <br>
+          {%if current_user.rol=="AD"%}
+          <b>Docente: </b> {{curso[16]}}
+          <br>
+          {% else %}
+          {%endif%}
+          {%if current_user.rol=="AD"%}
+          <b>Estudiantes: </b> {{curso[17]}}
+          {% else %}
+          <b>Estudiantes: </b> {{curso[16]}}
+          {%endif%}
+        </div>
+        <div class="card-footer">
+          {% if curso[14] == 1 %}
+          <span class="badge rounded-pill text-bg-success card-text"><i class="bi bi-check"></i> | Activo</span>
+          {% else %}
+          <span class="badge rounded-pill text-bg-danger card-text"><i class="bi bi-x"></i> | No activo</span>
+          {% endif %}
+          {%if current_user.rol == "AD"%}
+          <div class="btn-group float-end" role="group" aria-label="Botones de edición">
+            <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+              <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
+              <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip"
+                data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
+                  class="bi bi-filetype-xls"></i></button>
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            </form>
           </div>
-        </form>
+          {%else%}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {%else%}
+    {% endif %}
+    {% endfor %}
+  </div>
+  <!-- Paginacion de las cards de los cursos -->
+  <div class="container-fluid">
+    <div class="row float-end">
+      <div class="col-12">
+        <div class="holder"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Script  -->
-<!--petición ajax para rellenar los otros campos del modal-->
+
+<script
+  src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
 <script>
-  $('#modal_docente').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var recipient = button.data('bs-whateve') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    // modal.find('.modal-title').text('Editar docente ' + recipient)
-    modal.find('.modal-body input#id_docente').val(recipient)
-    $.ajax({
-      url: '/docentes/datos/modal',
-      type: 'POST',
-      data: {
-        id_docente: recipient
-      },
-      success: function (data) {
-        modal.find('.modal-body input#numero_documento').val(data.num_doc)
-        modal.find('.modal-body input#nombre').val(data.nombres)
-        modal.find('.modal-body input#apellido').val(data.apellidos)
-        modal.find('.modal-body input#correo').val(data.correo)
-        modal.find('.modal-body input#telefono').val(data.numero_cel)
-        modal.find('.modal-body input#telefono_fijo').val(data.numero_tel_fijo)
-        modal.find('.modal-body input#profesion').val(data.profesion)
-        modal.find('.modal-body input#id_docente').val(data.id_usuario)
-      }
-    })
-  })
+  // Barra de busqueda para filtrar las cards basada en el titulo y ordenarlos en la pantalla
+  $(document).ready(function () {
+    $("#Buscar").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $(".titulo").filter(function () {
+        $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+  // Paginacion de las cards de los cursos 
+  $(function () {
+    $("div.holder").jPages({
+      containerID: "listado",
+      perPage: 6,
+      midRange: 3,
+      startPage: 1,
+      startRange: 1,
+      endRange: 1,
+      previous: "←",
+      next: "→",
+      delay: 50,
+    });
+  });
 </script>
-
-
-
-
-
 {%endblock%}
 {%block footer%}
 

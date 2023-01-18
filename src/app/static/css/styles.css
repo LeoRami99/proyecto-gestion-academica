@@ -50,16 +50,17 @@
 }
 .btn-card{
   transition: ease-in 0.2s;
-  background-color: #003269;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
   margin: 2px;
+  border:solid 1px #000000;
 }
 .btn-card:hover{
-  background-color: #003269;
+  background-color: #6aa7e8;
   color: #ffffff;
   transform: scale(1.05);
-  box-shadow: 2px 2px 0px #003269;
-  border: solid 1px #f7ea32;;
+  box-shadow: 2px 2px 2px#000000;
+  /* border: solid 1px #ffffff; */
   z-index: 1;
   /* Cuando se haga hover mostrar el icono */
 }
@@ -110,42 +111,19 @@
   width: 100px;
   height: 100px;
 }
-
-
-
-.parallax__container {
-	clip: rect(0, auto, auto, 0);
-	height: 100%;
-	left: 0;
-	overflow: hidden;
-	position: absolute;
-	top: 0;
-	width: 100%;
-	z-index: -100;
-}
-
-.parallax {
-	position: fixed;
-	top: 0;
-	-webkit-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0);
-	-webkit-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-	width: 100%;
-
-	/* BG behaviour */
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
 .spinner {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   border: 9px solid #868ce8;
   animation: spinner-bulqg1 0.8s infinite linear alternate,
-       spinner-oaa3wk 1.6s infinite linear;
+  spinner-oaa3wk 1.6s infinite linear;
+  /* Centrar en la pantalla */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
 }
 
 @keyframes spinner-bulqg1 {
@@ -198,7 +176,7 @@
 
 
 /* Animación de carga */
-/* .loader {
+.loader {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -206,9 +184,9 @@
   height: 100%;
   z-index: 9999;
   
-  background: linear-gradient(90deg, rgb(84, 81, 151) 0%, rgb(65, 131, 76) 0%, rgb(11, 100, 3) 100%);
-} */
-/* .loading {
+  background: #ffffff;
+} 
+.loading {
   width: 60px;
   height: 60px;
   position: absolute;
@@ -302,7 +280,7 @@
   100% {
     transform: scale(1);
   }
-} */
+}
 
 /* Css para el paginador */
 .holder{
@@ -349,6 +327,39 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 .accordion-body{
   height: 300px;
   overflow: scroll;
+}
+
+/* cambiar el estilo de paginador de datatables */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  background-color: #6aa7e8;
+  color: #fff !important;
+  border: 1px solid #6aa7e8;
+  border-radius: 10px;
+}
+/* Hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #6aa7e8 !important;
+  color: #fff !important;
+  border: 1px solid #6aa7e8 !important;
+}
+.dataTables_filter {
+  float: right;
+  text-align: right;
+  margin: 20px;
+}
+.dataTables_filter input {
+  border-radius: 10px !important;
+  border: 1px solid #000000 !important;
+}
+
+.dataTables_length {
+  float: left;
+  text-align: left;
+  margin: 20px;
+}
+.dataTables_length select {
+  border-radius: 10px !important;
+  border: 1px solid #000000 !important;
 }
 
 

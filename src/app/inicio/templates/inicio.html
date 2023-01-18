@@ -44,8 +44,10 @@
   <div class="offcanvas-body">
     <div>
       <div class="d-flex">
-        <img src="https://cdn.pixabay.com/photo/2016/11/29/09/41/bag-1868758_960_720.jpg" class="rounded-circle"
-          alt="..." height="100px" width="100px">
+        <script src="https://cdn.lordicon.com/fudrjiwc.js"></script>
+        <lord-icon src="https://cdn.lordicon.com/dxjqoygy.json" trigger="hover"
+          colors="primary:#121331,secondary:#6aa7e8" style="width:100px;height:100px" class="rounded-circle">
+        </lord-icon>
         <div class="ms-3">
           <h5>{{current_user.nombre}} {{current_user.apellido}}</h5>
           <p>{{nombre_cliente}}</p>
@@ -74,9 +76,12 @@
               <!-- Lista de botonos -->
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a type="button" class="btn btn-card">Cursos activos</a>
-                  <a type="button" class="btn btn-card">cursos no activos</a>
-                  <a type="button" class="btn btn-card">Registrar curso</a>
+                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
+                  {%if current_user.rol == "AD"%}
+                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
+
+                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
+                  {%endif%}
                 </div>
               </div>
 
@@ -86,31 +91,40 @@
             <h2 class="accordion-header" id="flush-headingTwo">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                Accordion Item #2
+                <i class="bi bi-person"></i> <strong> Gestión estudiantes</strong>
               </button>
             </h2>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
               data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-                filled with some actual content.</div>
+              <div class="accordion-body">
+                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
+                  {%if current_user.rol == "AD"%}
+                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+                  {%endif%}
+                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
+                </div>
+              </div>
             </div>
           </div>
+          {%if current_user.rol == "AD"%}
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingThree">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                Accordion Item #3
+                <i class="bi bi-people"></i> <strong>Docentes</strong>
               </button>
             </h2>
             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
               data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
-                happening here in terms of content, but just filling up the space to make it look, at least at first
-                glance, a bit more representative of how this would look in a real-world application.</div>
+              <div class="accordion-body">
+                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
+                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i class="bi bi-people"></i> Docentes</a>
+                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
+                </div>
+              </div>
             </div>
           </div>
+          {%endif%}
         </div>
       </div>
     </div>
@@ -120,14 +134,26 @@
 <section class="bienvenida">
   <!-- Header -->
   <div class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <!-- <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt=""
+      width="72" height="57"> -->
     <h1 class="display-5 fw-bold tuclase">Bienvenido/a {{current_user.nombre}}</h1>
     <div class="col-lg-6 mx-auto">
-      <p class="lead mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most
-        popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive
-        prebuilt components, and powerful JavaScript plugins.</p>
+      <div class="animate__animated animate__pulse animate__infinite animate__slower">
+
+        <img src="{{url_for('static', filename='imgs/inicio_image.png')}}" class="img-fluid" alt="...">
+      </div>
+      <p class="lead mb-4">
+
+      </p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <a href="#options" class="btn animate__animated animate__bounce animate__infinite animate__slower"><i class="bi bi-arrow-down-short" style="font-size: 80px;"></i></a>
+        <a href="#options"><script src="https://cdn.lordicon.com/fudrjiwc.js"></script>
+          <lord-icon
+              src="https://cdn.lordicon.com/rxufjlal.json"
+              trigger="hover"
+              colors="primary:#ffffff"
+              style="width:50px;height:50px">
+          </lord-icon>
+        </a>
       </div>
     </div>
   </div>
@@ -140,7 +166,7 @@
     <!-- Cards para cada apartado -->
     <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mt-2">
       <!-- Card de cursos  -->
-      
+
       <div class="col" data-aos="fade-right" data-aos-duration="1000">
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img"
@@ -152,18 +178,22 @@
           <div class="card-body" style="overflow-y: auto">
             <h4 class="card-title"><i class="bi bi-mortarboard"></i> Cursos</h4>
             <p class="card-text">
-              Gestiona los cursos que impartes, crea nuevos cursos, edita los cursos que ya tienes, 
+              Gestiona los cursos que impartes, crea nuevos cursos, edita los cursos que ya tienes,
               elimina cursos que ya no impartes.
             </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-award"></i> Cursos </a>
+            <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos no activos </a>
+
             <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
             {%if current_user.rol== "AD"%}
-              <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar curso</a>
-              <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar docente</a>
+            <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar
+              curso</a>
+            <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
+              Asignar docente</a>
             {%endif%}
-            
+
           </div>
         </div>
       </div>
@@ -185,10 +215,12 @@
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             {%if current_user.rol == "AD"%}
-            <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+            <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i
+                class="bi bi-person-add"></i> Registrar estudiantes</a>
             <!-- <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a> -->
             {%endif%}
-            <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y Calificaciones</a>
+            <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" class="btn btn-card"><i
+                class="bi bi-card-checklist"></i> Asistencia y Calificaciones</a>
           </div>
         </div>
       </div>
@@ -212,7 +244,8 @@
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('docentes.index')}}" class="btn btn-card"><i class="bi bi-check-circle"></i> Docentes</a>
             <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Docentes no activos</a> -->
-            <a href="{{url_for('docentes.registroDocentes')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
+            <a href="{{url_for('docentes.registroDocentes')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i>
+              Registrar docentes</a>
           </div>
         </div>
       </div>

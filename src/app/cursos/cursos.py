@@ -81,21 +81,52 @@ def listar_cursos():
                 lista_cursos.append(curso_lista + ('Sin asignar', contador_estudiantes))
         return render_template('cursos_index.html', cursos=lista_cursos, docentes=docentes)
     elif current_user.rol == 'DOC':
+        estudiante= Estudiante()
         #Solo listar los cursos que se le fueron asignados a el docente
         curso = Curso()
         asig_doc = curso.obtener_cursos_docente(current_user.id)
         cursos = curso.obtener_cursos(current_user.id_cliente)
         listar_cursos = []
         for cursos in zip(cursos, asig_doc):
+            contador_estudiantes = estudiante.count_usuarios_cupo(cursos[0][0], current_user.id_cliente)
             if cursos[1] != None:
-                listar_cursos.append(cursos[0])
+                listar_cursos.append(cursos[0]+(contador_estudiantes,))
             else:
                 pass
+        print(listar_cursos)
         return render_template('cursos_index.html', cursos=listar_cursos)
     else:
         flash('No tiene permisos para acceder a esta sección')
         return redirect(url_for('inicio.index'))
 
+@cursos.route('/cursos-no-activos')
+@login_required
+def cursos_no_activos():
+    if current_user.rol == 'AD':
+        curso = Curso()
+        cursos = curso.obtener_cursos(current_user.id_cliente)
+        # Datos del docente
+        docente = Docente()
+        docentes = docente.obtenerDocentesCliente(current_user.id_cliente)
+        # contador de estudiantes por curso
+        estudiante = Estudiante()
+        
+        # Condición para verificar si se asigno el docente al curso
+        lista_cursos = []
+        for curso_lista in cursos:
+            if curso.lista_curso_docente(curso_lista[0], current_user.id_cliente) != None:
+                # Se agrega el curso + el nombre del docente
+                cursoxdocente = docente.obtenerDocente(curso.lista_curso_docente(curso_lista[0], current_user.id_cliente)[3])
+                docente_nombre_apellido = cursoxdocente[2] + ' ' + cursoxdocente[3] 
+                # agregar el contador de estudiantes por curso
+                contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
+                lista_cursos.append(curso_lista + (docente_nombre_apellido, contador_estudiantes))
+            else:
+                contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
+                # Se agrega el curso + sin asignar
+                lista_cursos.append(curso_lista + ('Sin a s zsignar', contador_estudiantes))
+        return render_template('cursos_noactivos.html', cursos=lista_cursos, docentes=docentes)
+   
 
 #Vista para asignar docente a un curso
 @cursos.route('/cursos-docente')
@@ -176,6 +207,30 @@ def actualizar_curso():
             else:
                 flash('Error al actualizar curso')
                 return redirect(url_for('cursos.listar_cursos'))
+@cursos.route("/estado-curso", methods=['POST'])
+@login_required
+def estado_curso():
+    if request.method == 'POST':
+        id_curso = request.form['id_curso']
+        if id_curso:
+            curso = Curso()
+            if curso.estado_curso(id_curso, current_user.id_cliente):
+                if curso.cerrar_curso(id_curso, current_user.id_cliente):
+                   flash('Curso cerrado correctamente')
+                   return redirect(url_for('cursos.listar_cursos'))
+                else:
+                    flash('Error al cerrar curso')
+                    return redirect(url_for('cursos.listar_cursos'))
+            else:
+                flash('Verifica las notas y calificaciones de los estudiantes, antes de dar por finalizado el curso')
+                return redirect(url_for('cursos.listar_cursos'))
+        else:
+            flash('Error al cerrar curso')
+            return redirect(url_for('cursos.listar_cursos'))
+    else:
+        flash('Error al cerrar curso')
+        return redirect(url_for('cursos.listar_cursos'))
+       
 
 
         

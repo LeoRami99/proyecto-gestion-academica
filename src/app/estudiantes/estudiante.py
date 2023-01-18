@@ -152,6 +152,8 @@ class Estudiante():
         sql = "UPDATE asistencias SET asis_1 = '{0}', asis_2 = '{1}', asis_3 = '{2}', asis_4 = '{3}', asis_5 = '{4}', asis_6 = '{5}', asis_7 = '{6}', asis_8 = '{7}', asis_9 = '{8}', asis_10 = '{9}', asis_11 = '{10}', asis_12 = '{11}', asis_13 = '{12}', asis_14 = '{13}', asis_15 = '{14}', asis_16 = '{15}', asis_17 = '{16}', asis_18 = '{17}', asis_19 = '{18}', asis_20 = '{19}', asis_21 = '{20}', asis_22 = '{21}', asis_23 = '{22}', asis_24 = '{23}', asis_25 = '{24}', asis_26 = '{25}', asis_27 = '{26}', asis_28 = '{27}', asis_29 = '{28}', asis_30 = '{29}' WHERE id_estudiante = '{30}' AND id_cliente = '{31}' AND id_curso = '{32}'".format(asis_1, asis_2, asis_3, asis_4, asis_5, asis_6, asis_7, asis_8, asis_9, asis_10, asis_11, asis_12, asis_13, asis_14, asis_15, asis_16, asis_17, asis_18, asis_19, asis_20, asis_21, asis_22, asis_23, asis_24, asis_25, asis_26, asis_27, asis_28, asis_29, asis_30, id_estudiante, id_cliente, id_curso)
         cursor.execute(sql)
         conn.commit()
+        # ver que arroja el sql para ver si se actualiza
+        print(sql)
         return True
       except Exception as e:
         print(e)
@@ -220,4 +222,3 @@ class Estudiante():
       except Exception as e:
         print(e)
         return False
-    

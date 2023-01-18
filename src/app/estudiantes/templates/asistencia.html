@@ -25,8 +25,10 @@
   <div class="offcanvas-body">
     <div>
       <div class="d-flex">
-        <img src="https://cdn.pixabay.com/photo/2016/11/29/09/41/bag-1868758_960_720.jpg" class="rounded-circle"
-          alt="..." height="100px" width="100px">
+        <script src="https://cdn.lordicon.com/fudrjiwc.js"></script>
+        <lord-icon src="https://cdn.lordicon.com/dxjqoygy.json" trigger="hover"
+          colors="primary:#121331,secondary:#6aa7e8" style="width:100px;height:100px" class="rounded-circle">
+        </lord-icon>
         <div class="ms-3">
           <h5>{{current_user.nombre}} {{current_user.apellido}}</h5>
           <p>{{nombre_cliente}}</p>
@@ -55,9 +57,12 @@
               <!-- Lista de botonos -->
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a type="button" class="btn btn-dark">Cursos activos</a>
-                  <a type="button" class="btn btn-dark">cursos no activos</a>
-                  <a type="button" class="btn btn-dark">Registrar curso</a>
+                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
+                  {%if current_user.rol == "AD"%}
+                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
+
+                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
+                  {%endif%}
                 </div>
               </div>
 
@@ -67,39 +72,55 @@
             <h2 class="accordion-header" id="flush-headingTwo">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                Accordion Item #2
+                <i class="bi bi-person"></i> <strong> Gestión estudiantes</strong>
               </button>
             </h2>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
               data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being
-                filled with some actual content.
+              <div class="accordion-body">
+                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
+                  {%if current_user.rol == "AD"%}
+                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+                  {%endif%}
+                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
+                </div>
               </div>
             </div>
           </div>
+          {%if current_user.rol == "AD"%}
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingThree">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                Accordion Item #3
+                <i class="bi bi-people"></i> <strong>Docentes</strong>
               </button>
             </h2>
             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
               data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the
-                <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting
-                happening here in terms of content, but just filling up the space to make it look, at least at first
-                glance, a bit more representative of how this would look in a real-world application.
+              <div class="accordion-body">
+                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
+                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i class="bi bi-people"></i> Docentes</a>
+                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
+                </div>
               </div>
             </div>
           </div>
+          {%endif%}
         </div>
       </div>
     </div>
   </div>
 </div>
 <!-- fin del offcanva -->
+<!-- Titulo -->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center">Asistencia</h1>
+    </div>
+  </div>
+</div>
 
 <!-- Formulario de registro de estudiantes-->
 <!-- Lista de curso -->
@@ -291,9 +312,9 @@
               <td>...</td>
               <td>3</td>
               <td>2</td>
-              <td>NOAP</td>
-              <td>NOAP</td>
-              <td>NOAP</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
             </tr>
           </table>
         </div>
@@ -301,8 +322,13 @@
         <form action="{{url_for('estudiantes.enviar_asistencia_excel')}}" method="post" enctype="multipart/form-data">
           <div class="mb-3">
             <input type="hidden" name="id_curso" value="{{id_curso}}">
+            <!-- tooltip -->
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Selecciona el archivo de excel que contiene la asistencia de los">
+              <i class="bi bi-info-circle"></i>
+            </span>
+            <br>
             <label for="excel" class="form-label">Selecciona el archivo</label>
-            <input class="form-control" type="file" id="excel" name="excel">
+            <input class="form-control" type="file" id="excel" name="excel" required>
           </div>
           <button type="submit" class="btn btn-card">Subir</button>
         </form>
@@ -312,13 +338,13 @@
 </div>
 
 <!-- realizar validación de  inputs que solo reciban el numero 0, 2, 3, 4, 0 con jquery-->
-<script>
+<!-- <script>
   $(document).ready(function () {
     $('input').on('input', function () {
       this.value = this.value.replace(/[^0-2-3-4-0]/g, '');
     });
   });
-</script>
+</script> -->
 
 
 
