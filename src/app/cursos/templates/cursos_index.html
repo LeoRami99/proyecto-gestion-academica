@@ -223,6 +223,7 @@
             <button type="button" class="btn btn-outline-primary m-1 rounded" data-bs-toggle="modal"
               data-bs-target="#modal_curso" data-bs-whateve="{{curso[0]}}"><i class="bi bi-pencil"></i></button>
             <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
               <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip"
@@ -231,6 +232,7 @@
               <input type="hidden" name="id_curso" value="{{curso[0]}}">
             </form>
             <form action="{{url_for('cursos.estado_curso')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input type="hidden" name="id_curso" value="{{curso[0]}}">
               <button type="submit" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip" data-bs-title="Finalizar el curso"
@@ -266,6 +268,7 @@
       </div>
       <div class="modal-body">
         <form action="{{url_for('cursos.actualizar_curso')}}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input type="hidden" id="id_curso" name="id_curso">
           <div class="mb-3">
             <label for="nombre_curso" class="form-label">Nombre del curso</label>
@@ -351,6 +354,9 @@
     $.ajax({
       url: '{{url_for("cursos.consultar_curso")}}',
       type: 'POST',
+      headers: {
+            'X-CSRFToken': '{{ csrf_token() }}'
+      },
       data: {
         id_curso: recipient
       },

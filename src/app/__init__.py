@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_wtf.csrf import CSRFProtect
 
 from flask_login import LoginManager
 # Instancias de los Blueprint
@@ -19,6 +20,8 @@ from .login.logueo import Usuario
 
 def createApp():
     app=Flask(__name__)
+    csrf = CSRFProtect(app)
+    csrf.init_app(app)
     # Manejo de errores
     app.register_error_handler(404, lambda e: render_template('404.html'))
 

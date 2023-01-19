@@ -126,6 +126,7 @@
 <!-- Lista de curso -->
 
 <form action="{{url_for('estudiantes.enviar_asistencia')}}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <input type="hidden" name="id_curso" value="{{id_curso}}">
   <div class="table-responsive">
     <table class="table table-bordered bg-light table-striped " id="tabla_asistencia_estudiante">
@@ -272,8 +273,13 @@
     <button type="submit" class="btn btn-card"
       onclick="return confirm('¿Seguro/a quieres actualizar las asistencias?')">Enviar</button>
     <button type="button" class="btn btn-card" data-bs-toggle="modal" data-bs-target="#subir_excel">
-      Subir asistencia con excel
+      Cargar archivo Excel
     </button>
+</form>
+<form action="{{url_for('estudiantes.descargar_asistencias')}}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <input type="hidden" name="id_curso" value="{{id_curso}}">
+  <button type="submit" class="btn btn-card">Descargar asistencia</button>
 </form>
 
 </div>
@@ -320,6 +326,7 @@
         </div>
 
         <form action="{{url_for('estudiantes.enviar_asistencia_excel')}}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <div class="mb-3">
             <input type="hidden" name="id_curso" value="{{id_curso}}">
             <!-- tooltip -->

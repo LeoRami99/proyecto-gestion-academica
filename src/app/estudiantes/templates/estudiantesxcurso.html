@@ -161,6 +161,7 @@
             Estudiantes en el curso: {{curso[1]}}
           </h5>
           <form action="{{url_for('estudiantes.asignar_estudiantes')}}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" name="id_curso" value="{{curso[0][0]}}">
             <input type="hidden" name="fecha_inicio" value="{{curso[0][3]}}">
             <input type="hidden" name="fecha_fin" value="{{curso[0][4]}}">
@@ -216,6 +217,7 @@
           <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
           data-bs-title="Verifica la información antes de subirla"><i class="bi bi-question-circle"></i></span>
           <form action="{{url_for('estudiantes.estudiantes_curso_excel')}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" name="id_curso" value="{{curso[0]}}">
             <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
             <input type="hidden" name="fecha_fin" value="{{curso[4]}}">

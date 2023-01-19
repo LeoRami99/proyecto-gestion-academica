@@ -41,6 +41,7 @@
         <h3>Ingresar al sistema</h3>
         <br>
         <form action="/login_sistema" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <div class="input-group">
             <!-- <label for="email">Email</label> -->
             <span class="input-group-text"><i class="bi bi-person"></i></span>

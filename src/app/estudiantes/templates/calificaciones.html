@@ -138,11 +138,11 @@
   </div>
 </div>
 
-<!-- Formulario de registro de estudiantes-->
 <!-- Lista de curso -->
 
 
 <form action="{{url_for('estudiantes.calificaciones_estudiantes')}}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <input type="hidden" name="id_curso" value="{{id_curso}}">
   <div class="table-responsive">
     <!-- tabla con numero de documento, apellido, nombre y calificaciones separadas por 3 cortes y dentro de cada corte tiene 3 subcolumnas-->
@@ -200,6 +200,11 @@
       Subir calificaciones con excel
     </button>
 </form>
+<form action="{{url_for('estudiantes.descargar_calificaciones')}}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <input type="hidden" name="id_curso" value="{{id_curso}}">
+  <button type="submit" class="btn btn-card">Descargar calificaciones</button>
+</form>
 
 </div>
 
@@ -247,6 +252,7 @@
         </table>
       </div>
         <form action="{{url_for('estudiantes.calificaciones_estudiantes_excel')}}" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <div class="mb-3">
             <input type="hidden" name="id_curso" value="{{id_curso}}">
             <label for="excel" class="form-label">Subir archivo</label>

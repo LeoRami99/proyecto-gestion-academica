@@ -142,6 +142,7 @@
   <div class="row" data-aos="fade-up" data-aos-duration="1000">
     <div class="col-12">
       <form action="{{url_for('cursos.registrar_curso')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="row">
           <div class="col-12">
             <div class="row">

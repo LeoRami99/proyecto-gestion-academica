@@ -770,6 +770,7 @@
             Fecha de fin: {{curso[4]}}
           </h5>
           <form action="{{url_for('cursos.asignar_docente_curso')}}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" name="id_curso" value={{curso[0]}}>
             <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
             <input type="hidden" name="fecha_fin" value="{{curso[4]}}">

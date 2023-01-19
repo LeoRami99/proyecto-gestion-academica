@@ -137,7 +137,7 @@
   <div class="row">
     <div class="col-12">
       <div class="text-center">
-        <h1 class="display-4">Cursos no activos</h1>
+        <h1 class="display-4">Cursos finalizados</h1>
       </div>
     </div>
   </div>
@@ -216,17 +216,32 @@
           {% if curso[14] == 1 %}
           <span class="badge rounded-pill text-bg-success card-text"><i class="bi bi-check"></i> | Activo</span>
           {% else %}
-          <span class="badge rounded-pill text-bg-danger card-text"><i class="bi bi-x"></i> | No activo</span>
+          <span class="badge rounded-pill text-bg-danger card-text"><i class="bi bi-check2-all"></i> | Finalizado</span>
           {% endif %}
           {%if current_user.rol == "AD"%}
           <div class="btn-group float-end" role="group" aria-label="Botones de edición">
             <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
               <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip"
                 data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
                   class="bi bi-filetype-xls"></i></button>
               <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            </form>
+            <form action="{{url_for('estudiantes.descargar_calificaciones')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+              <button type="submit" class="btn btn-outline-success" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip"
+              data-bs-title="Descargar calificaciones"><i class="bi bi-clipboard-check"></i> </button>
+            </form>
+            <form action="{{url_for('estudiantes.descargar_asistencias')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+              <button type="submit" class="btn btn-outline-success" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip"
+                data-bs-title="Descargar asistencias"><i class="bi bi-list-check"></i></button>
             </form>
           </div>
           {%else%}

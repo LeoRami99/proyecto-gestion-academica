@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, Response
 from flask_login import login_required, current_user
 #Importación de la clase Curso
 from app.cursos.curso import Curso
@@ -8,6 +8,10 @@ from app.estudiantes.estudiante import Estudiante
 
 # Se importa pandas para leer el excel
 import pandas as pd
+# io 
+import io
+# excel 
+import xlwt
 
 
 
@@ -25,6 +29,7 @@ def registro_estudiantes():
 @estudiantes.route('/guardar-estudiante', methods=['POST'])
 @login_required
 def guardar_estudiante():
+    expression_regular = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     if request.method == 'POST':
         nombres = request.form['nombres']
         apellidos = request.form['apellidos']
@@ -410,8 +415,140 @@ def calificaciones_estudiantes_excel():
                 flash('No se selecciono ningun archivo')
                 return redirect(url_for('estudiantes.calificaciones_estudiantes_id', id_curso=id_curso))
 
+"""
+    Descargar asistencias y calificaciones por curso en excel
+"""
+@estudiantes.route('/descargar-asistencias', methods=['POST'])
+@login_required
+def descargar_asistencias():
+    if request.method == 'POST':
+        try:
+            id_curso = request.form['id_curso']
+            estudiante = Estudiante()
+            lista_asistencia = estudiante.obtener_asistencia(id_curso)
+            # Guardar en un excel las asistencias
+            salida = io.BytesIO()
+            libro = xlwt.Workbook()
+            hoja = libro.add_sheet('Asistencias')
+            hoja.write(0, 0, 'Apellido')
+            hoja.write(0, 1, 'Nombre')
+            hoja.write(0, 2, 'Número de identificación')
+            hoja.write(0, 3, 'Asistencia 1')
+            hoja.write(0, 4, 'Asistencia 2')
+            hoja.write(0, 5, 'Asistencia 3')
+            hoja.write(0, 6, 'Asistencia 4')
+            hoja.write(0, 7, 'Asistencia 5')
+            hoja.write(0, 8, 'Asistencia 6')
+            hoja.write(0, 9, 'Asistencia 7')
+            hoja.write(0, 10, 'Asistencia 8')
+            hoja.write(0, 11, 'Asistencia 9')
+            hoja.write(0, 12, 'Asistencia 10')
+            hoja.write(0, 13, 'Asistencia 11')
+            hoja.write(0, 14, 'Asistencia 12')
+            hoja.write(0, 15, 'Asistencia 13')
+            hoja.write(0, 16, 'Asistencia 14')
+            hoja.write(0, 17, 'Asistencia 15')
+            hoja.write(0, 18, 'Asistencia 16')
+            hoja.write(0, 19, 'Asistencia 17')
+            hoja.write(0, 20, 'Asistencia 18')
+            hoja.write(0, 21, 'Asistencia 19')
+            hoja.write(0, 22, 'Asistencia 20')
+            hoja.write(0, 23, 'Asistencia 21')
+            hoja.write(0, 24, 'Asistencia 22')
+            hoja.write(0, 25, 'Asistencia 23')
+            hoja.write(0, 26, 'Asistencia 24')
+            hoja.write(0, 27, 'Asistencia 25')
+            hoja.write(0, 28, 'Asistencia 26')
+            hoja.write(0, 29, 'Asistencia 27')
+            hoja.write(0, 30, 'Asistencia 28')
+            hoja.write(0, 31, 'Asistencia 29')
+            hoja.write(0, 32, 'Asistencia 30')
+                
 
-       
+            for indice in range(len(lista_asistencia)):
+                hoja.write(indice+1, 0, lista_asistencia[indice][2])
+                hoja.write(indice+1, 1, lista_asistencia[indice][1])
+                hoja.write(indice+1, 2, lista_asistencia[indice][0])
+                hoja.write(indice+1, 3, int(lista_asistencia[indice][3]))
+                hoja.write(indice+1, 4, int(lista_asistencia[indice][4]))
+                hoja.write(indice+1, 5, int(lista_asistencia[indice][5]))
+                hoja.write(indice+1, 6, int(lista_asistencia[indice][6]))
+                hoja.write(indice+1, 7, int(lista_asistencia[indice][7]))
+                hoja.write(indice+1, 8, int(lista_asistencia[indice][8]))
+                hoja.write(indice+1, 9, int(lista_asistencia[indice][9]))
+                hoja.write(indice+1, 10, int(lista_asistencia[indice][10]))
+                hoja.write(indice+1, 11, int(lista_asistencia[indice][11]))
+                hoja.write(indice+1, 12, int(lista_asistencia[indice][12]))
+                hoja.write(indice+1, 13, int(lista_asistencia[indice][13]))
+                hoja.write(indice+1, 14, int(lista_asistencia[indice][14]))
+                hoja.write(indice+1, 15, int(lista_asistencia[indice][15]))
+                hoja.write(indice+1, 16, int(lista_asistencia[indice][16]))
+                hoja.write(indice+1, 17, int(lista_asistencia[indice][17]))
+                hoja.write(indice+1, 18, int(lista_asistencia[indice][18]))
+                hoja.write(indice+1, 19, int(lista_asistencia[indice][19]))
+                hoja.write(indice+1, 20, int(lista_asistencia[indice][20]))
+                hoja.write(indice+1, 21, int(lista_asistencia[indice][21]))
+                hoja.write(indice+1, 22, int(lista_asistencia[indice][22]))
+                hoja.write(indice+1, 23, int(lista_asistencia[indice][23]))
+                hoja.write(indice+1, 24, int(lista_asistencia[indice][24]))
+                hoja.write(indice+1, 25, int(lista_asistencia[indice][25]))
+                hoja.write(indice+1, 26, int(lista_asistencia[indice][26]))
+                hoja.write(indice+1, 27, int(lista_asistencia[indice][27]))
+                hoja.write(indice+1, 28, int(lista_asistencia[indice][28]))
+                hoja.write(indice+1, 29, int(lista_asistencia[indice][29]))
+                hoja.write(indice+1, 30, int(lista_asistencia[indice][30]))
+                hoja.write(indice+1, 31, int(lista_asistencia[indice][31]))
+                hoja.write(indice+1, 32, int(lista_asistencia[indice][32]))
+            libro.save(salida)
+            salida.seek(0)
+            return Response(salida, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=asistencias.xls"})
+        except Exception as e:
+            flash("Error al generar el archivo excel")
+            return redirect(url_for('estudiantes.asistencia_estudiantes'))
+@estudiantes.route('/descargar-calificaciones', methods=['POST'])
+@login_required
+def descargar_calificaciones():
+    if request.method == 'POST':
+        try:
+            id_curso = request.form['id_curso']
+            salida = io.BytesIO()
+            libro = xlwt.Workbook()
+            hoja = libro.add_sheet('Calificaciones')
+            lista_calificaciones = Estudiante().obtener_calificacion(id_curso)
+            hoja.write(0, 0, 'Apellido')
+            hoja.write(0, 1, 'Nombre')
+            hoja.write(0, 2, 'Número de identificación')
+            hoja.write(0, 3, 'Calificacion 1')
+            hoja.write(0, 4, 'Calificacion 2')
+            hoja.write(0, 5, 'Calificacion 3')
+            hoja.write(0, 6, 'Calificacion 4')
+            hoja.write(0, 7, 'Calificacion 5')
+            hoja.write(0, 8, 'Calificacion 6')
+            hoja.write(0, 9, 'Calificacion 7')
+            hoja.write(0, 10, 'Calificacion 8')
+            hoja.write(0, 11, 'Calificacion 9')
+            hoja.write(0, 12, 'Calificación final')
+            hoja.write(0, 13, 'Observaciones')
 
-       
+            for indice in range(len(lista_calificaciones)):
+                hoja.write(indice+1, 0, lista_calificaciones[indice][2])
+                hoja.write(indice+1, 1, lista_calificaciones[indice][1])
+                hoja.write(indice+1, 2, lista_calificaciones[indice][0])
+                hoja.write(indice+1, 3, float(lista_calificaciones[indice][3]))
+                hoja.write(indice+1, 4, float(lista_calificaciones[indice][4]))
+                hoja.write(indice+1, 5, float(lista_calificaciones[indice][5]))
+                hoja.write(indice+1, 6, float(lista_calificaciones[indice][6]))
+                hoja.write(indice+1, 7, float(lista_calificaciones[indice][7]))
+                hoja.write(indice+1, 8, float(lista_calificaciones[indice][8]))
+                hoja.write(indice+1, 9, float(lista_calificaciones[indice][9]))
+                hoja.write(indice+1, 10, float(lista_calificaciones[indice][10]))
+                hoja.write(indice+1, 11, float(lista_calificaciones[indice][11]))
+                hoja.write(indice+1, 12, float(lista_calificaciones[indice][12]))
+                hoja.write(indice+1, 13, lista_calificaciones[indice][13])
 
+            libro.save(salida)
+            salida.seek(0)
+            return Response(salida, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=calificaciones.xls"})
+        except Exception as e:
+            flash("Error al generar el archivo excel")
+            return redirect(url_for('estudiantes.calificaciones_estudiantes'))

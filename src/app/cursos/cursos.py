@@ -124,8 +124,26 @@ def cursos_no_activos():
             else:
                 contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
                 # Se agrega el curso + sin asignar
-                lista_cursos.append(curso_lista + ('Sin a s zsignar', contador_estudiantes))
+                lista_cursos.append(curso_lista + ('Sin asignar', contador_estudiantes))
         return render_template('cursos_noactivos.html', cursos=lista_cursos, docentes=docentes)
+    elif current_user.rol == 'DOC':
+        estudiante= Estudiante()
+        #Solo listar los cursos que se le fueron asignados a el docente
+        curso = Curso()
+        asig_doc = curso.obtener_cursos_docente(current_user.id)
+        cursos = curso.obtener_cursos(current_user.id_cliente)
+        listar_cursos = []
+        for cursos in zip(cursos, asig_doc):
+            contador_estudiantes = estudiante.count_usuarios_cupo(cursos[0][0], current_user.id_cliente)
+            if cursos[1] != None:
+                listar_cursos.append(cursos[0]+(contador_estudiantes,))
+            else:
+                pass
+        print(listar_cursos)
+        return render_template('cursos_noactivos.html', cursos=listar_cursos)
+    else:
+        flash('No tiene permisos para acceder a esta sección')
+        return redirect(url_for('inicio.index'))
    
 
 #Vista para asignar docente a un curso

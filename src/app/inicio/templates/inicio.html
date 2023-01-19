@@ -184,13 +184,13 @@
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-award"></i> Cursos </a>
-            <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos no activos </a>
+            <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos finalizados </a>
 
             <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
             {%if current_user.rol== "AD"%}
-            <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar
+              <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar
               curso</a>
-            <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
+              <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
               Asignar docente</a>
             {%endif%}
 

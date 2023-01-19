@@ -142,7 +142,8 @@
   <!-- formulario de registro de estudiantes -->
   <div class="row" data-aos="fade-up" data-aos-duration="1000">
     <div class="col-12">
-      <form action="{{url_for('estudiantes.guardar_estudiante')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+      <form action="{{url_for('estudiantes.guardar_estudiante')}}" id="form" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="row">
           <div class="col-12">
             <div class="row">
@@ -255,6 +256,7 @@
       </div>
       <div class="modal-body text-center">
         <form action="{{url_for('estudiantes.estudiantes_excel')}}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
           <div class="mb-3 table-responsive ">
             <table class="table table-bordered">
@@ -303,6 +305,7 @@
     </div>
   </div>
 </div>
+
 
 
 {%endblock%}
