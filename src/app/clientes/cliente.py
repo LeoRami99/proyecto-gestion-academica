@@ -18,12 +18,30 @@ class Cliente():
             print(e)
             return False
     def obtener_cliente(self , id):
-        conn = obtener_conexion()
-        cursor = conn.cursor()
-        sql = "SELECT * FROM cliente where id = {0}".format(id)
-        cursor.execute(sql)
-        cliente = cursor.fetchone()
-        return cliente
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = "SELECT * FROM cliente where id = {0}".format(id)
+            cursor.execute(sql)
+            cliente = cursor.fetchone()
+            return cliente
+        except Exception as e:
+            print(e)
+            return False
+    
+    def obtener_clientes():
+        try:
+            conn= obtener_conexion()
+            cursor = conn.cursor()
+            sql = "SELECT * FROM cliente"
+            cursor.execute(sql)
+            clientes = cursor.fetchall()
+            return clientes
+        except Exception as e:
+            print(e)
+            return False
+   
+        
 
             
       

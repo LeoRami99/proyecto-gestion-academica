@@ -9,6 +9,7 @@ from app.cursos.cursos import cursos
 from app.clientes.clientes import clientes
 from app.estudiantes.estudiantes import estudiantes
 from app.docentes.docentes import docentes
+from app.admin.admins import admin
 
 # inicio de sesion
 from .login.logueo import Usuario
@@ -45,6 +46,7 @@ def createApp():
 
 
     # Registro de los Blueprint
+    app.register_blueprint(admin)
     app.register_blueprint(login_page)
     app.register_blueprint(inicio)
     app.register_blueprint(cursos)

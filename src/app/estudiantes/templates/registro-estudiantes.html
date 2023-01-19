@@ -295,7 +295,9 @@
             <select name="id_curso" id="curso" class="form-select" required>
               <option value="">Seleccione</option>
               {%for curso in cursos%}
-                <option value="{{curso[0]}}">{{curso[0]}} | {{curso[1]}} | {{curso[2]}}</option>
+                {%if curso[14]==1%}
+                  <option value="{{curso[0]}}">{{curso[0]}} | {{curso[1]}} | {{curso[2]}}</option>
+                {%endif%}
               {%endfor%}
             </select>
           </div>

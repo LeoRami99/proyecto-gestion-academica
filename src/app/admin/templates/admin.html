@@ -1,0 +1,116 @@
+{%extends "base.html"%}
+{%block title%}Admin{%endblock%}
+{% block navbar %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" style="color:#ffffff;">Nombre del sistema  sistema</a>
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list" style="color: #ffffff;"></i>
+    </button> -->
+    <!-- <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#" style="color:#ffffff;">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" style="color:#ffffff;">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" style="color:#ffffff;">Pricing</a>
+      </li>
+    </ul>
+  </div> -->
+</div>
+</nav>
+{% endblock %}
+{%block content%}
+<!-- content -->
+<div class="row justify-content-md-center align-items-center">
+      <!-- centrar la columna en el centro de la pantalla -->
+      <div class="col col-md-5 g-4 m-5">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Registro Administradores</h4>
+            <form action="{{url_for('admin.registrar_administrador')}}" method="post" class="m-2 p-2">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <label for="username">Nombre de usuario</label>
+              <input type="text" name="username" id="username" placeholder="Nombre de usuario" required class="form-control" >
+              <div id="username_result"></div>
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Nombre del administrador" required class="form-control">
+              <label for="apellido">Apellido</label>
+              <input type="text" id="apellido" name="apellido" placeholder="Apellido del administrador" required class="form-control">
+              <label for="correo">Correo</label>
+              <input type="text" id="correo" name="correo" placeholder="Correo del administrador" required class="form-control">
+              <label for="contrasena">Contraseña</label>
+              <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña del administrador" required class="form-control">
+              <label for="telefono">Telefono</label>
+              <input type="text" id="telefono" name="telefono" placeholder="Telefono del administrador" required class="form-control">
+              <label for="cliente">Cliente</label>
+              <select name="cliente" id="cliente" class="form-select" required>
+                <option value="">Selecciona el cliente </option>
+                {%for cliente in clientes%}
+                <option value="{{cliente[0]}}">{{cliente[2]}}</option>
+                {%endfor%}
+              </select>
+              <label for="rol">Rol</label>
+              <select name="rol" id="rol" class="form-select" required>
+                <option value="">Seleccione un rol</option>
+                <option value="AD">Administrador</option>
+                <option value="AC" disabled>Administrador Académico</option>
+              </select>
+              <div class="text-center">
+                <button type="submit" class="btn btn-card mt-3">Registrar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+<!-- Jquery consultar nombre de usuario si ya existe o no  -->
+<script>
+  $(document).ready(function(){
+    $('#username').keyup(function(){
+      var username = $(this).val();
+      if(username != ''){
+        $.ajax({
+          url: "{{url_for('admin.obtener_nombres_usuarios')}}",
+          headers: {"X-CSRFToken": "{{ csrf_token() }}"},
+          method: "POST",
+          data: {
+            username: username
+          },
+          success: function(data){
+            if (data == 'Este nombre de usuario ya existe') {
+              $('#username').css("border-color", "#F90A0A");
+              // Añadir el mensaje de error
+              $('#username').after('<span class="text-danger">' + data + '</span>');
+
+            } else {
+              $('#username').css("border-color", "#34F458");
+              // Eliminar el mensaje de error
+              $('.text-danger').remove();
+            }
+          }
+        });
+      }
+    });
+  });
+
+
+
+
+</script>
+{%endblock%}
+{%block footer%}
+
+<!-- footer -->
+<footer class="footer mt-auto py-3 fondo_navbar">
+  <div class="container">
+    <span class="text-muted">prueba</span>
+  </div>
+</footer>
+{%endblock%}
