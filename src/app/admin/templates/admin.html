@@ -42,11 +42,11 @@
               <label for="apellido">Apellido</label>
               <input type="text" id="apellido" name="apellido" placeholder="Apellido del administrador" required class="form-control">
               <label for="correo">Correo</label>
-              <input type="text" id="correo" name="correo" placeholder="Correo del administrador" required class="form-control">
+              <input type="email" id="correo" name="correo" placeholder="Correo del administrador" required class="form-control">
               <label for="contrasena">Contraseña</label>
-              <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña del administrador" required class="form-control">
+              <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña del administrador" required class="form-control" minlength="6">
               <label for="telefono">Telefono</label>
-              <input type="text" id="telefono" name="telefono" placeholder="Telefono del administrador" required class="form-control">
+              <input type="number" id="telefono" name="telefono" placeholder="Telefono del administrador" required class="form-control">
               <label for="cliente">Cliente</label>
               <select name="cliente" id="cliente" class="form-select" required>
                 <option value="">Selecciona el cliente </option>
@@ -58,7 +58,7 @@
               <select name="rol" id="rol" class="form-select" required>
                 <option value="">Seleccione un rol</option>
                 <option value="AD">Administrador</option>
-                <option value="AC" disabled>Administrador Académico</option>
+                <option value="ADM">Administrador admisiones</option>
               </select>
               <div class="text-center">
                 <button type="submit" class="btn btn-card mt-3">Registrar</button>
@@ -99,18 +99,152 @@
       }
     });
   });
+  // expressions regular for email
+$(document).ready(function(){
+  
+  $('#correo').keyup(function(){
+    var correo = $(this).val();
+    // expression regular for email
+    var exp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.([a-zA-Z]{2,4})+$/;
+    if (correo != '') {
+      if (!exp.test(correo)) {
+        $('#correo').css("border-color", "#F90A0A");
+      } else {
+        $('#correo').css("border-color", "#34F458");
+        // Eliminar el mensaje de error
+        $('.text-danger').remove();
+      }
+    }
+  });
+});
+
+// Hasta que todos los inputs esten completos se habilita el boton de registrar
+$(document).ready(function(){
+  $('#username').keyup(function(){
+    var username = $(this).val();
+    var nombre = $('#nombre').val();
+    var apellido = $('#apellido').val();
+    var correo = $('#correo').val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $('#telefono').val();
+    var cliente = $('#cliente').val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#nombre').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $(this).val();
+    var apellido = $('#apellido').val();
+    var correo = $('#correo').val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $('#telefono').val();
+    var cliente = $('#cliente').val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#apellido').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $('#nombre').val();
+    var apellido = $(this).val();
+    var correo = $('#correo').val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $('#telefono').val();
+    var cliente = $('#cliente').val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#correo').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $('#nombre').val();
+    var apellido = $('#apellido').val();
+    var correo = $(this).val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $('#telefono').val();
+    var cliente = $('#cliente').val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#contrasena').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $('#nombre').val();
+    var apellido = $('#apellido').val();
+    var correo = $('#correo').val();
+    var contrasena = $(this).val();
+    var telefono = $('#telefono').val();
+    var cliente = $('#cliente').val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#telefono').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $('#nombre').val();
+    var apellido = $('#apellido').val();
+    var correo = $('#correo').val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $(this).val();
+    var cliente = $('#cliente').val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#cliente').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $('#nombre').val();
+    var apellido = $('#apellido').val();
+    var correo = $('#correo').val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $('#telefono').val();
+    var cliente = $(this).val();
+    var rol = $('#rol').val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+  $('#rol').keyup(function(){
+    var username = $('#username').val();
+    var nombre = $('#nombre').val();
+    var apellido = $('#apellido').val();
+    var correo = $('#correo').val();
+    var contrasena = $('#contrasena').val();
+    var telefono = $('#telefono').val();
+    var cliente = $('#cliente').val();
+    var rol = $(this).val();
+    if (username != '' && nombre != '' && apellido != '' && correo != '' && contrasena != '' && telefono != '' && cliente != '' && rol != '') {
+      $('button').removeAttr('disabled');
+    } else {
+      $('button').attr('disabled', 'disabled');
+    }
+  });
+});
+
 
 
 
 
 </script>
-{%endblock%}
-{%block footer%}
-
-<!-- footer -->
-<footer class="footer mt-auto py-3 fondo_navbar">
-  <div class="container">
-    <span class="text-muted">prueba</span>
-  </div>
-</footer>
 {%endblock%}

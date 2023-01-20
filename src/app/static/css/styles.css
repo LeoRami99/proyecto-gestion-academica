@@ -348,7 +348,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 .dataTables_filter input {
   border-radius: 10px !important;
-  border: 1px solid #000000 !important;
+  border: 1px solid #ffffff !important;
 }
 
 .dataTables_length {
@@ -358,7 +358,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 .dataTables_length select {
   border-radius: 10px !important;
-  border: 1px solid #000000 !important;
+  border: 1px solid #ffffff !important;
 }
 
 

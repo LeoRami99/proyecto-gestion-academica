@@ -35,6 +35,7 @@
 {% endblock %}
 {%block content%}
 <!-- Offcanva -->
+{#
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
@@ -75,11 +76,14 @@
               <!-- Lista de botonos -->
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
+                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-award"></i> Cursos</a>
                   {%if current_user.rol == "AD"%}
-                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
+                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-check-circle"></i> Registrar curso</a>
 
-                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
+                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-person-add"></i> Asignar Docentes</a>
                   {%endif%}
                 </div>
               </div>
@@ -98,9 +102,11 @@
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
                   {%if current_user.rol == "AD"%}
-                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-person-add"></i> Registrar estudiantes</a>
                   {%endif%}
-                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
+                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
                 </div>
               </div>
             </div>
@@ -117,8 +123,10 @@
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i class="bi bi-people"></i> Docentes</a>
-                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
+                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-people"></i> Docentes</a>
+                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-plus-circle"></i> Registrar docentes</a>
                 </div>
               </div>
             </div>
@@ -128,7 +136,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>#}
 
 
 
@@ -137,14 +145,22 @@
   <div class="row">
     <div class="col-12">
       <div class="text-center">
-        <h1 class="display-4">Cursos</h1>
+        <h1 class="display-4 text-white">Cursos</h1>
       </div>
     </div>
   </div>
   <!-- Lista de cursos en cards-->
   <!-- Barra de busqueda para filtrar las cards -->
+  
   <div class="row">
     <div class="col-12">
+      <div class="container-fluid">
+        <div class="row float-start">
+          <div class="col-12">
+            <div class="holder"></div>
+          </div>
+        </div>
+      </div>
       <div class="input-group flex-nowrap mb-3 w-25 float-end">
         <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
         <input type="text" class="form-control" id="Buscar" placeholder="Buscar" aria-label="Buscar"
@@ -162,10 +178,10 @@
     <div class="col mb-5">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}}</h5>
+          <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}} | {{curso[2]}}</h5>
         </div>
         <div class="card-body">
-          <b>Código del curso:</b> {{curso[2]}}
+          <b>Código del curso:</b>{{curso[2]}}
           <br>
           <b>Fecha inicio:</b> {{curso[3]}}
           <br>
@@ -223,7 +239,7 @@
             <button type="button" class="btn btn-outline-primary m-1 rounded" data-bs-toggle="modal"
               data-bs-target="#modal_curso" data-bs-whateve="{{curso[0]}}"><i class="bi bi-pencil"></i></button>
             <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
               <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
               <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip"
@@ -232,7 +248,7 @@
               <input type="hidden" name="id_curso" value="{{curso[0]}}">
             </form>
             <form action="{{url_for('cursos.estado_curso')}}" method="post" class="m-1">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
               <input type="hidden" name="id_curso" value="{{curso[0]}}">
               <button type="submit" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip" data-bs-title="Finalizar el curso"
@@ -249,14 +265,8 @@
     {% endfor %}
   </div>
   <!-- Paginacion de las cards de los cursos -->
-  <div class="container-fluid">
-    <div class="row float-end">
-      <div class="col-12">
-        <div class="holder"></div>
-      </div>
-    </div>
-  </div>
 </div>
+
 
 <!-- Modal para editar la información del curso -->
 <div class="modal fade" id="modal_curso" tabindex="-1" aria-labelledby="modal_curso" aria-hidden="true">
@@ -268,7 +278,7 @@
       </div>
       <div class="modal-body">
         <form action="{{url_for('cursos.actualizar_curso')}}" method="POST">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
           <input type="hidden" id="id_curso" name="id_curso">
           <div class="mb-3">
             <label for="nombre_curso" class="form-label">Nombre del curso</label>
@@ -355,7 +365,7 @@
       url: '{{url_for("cursos.consultar_curso")}}',
       type: 'POST',
       headers: {
-            'X-CSRFToken': '{{ csrf_token() }}'
+        'X-CSRFToken': '{{ csrf_token() }}'
       },
       data: {
         id_curso: recipient
@@ -392,6 +402,7 @@
       $(".titulo").filter(function () {
         $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
+      $
     });
   });
   // Paginacion de las cards de los cursos 
@@ -409,48 +420,4 @@
     });
   });
 </script>
-{%endblock%}
-{%block footer%}
-
-<!-- footer -->
-<footer class="text-center text-white fondo_navbar">
-  <!-- Grid container -->
-  <div class="container pt-4">
-    <!-- Section: Social media -->
-    <section class="mb-4">
-      <!-- Facebook -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark">
-        <i class="bi bi-facebook-f"></i></a>
-
-      <!-- Twitter -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-twitter"></i></a>
-
-      <!-- Google -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-google"></i></a>
-
-      <!-- Instagram -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-instagram"></i></a>
-
-      <!-- Linkedin -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-linkedin"></i></a>
-      <!-- Github -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-github"></i></a>
-    </section>
-    <!-- Section: Social media -->
-  </div>
-  <!-- Grid container -->
-
-  <!-- Copyright -->
-  <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2020 Copyright:
-    <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-  </div>
-  <!-- Copyright -->
-</footer>
-
 {%endblock%}

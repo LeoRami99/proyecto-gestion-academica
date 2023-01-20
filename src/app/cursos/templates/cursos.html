@@ -35,6 +35,7 @@
 {% endblock %}
 {%block content%}
 <!-- Offcanva -->
+{#
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
@@ -128,14 +129,14 @@
       </div>
     </div>
   </div>
-</div>
+</div>#}
 
 
 <!-- titulo -->
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Registrar curso</h1>
+      <h1 class="text-center mt-5 text-white" data-aos="fade-down" data-aos-duration="1000">Registrar curso</h1>
     </div>
   </div>
   <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
@@ -262,47 +263,4 @@
   </div>
 </div>
 
-{%endblock%}
-{%block footer%}
-
-<!-- footer -->
-<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
-  <!-- Grid container -->
-  <div class="container pt-4">
-    <!-- Section: Social media -->
-    <section class="mb-4">
-      <!-- Facebook -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark">
-        <i class="bi bi-facebook-f"></i></a>
-
-      <!-- Twitter -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-twitter"></i></a>
-
-      <!-- Google -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-google"></i></a>
-
-      <!-- Instagram -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-instagram"></i></a>
-
-      <!-- Linkedin -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-linkedin"></i></a>
-      <!-- Github -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-github"></i></a>
-    </section>
-    <!-- Section: Social media -->
-  </div>
-  <!-- Grid container -->
-
-  <!-- Copyright -->
-  <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2020 Copyright:
-    <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-  </div>
-  <!-- Copyright -->
-</footer>
 {%endblock%}

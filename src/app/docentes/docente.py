@@ -74,6 +74,38 @@ class Docente():
         except Exception as e:
             print(e)
             return False
+
+    # obtener docentes por cliente y numero de documento
+    @classmethod
+    def verificar_docente_username(self, nombre_usuario):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql="""SELECT id FROM usuarios WHERE nombre_usuario='{0}' AND rol='DOC'""".format(nombre_usuario)
+            cursor.execute(sql)
+            fila = cursor.fetchone()
+            if fila is None:
+                return False
+            else:
+                return True
+        except Exception as e:
+            print(e)
+            return False
+    @classmethod
+    def verificar_docente(self, id_cliente, num_doc):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql="""SELECT id FROM usuarios WHERE id_cliente={0} AND numero_doc={1} AND rol='DOC'""".format(id_cliente, num_doc)
+            cursor.execute(sql)
+            fila = cursor.fetchone()
+            if fila is None:
+                return False
+            else:
+                return True
+        except Exception as e:
+            print(e)
+            return False
     
 
         

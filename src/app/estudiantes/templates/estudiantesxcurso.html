@@ -35,7 +35,7 @@
 {% endblock %}
 {%block content%}
 <!-- Offcanva  -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+{#<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -75,11 +75,14 @@
               <!-- Lista de botonos -->
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
+                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-award"></i> Cursos</a>
                   {%if current_user.rol == "AD"%}
-                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
+                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-check-circle"></i> Registrar curso</a>
 
-                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
+                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-person-add"></i> Asignar Docentes</a>
                   {%endif%}
                 </div>
               </div>
@@ -98,9 +101,11 @@
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
                   {%if current_user.rol == "AD"%}
-                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-person-add"></i> Registrar estudiantes</a>
                   {%endif%}
-                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
+                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
                 </div>
               </div>
             </div>
@@ -117,8 +122,10 @@
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i class="bi bi-people"></i> Docentes</a>
-                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
+                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-people"></i> Docentes</a>
+                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-plus-circle"></i> Registrar docentes</a>
                 </div>
               </div>
             </div>
@@ -128,30 +135,46 @@
       </div>
     </div>
   </div>
-</div>
+</div>#}
 
 
 <!-- titulo -->
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h1 class="text-center mt-5" data-aos="fade-down" data-aos-duration="1000">Asignar estudiantes a curso</h1>
+      <h1 class="text-center mt-5 text-white" data-aos="fade-down" data-aos-duration="1000">Asignar estudiantes a curso</h1>
     </div>
   </div>
-  
+  <div class="row">
+    <div class="col-12">
+      <!-- Paginacion de las cards de los cursos -->
+      <div class="container-fluid">
+        <div class="row float-start">
+          <div class="col-12">
+            <div class="holder"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Buscador -->
+      <div class="input-group flex-nowrap mb-3 w-25 float-end">
+        <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="Buscar" placeholder="Buscar" aria-label="Buscar"
+          aria-describedby="addon-wrapping">
+      </div>
+    </div>
+  </div>
+
   <!-- cards -->
   <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
     {% for curso in cursos%}
-    <div class="col">
-      <div class="card h-100">
+    <div class="col mb-5">
+      <div class="card">
         <div class="card-header">
-          <h5 class="card-title"><i class="bi bi-mortarboard"></i> {{curso[0][1]}}</h5>
+          <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[0][1]}} | {{curso[0][2]}}</h5>
         </div>
-
         <div class="card-body">
-
           <!-- se asigna mediante un select al docente -->
-          <h5 class="titulo">
+          <h5>
             Código curso: {{curso[0][2]}}
             <br>
             Fecha de inicio: {{curso[0][3]}}
@@ -161,13 +184,14 @@
             Estudiantes en el curso: {{curso[1]}}
           </h5>
           <form action="{{url_for('estudiantes.asignar_estudiantes')}}" method="post">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             <input type="hidden" name="id_curso" value="{{curso[0][0]}}">
             <input type="hidden" name="fecha_inicio" value="{{curso[0][3]}}">
             <input type="hidden" name="fecha_fin" value="{{curso[0][4]}}">
             <div class="mb-3">
               <label for="num_doc" class="form-label">Número de documento del estudiante</label>
-              <input type="number" name="num_doc" id="num_doc" class="form-control" placeholder="Número de documento" required>
+              <input type="number" name="num_doc" id="num_doc" class="form-control" placeholder="Número de documento"
+                required>
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-card mt-2">Asignar</button>
@@ -180,76 +204,67 @@
             </button>
           </div>
           <!-- Boton para abrir modal -->
-          
+
         </div>
       </div>
     </div>
     <!-- Modal para subir archivo de excel -->
     <div class="modal fade" id="modal-{{curso[0][0]}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Subir archivo de excel</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
-          
-          <table class="table table-bordered">
-            <tr>
-              <th></th>
-              <th>Número de documento</th>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>123456789</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>127391289</td>
-            </tr>
-            <tr>
-              <td>...</td>
-              <td>...</td>
-            </tr>
-          </table>
-          <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-          data-bs-title="Verifica la información antes de subirla"><i class="bi bi-question-circle"></i></span>
-          <form action="{{url_for('estudiantes.estudiantes_curso_excel')}}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input type="hidden" name="id_curso" value="{{curso[0]}}">
-            <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
-            <input type="hidden" name="fecha_fin" value="{{curso[4]}}">
-            <div class="mb-3">  
-              <label for="excel" class="form-label">Subir archivo</label>
-              <input class="form-control" type="file" id="excel" name="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-            </div>
-            <button type="submit" class="btn btn-primary">Subir</button>
-          </form>
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Subir archivo de excel</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
+
+            <table class="table table-bordered">
+              <tr>
+                <th></th>
+                <th>Número de documento</th>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>123456789</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>127391289</td>
+              </tr>
+              <tr>
+                <td>...</td>
+                <td>...</td>
+              </tr>
+            </table>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+              data-bs-title="Verifica la información antes de subirla"><i class="bi bi-question-circle"></i></span>
+            <form action="{{url_for('estudiantes.estudiantes_curso_excel')}}" method="post"
+              enctype="multipart/form-data">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+              <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
+              <input type="hidden" name="fecha_fin" value="{{curso[4]}}">
+              <div class="mb-3">
+                <label for="excel" class="form-label">Subir archivo</label>
+                <input class="form-control" type="file" id="excel" name="excel"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+              </div>
+              <button type="submit" class="btn btn-primary">Subir</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Fin modal -->
+    <!-- Fin modal -->
     {% endfor %}
   </div>
-
-
-
-
-
-
-
-  <div class="container-fluid">
-    <div class="row float-end">
-      <div class="col-12">
-        <div class="holder"></div>
-      </div>
-    </div>
-  </div>
-
 </div>
+</div>
+
+
+
 <script
   src="https://cdn.jsdelivr.net/gh/luis-almeida/jPages@b6a51c90640c95d8ea4238f9196741eb9fb61531/js/jPages.js"></script>
 <script>
@@ -260,6 +275,7 @@
       $(".titulo").filter(function () {
         $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
+      $
     });
   });
   // Paginacion de las cards de los cursos 
@@ -278,47 +294,4 @@
   });
 </script>
 
-{%endblock%}
-{%block footer%}
-
-<!-- footer -->
-<footer class="text-center text-white fondo_navbar" data-aos="fade-up" data-aos-duration="1000">
-  <!-- Grid container -->
-  <div class="container pt-4">
-    <!-- Section: Social media -->
-    <section class="mb-4">
-      <!-- Facebook -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark">
-        <i class="bi bi-facebook-f"></i></a>
-
-      <!-- Twitter -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-twitter"></i></a>
-
-      <!-- Google -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-google"></i></a>
-
-      <!-- Instagram -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-instagram"></i></a>
-
-      <!-- Linkedin -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-linkedin"></i></a>
-      <!-- Github -->
-      <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i
-          class="bi bi-github"></i></a>
-    </section>
-    <!-- Section: Social media -->
-  </div>
-  <!-- Grid container -->
-
-  <!-- Copyright -->
-  <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2020 Copyright:
-    <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-  </div>
-  <!-- Copyright -->
-</footer>
 {%endblock%}

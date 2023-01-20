@@ -23,7 +23,7 @@ def index():
 def registrar_curso():
     if request.method == 'POST':
         nombre_curso= request.form['nombre_curso']
-        codigo_curso = request.form['codigo_curso']
+        # codigo_curso = request.form['codigo_curso']
         fecha_inicio = request.form['fecha_inicio']
         fecha_fin = request.form['fecha_final']
         horario = request.form['horario_curso']
@@ -37,8 +37,14 @@ def registrar_curso():
         enlace_form_asistencia = request.form['enlace_form_asistencia']
         estado_curso = request.form['estado_curso']
         id_cliente = request.form['id_cliente']
-        if nombre_curso and codigo_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
-            curso = Curso(nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
+        last_id = Curso.obtener_id_curso()
+
+
+        
+
+        if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
+            codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
+            curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
             if curso.guardar_curso():
                 flash('Curso registrado correctamente')
                 return redirect(url_for('cursos.listar_cursos'))
@@ -51,6 +57,17 @@ def registrar_curso():
     else:
         flash('Error al registrar curso')
         return redirect(url_for('cursos.index'))
+
+
+
+#funcion para generar acronimos
+def acronimo(nombre_curso):
+    palabras_irrelevantes =["con", "de", "y" "en", "el"]
+    palabras = nombre_curso.split()
+    palabras_relevantes = list(filter(lambda x: x.lower() not in palabras_irrelevantes, palabras))
+    acronimo = "".join(map(lambda x: x[0].upper(), palabras_relevantes))
+    return acronimo
+
         
 
 @cursos.route('/listar_cursos')
@@ -87,14 +104,19 @@ def listar_cursos():
         asig_doc = curso.obtener_cursos_docente(current_user.id)
         cursos = curso.obtener_cursos(current_user.id_cliente)
         listar_cursos = []
-        for cursos in zip(cursos, asig_doc):
-            contador_estudiantes = estudiante.count_usuarios_cupo(cursos[0][0], current_user.id_cliente)
-            if cursos[1] != None:
-                listar_cursos.append(cursos[0]+(contador_estudiantes,))
-            else:
-                pass
-        print(listar_cursos)
+        # solo mostrar los cursos que estan disponibles para dicho docente
+        for curso_lista in cursos:
+            for curso_docente in asig_doc:
+                contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
+                if curso_lista[0] == curso_docente[1]:
+                    listar_cursos.append(curso_lista+(contador_estudiantes,))
+                else:
+                    pass
+        # Datos del docente
         return render_template('cursos_index.html', cursos=listar_cursos)
+
+
+
     else:
         flash('No tiene permisos para acceder a esta sección')
         return redirect(url_for('inicio.index'))
@@ -133,13 +155,15 @@ def cursos_no_activos():
         asig_doc = curso.obtener_cursos_docente(current_user.id)
         cursos = curso.obtener_cursos(current_user.id_cliente)
         listar_cursos = []
-        for cursos in zip(cursos, asig_doc):
-            contador_estudiantes = estudiante.count_usuarios_cupo(cursos[0][0], current_user.id_cliente)
-            if cursos[1] != None:
-                listar_cursos.append(cursos[0]+(contador_estudiantes,))
-            else:
-                pass
-        print(listar_cursos)
+        # solo mostrar los cursos que estan disponibles para dicho docente
+        for curso_lista in cursos:
+            for curso_docente in asig_doc:
+                contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)
+                if curso_lista[0] == curso_docente[1]:
+                    listar_cursos.append(curso_lista+(contador_estudiantes,))
+                else:
+                    pass
+        # print(listar_cursos)
         return render_template('cursos_noactivos.html', cursos=listar_cursos)
     else:
         flash('No tiene permisos para acceder a esta sección')

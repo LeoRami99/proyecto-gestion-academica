@@ -112,6 +112,25 @@ class Curso():
             return False
 
 
+    #funcion para obtener el id del ultimo curso para generar el codigo
+    @classmethod
+    def obtener_id_curso(self):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = "SELECT MAX(id) FROM curso"
+            cursor.execute(sql)
+            id_curso = cursor.fetchone()
+            
+            if id_curso[0] is None:
+                return 0
+            else:
+                return id_curso[0]
+        except Exception as e:
+            print(e)
+            return False
+
+
 
     """
         Estas funciones son para cumplir el rol de parametros para cerrar el curso.

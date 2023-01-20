@@ -29,7 +29,7 @@ def registro_estudiantes():
 @estudiantes.route('/guardar-estudiante', methods=['POST'])
 @login_required
 def guardar_estudiante():
-    expression_regular = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    
     if request.method == 'POST':
         nombres = request.form['nombres']
         apellidos = request.form['apellidos']
@@ -261,20 +261,18 @@ def asistencia_estudiantes():
                 lista_cursos_activos.append(indice)
             else:
                 pass
-    else:
-        # mostrar al docente los cursos que tiene asignados
-       for list_curso_doc in zip(cursos, asig_doc):
-            if list_curso_doc[0][14]==1:
-                if list_curso_doc[0][0]==list_curso_doc[1][1]:
-                   lista_cursos_activos.append(list_curso_doc[0])
-                else:
-                    pass
-            else:
-                pass
-
+    elif current_user.rol == "DOC":
+        # mostrar los cursos que tiene asignado el docente
+        for indice in asig_doc:
+           for indice2 in cursos:
+               if indice[1] == indice2[0]:
+                   if indice2[14]==1:
+                       lista_cursos_activos.append(indice2)
+                   else:
+                       pass
+               else:
+                   pass
     return render_template('asistencia_calificacion.html', cursos=lista_cursos_activos)
-
-            
     # return render_template('asistencia_calificacion.html', cursos=lista_cursos_activos)
 @estudiantes.route('/asistencia-estudiantes/<id_curso>')
 @login_required

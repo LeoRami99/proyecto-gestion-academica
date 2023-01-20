@@ -40,8 +40,7 @@ def registrar_administrador():
             telefono = request.form['telefono']
             cliente = request.form['cliente']
             rol = request.form['rol']
-            print(rol)
-            if nombre_usuario and contrasena and nombre and apellido and email and telefono and cliente and rol:
+            if nombre_usuario and len(contrasena)>=6 and contrasena and nombre and apellido and email and telefono and cliente and rol:
                 # verficar que los datos esten y no tenga expresiones regulares antes de registrar
                 if not re.match(expresiones_regulares['username'], nombre_usuario) and not re.match(expresiones_regulares['contrasena'], contrasena) and not re.match(expresiones_regulares['nombre'], nombre) and not re.match(expresiones_regulares['apellido'], apellido) and not re.match(expresiones_regulares['correo'], email) and not re.match(expresiones_regulares['telefono'], telefono) and not re.match(expresiones_regulares['cliente'], cliente) and not re.match(expresiones_regulares['rol'], rol):
                     flash('Los datos no son validos')
