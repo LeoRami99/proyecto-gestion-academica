@@ -40,7 +40,7 @@ def registrar():
         profesion = request.form['profesion']
         id_cliente = request.form['id_cliente']
         if nombre_usuario and nombres and apellidos and correo and password and numero_cel and numero_tel_fijo and rol and estado and tipo_doc and num_doc and profesion and id_cliente:
-            docente = Docente(nombre_usuario, nombres, apellidos, correo, generate_password_hash(password), numero_cel, numero_tel_fijo, rol, estado, tipo_doc, num_doc, profesion, id_cliente)
+            docente = Docente(nombre_usuario, nombres.title(), apellidos.title(), correo, generate_password_hash(password), numero_cel, numero_tel_fijo, rol, estado, tipo_doc, num_doc, profesion, id_cliente)
             if docente.verificar_docente_username(nombre_usuario) and docente.verificar_docente(current_user.id_cliente, num_doc):
                 flash('Actualmente ya existe un docente con el mismo número de documento')
                 return redirect(url_for('docentes.index'))
