@@ -86,18 +86,18 @@ $(document).ready(function () {
 });
 
 // Restringir el uso de la consola del navegador
-document.addEventListener("contextmenu", (event) => event.preventDefault());
-document.addEventListener("keydown", (event) => {
-  if (event.ctrlKey && event.shiftKey && event.keyCode == "I".charCodeAt(0)) {
-    event.preventDefault();
-  }
-  if (event.ctrlKey && event.shiftKey && event.keyCode == "J".charCodeAt(0)) {
-    event.preventDefault();
-  }
-  if (event.ctrlKey && event.keyCode == "U".charCodeAt(0)) {
-    event.preventDefault();
-  }
-});
+// document.addEventListener("contextmenu", (event) => event.preventDefault());
+// document.addEventListener("keydown", (event) => {
+//   if (event.ctrlKey && event.shiftKey && event.keyCode == "I".charCodeAt(0)) {
+//     event.preventDefault();
+//   }
+//   if (event.ctrlKey && event.shiftKey && event.keyCode == "J".charCodeAt(0)) {
+//     event.preventDefault();
+//   }
+//   if (event.ctrlKey && event.keyCode == "U".charCodeAt(0)) {
+//     event.preventDefault();
+//   }
+// });
 
 
 
