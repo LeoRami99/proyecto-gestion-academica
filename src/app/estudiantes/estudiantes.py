@@ -395,7 +395,7 @@ def calificaciones_estudiantes_excel():
             # verificar que el archivo sea un excel
         if not excel.filename.endswith('.xlsx'):
             flash('El archivo no es un excel')
-            return redirect(url_for('estudiantes.estudiantes_curso'))
+            return redirect(url_for('estudiantes.calificaciones_estudiantes_id', id_curso=id_curso))
         else:
             try:
                 df = pd.read_excel(excel)
