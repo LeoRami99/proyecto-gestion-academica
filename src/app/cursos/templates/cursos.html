@@ -185,6 +185,7 @@
                   <select name="modalidad_curso" id="modalidad_curso" class="form-control p-2">
                     <option value="Presencial">Presencial</option>
                     <option value="Virtual">Virtual</option>
+                    <option value="Semipresencial">Semipresencial</option>
                   </select>
                 </div>
               </div>
@@ -236,6 +237,17 @@
                   <label for="enlace_form_asistencia" class="form-label">Enlace formulario de asistencia</label>
                   <input type="text" class="form-control p-2" id="enlace_form_asistencia" name="enlace_form_asistencia"
                     placeholder="Enlace del formulario de asistencias" required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="docente" class="form-label">Docente</label>
+                  <select name="docente" id="docente" class="form-select">
+                    <option value="">Sin Asignar</option>
+                    {%for docente in docentes%}
+                      <option value="{{docente[0]}}">{{docente[9]}} | {{docente[2]}} {{docente[3]}} | {{docente[10]}}</option>
+                    {%endfor%}
+                  </select>
                 </div>
               </div>
               <div class="col-12 col-md-6 col-lg-4">

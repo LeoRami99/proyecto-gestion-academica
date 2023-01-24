@@ -243,9 +243,9 @@
             <form action="{{url_for('estudiantes.estudiantes_curso_excel')}}" method="post"
               enctype="multipart/form-data">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-              <input type="hidden" name="id_curso" value="{{curso[0]}}">
-              <input type="hidden" name="fecha_inicio" value="{{curso[3]}}">
-              <input type="hidden" name="fecha_fin" value="{{curso[4]}}">
+              <input type="hidden" name="id_curso" value="{{curso[0][0]}}">
+              <input type="hidden" name="fecha_inicio" value="{{curso[0][3]}}">
+              <input type="hidden" name="fecha_fin" value="{{curso[0][4]}}">
               <div class="mb-3">
                 <label for="excel" class="form-label">Subir archivo</label>
                 <input class="form-control" type="file" id="excel" name="excel"

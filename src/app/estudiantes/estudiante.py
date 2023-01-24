@@ -68,7 +68,7 @@ class Estudiante():
         conn.commit()
         return True
       except Exception as e:
-        print(e)
+        print("el error esta aquí:" , e)
         return False
     #Contador de usuarios asignados a un curso y se hace
     @classmethod
@@ -136,7 +136,7 @@ class Estudiante():
       try:
         conn = obtener_conexion()
         cursor = conn.cursor()
-        sql = "SELECT nombre, apellido, numero_doc FROM estudiantes WHERE id = '{0}'".format(id_estudiante)
+        sql = "SELECT nombre, apellido, numero_doc, correo FROM estudiantes WHERE id = '{0}'".format(id_estudiante)
         cursor.execute(sql)
         estudiante = cursor.fetchone()
         conn.commit()
@@ -222,3 +222,34 @@ class Estudiante():
       except Exception as e:
         print(e)
         return False
+    @classmethod
+    def obtener_estudiantes_curso(self, id_curso):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = "SELECT * FROM estudiantes INNER JOIN asignacion_estudiantes_curso ON estudiantes.id=asignacion_estudiantes_curso.id_estudiante WHERE asignacion_estudiantes_curso.id_curso='{0}'".format(id_curso)
+        cursor.execute(sql)
+        estudiantes = cursor.fetchall()
+        conn.commit()
+        return estudiantes
+      except Exception as e:
+        print(e)
+        return False
+
+    # Este metodo verifica que los estudiantes no se dupliquen en la asignación asistencias como de calificaciones
+    @classmethod
+    def verificar_asignacion_curso(self, id_curso, id_estudiante, id_cliente):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = "SELECT * FROM asignacion_estudiantes_curso WHERE id_curso='{0}' AND id_estudiante='{1}' AND id_cliente='{2}'".format(id_curso, id_estudiante, id_cliente)
+        cursor.execute(sql)
+        conn.commit()
+        if cursor.rowcount == 0:
+          return False
+        else:
+          return True
+      except Exception as e:
+        print(e)
+        return False
+      

@@ -19,6 +19,7 @@ class Curso():
         self.enlace_form_asistencia = enlace_form_asistencia
         self.estado = estado
         self.id_cliente = id_cliente
+
     def guardar_curso(self):
         try:
             conn = obtener_conexion()
@@ -31,17 +32,20 @@ class Curso():
         except Exception as e:
             print(e)
             return False
+
     def obtener_cursos(self, id_cliente):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = "SELECT * FROM curso where id_cliente = {0}".format(id_cliente)
+            sql = "SELECT * FROM curso where id_cliente = {0}".format(
+                id_cliente)
             cursor.execute(sql)
             cursos = cursor.fetchall()
             return cursos
         except Exception as e:
             print(e)
             return False
+
     def obtener_curso(self, id):
         try:
             conn = obtener_conexion()
@@ -53,17 +57,20 @@ class Curso():
         except Exception as e:
             print(e)
             return False
+
     def actualizar_curso(self, id):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_inicio = '{2}', fecha_fin = '{3}', horario = '{4}', duracion= '{5}', intensidad_horaria = '{6}', cantidad_sesiones = '{7}', cupo_curso = '{8}', enlace_clase = '{9}', enlace_grabaciones = '{10}', formulario_asistencia = '{11}' WHERE id = {12}""".format(self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, id)
+            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_inicio = '{2}', fecha_fin = '{3}', horario = '{4}', duracion= '{5}', intensidad_horaria = '{6}', cantidad_sesiones = '{7}', cupo_curso = '{8}', enlace_clase = '{9}', enlace_grabaciones = '{10}', formulario_asistencia = '{11}' WHERE id = {12}""".format(
+                self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, id)
             cursor.execute(sql)
             conn.commit()
             return True
         except Exception as e:
             print(e)
             return False
+
     def eliminar_curso(self, id):
         try:
             conn = obtener_conexion()
@@ -75,44 +82,50 @@ class Curso():
         except Exception as e:
             print(e)
             return False
+
     @classmethod
     def lista_curso_docente(self, id_curso, id_cliente):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = "SELECT id, id_curso, id_cliente, id_docente FROM asignacion_docente_curso WHERE id_curso = {0} AND id_cliente = {1}".format(id_curso, id_cliente)
+            sql = "SELECT id, id_curso, id_cliente, id_docente FROM asignacion_docente_curso WHERE id_curso = {0} AND id_cliente = {1}".format(
+                id_curso, id_cliente)
             cursor.execute(sql)
             cursos_docente = cursor.fetchone()
             return cursos_docente
         except Exception as e:
             print(e)
             return False
+
     @classmethod
     def asignar_docente_curso(self, id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin):
         try:
-            conn= obtener_conexion()
+            conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """INSERT INTO asignacion_docente_curso (id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')""".format(id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin)
+            sql = """INSERT INTO asignacion_docente_curso (id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')""".format(
+                id_curso, id_docente, id_cliente, fecha_inicio, fecha_fin)
             cursor.execute(sql)
             conn.commit()
             return True
         except Exception as e:
             print(e)
             return False
+
     @classmethod
     def obtener_cursos_docente(self, id_docente):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql="""SELECT * FROM asignacion_docente_curso WHERE id_docente={0}""".format(id_docente)
+            sql = """SELECT * FROM asignacion_docente_curso WHERE id_docente={0}""".format(
+                id_docente)
             cursor.execute(sql)
             filas = cursor.fetchall()
             return filas
         except Exception as e:
             return False
 
+    # funcion para obtener el id del ultimo curso para generar el codigo
 
-    #funcion para obtener el id del ultimo curso para generar el codigo
     @classmethod
     def obtener_id_curso(self):
         try:
@@ -121,7 +134,7 @@ class Curso():
             sql = "SELECT MAX(id) FROM curso"
             cursor.execute(sql)
             id_curso = cursor.fetchone()
-            
+
             if id_curso[0] is None:
                 return 0
             else:
@@ -130,7 +143,22 @@ class Curso():
             print(e)
             return False
 
-
+    @classmethod
+    def obtener_curso_id(self, codigo_curso):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = "SELECT id FROM curso WHERE codigo_curso = '{0}'".format(
+                codigo_curso)
+            cursor.execute(sql)
+            id_curso = cursor.fetchone()
+            if id_curso != None:
+                return id_curso[0]
+            else:
+                return False
+        except Exception as e:
+            print(e)
+            return False
 
     """
         Estas funciones son para cumplir el rol de parametros para cerrar el curso.
@@ -152,12 +180,14 @@ class Curso():
         except Exception as e:
             print(e)
             return False
+
     @classmethod
     def asistencia_estudiante_curso(self, id_estudiante, id_curso):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """SELECT SUM(asis_1 + asis_2 + asis_3+ asis_4+ asis_5+ asis_6+ asis_7+asis_8+asis_9+asis_10+asis_11 + asis_12 + asis_13+ asis_14+ asis_15+ asis_16+ asis_17+asis_18+asis_19+asis_20+asis_21 + asis_22 + asis_23+ asis_24+ asis_25+asis_26+asis_27+asis_28+asis_29+asis_30) as asistencias FROM asistencias WHERE id_estudiante = '{0}' AND id_curso = '{1}'""".format(id_estudiante, id_curso)
+            sql = """SELECT SUM(asis_1 + asis_2 + asis_3+ asis_4+ asis_5+ asis_6+ asis_7+asis_8+asis_9+asis_10+asis_11 + asis_12 + asis_13+ asis_14+ asis_15+ asis_16+ asis_17+asis_18+asis_19+asis_20+asis_21 + asis_22 + asis_23+ asis_24+ asis_25+asis_26+asis_27+asis_28+asis_29+asis_30) as asistencias FROM asistencias WHERE id_estudiante = '{0}' AND id_curso = '{1}'""".format(
+                id_estudiante, id_curso)
             cursor.execute(sql)
             filas = cursor.fetchone()
             return filas[0]
@@ -165,12 +195,14 @@ class Curso():
             print(e)
             return False
     # Contador de estudiantes por curso
+
     @classmethod
     def count_estudiantes_curso(self, id_curso, id_cliente):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """SELECT COUNT(*) FROM asignacion_estudiantes_curso WHERE id_curso = {0} AND id_cliente = {1}""".format(id_curso, id_cliente)
+            sql = """SELECT COUNT(*) FROM asignacion_estudiantes_curso WHERE id_curso = {0} AND id_cliente = {1}""".format(
+                id_curso, id_cliente)
             cursor.execute(sql)
             filas = cursor.fetchone()
             return filas[0]
@@ -181,19 +213,22 @@ class Curso():
     @classmethod
     def estado_curso(self, id_curso, id_cliente):
         try:
-            cantidad_estudiantes = self.count_estudiantes_curso(id_curso, id_cliente)
+            cantidad_estudiantes = self.count_estudiantes_curso(
+                id_curso, id_cliente)
             notas_estudiantes = self.consulta_notas_curso(id_curso)
-            lista_notas_finales=[]
+            lista_notas_finales = []
             lista_asistencia_estudiante = []
-            lista_result_condiciones=[]
+            lista_result_condiciones = []
             for indice in notas_estudiantes:
                 # colocar el id y la asistencia
-                lista_asistencia_estudiante.append([indice[0], self.asistencia_estudiante_curso(indice[0], id_curso)])
-            
+                lista_asistencia_estudiante.append(
+                    [indice[0], self.asistencia_estudiante_curso(indice[0], id_curso)])
+
             for indice in notas_estudiantes:
                 # colocar el id y la nota final
-                lista_notas_finales.append([indice[0], float(indice[1])+float(indice[2])+float(indice[3])])
-        
+                lista_notas_finales.append(
+                    [indice[0], float(indice[1])+float(indice[2])+float(indice[3])])
+
             for indice in zip(lista_notas_finales, lista_asistencia_estudiante):
                 if indice[0][1] >= 3.0 and indice[1][1] >= 66:
                     lista_result_condiciones.append([indice[0][0], True])
@@ -212,7 +247,7 @@ class Curso():
                 return True
             else:
                 return False
-            
+
         except Exception as e:
             print(e)
             return False
@@ -222,10 +257,47 @@ class Curso():
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """UPDATE curso SET estado_curso = 0 WHERE id = '{0}' AND id_cliente = {1}""".format(id_curso, id_cliente)
+            sql = """UPDATE curso SET estado_curso = 0 WHERE id = '{0}' AND id_cliente = {1}""".format(
+                id_curso, id_cliente)
             cursor.execute(sql)
             conn.commit()
             return True
         except Exception as e:
             print("Aqui es el erro:", e)
             return False
+
+    @classmethod
+    def reactivar_curso(sefl, id_curso, id_cliente):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = """UPDATE curso SET estado_curso = 1 WHERE id = '{0}' AND id_cliente = {1}""".format(
+                id_curso, id_cliente)
+            cursor.execute(sql)
+            conn.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    # Se obtiene toda la información del curso concatenado con el nombre del docente asignado
+    @classmethod
+    def obtener_curso_docente(self, id_curso):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = """SELECT usuarios.nombre as 'Nombre del Docente', usuarios.apellido as 'Apellidos del Docente', curso.* FROM asignacion_docente_curso
+                JOIN curso ON asignacion_docente_curso.id_curso = curso.id
+                JOIN usuarios ON asignacion_docente_curso.id_docente = usuarios.id
+                WHERE asignacion_docente_curso.id_curso = {0}""".format(id_curso)
+            cursor.execute(sql)
+            filas = cursor.fetchone()
+            if filas is None:
+                return False
+            else:
+                return filas
+        except Exception as e:
+            print(e)
+            return False
+
+

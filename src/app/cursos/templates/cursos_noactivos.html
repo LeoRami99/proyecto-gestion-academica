@@ -252,6 +252,13 @@
                 data-bs-custom-class="custom-tooltip"
                 data-bs-title="Descargar asistencias"><i class="bi bi-list-check"></i></button>
             </form>
+            <form action="{{url_for('cursos.reactivar_curso')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip"
+                data-bs-title="Reactivar el curso"><i class="bi bi-arrow-clockwise"></i></button>
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+            </form>
           </div>
           {%else%}
           {% endif %}

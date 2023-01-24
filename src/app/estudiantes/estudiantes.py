@@ -5,6 +5,8 @@ from flask_login import login_required, current_user
 from app.cursos.curso import Curso
 # Clase de metodos de enviar a la base de datos
 from app.estudiantes.estudiante import Estudiante
+# Metodos de mail
+from app.mail.mail import enviar_correo_estudiante
 
 # Se importa pandas para leer el excel
 import pandas as pd
@@ -17,10 +19,20 @@ import xlwt
 
 estudiantes = Blueprint('estudiantes', __name__, template_folder='templates', url_prefix='/')
 
-@estudiantes.route('/estudiantes')
-@login_required
+@estudiantes.route('/estudiantes', methods=['POST'])
+# @login_required
 def index():
-    return render_template('estudiantes.html')
+    estudiante = Estudiante()
+    if request.method == 'POST':
+        id_curso = request.form['id_curso']
+        if id_curso:
+            curso= Curso().obtener_curso(id_curso)
+            estudiante = estudiante.obtener_estudiantes_curso(id_curso)
+            return render_template('estudiantes.html', estudiantes=estudiante, curso=curso)
+    else:
+        flash('No se pudo obtener los estudiantes')
+        return redirect(url_for('inicio.index'))
+    # return render_template('estudiantes.html')
 @estudiantes.route('/registro-estudiantes')
 @login_required
 def registro_estudiantes():
@@ -46,31 +58,51 @@ def guardar_estudiante():
                 flash('El estudiante ya se encuentra registrado')
                 return redirect(url_for('estudiantes.registro_estudiantes'))
             else:
-                if estudiante.guardar_estudiante():
-                    # verificar si el estudiante se registro correctamente
-                    if Estudiante.verificacion_estudiantes(num_doc, current_user.id_cliente):
-                        # Se obtiene el id del estudiante
-                        id_estudiante = Estudiante.estudiante_id(num_doc, current_user.id_cliente)
-
-                        # Se registra el estudiante en el curso
-                        if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
-                            if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
-                                flash('El estudiante se registro correctamente')
-                                return redirect(url_for('estudiantes.registro_estudiantes'))
+                print("Validación del docente en el curso", Curso.obtener_curso_docente(id_curso))
+                if Curso.obtener_curso_docente(id_curso):
+                    if estudiante.guardar_estudiante():
+                        # verificar si el estudiante se registro correctamente
+                        if Estudiante.verificacion_estudiantes(num_doc, current_user.id_cliente):
+                            # Se obtiene el id del estudiante
+                            if Curso.obtener_curso_docente(id_curso):
+                                id_estudiante = Estudiante.estudiante_id(num_doc, current_user.id_cliente)
+                                # Declaroación de variables para enviar el correo con los parametros correspondientes
+                                nombres_docente = Curso.obtener_curso_docente(id_curso)[0] + " " + Curso.obtener_curso_docente(id_curso)[1]
+                                nombre_curso = Curso.obtener_curso_docente(id_curso)[3]
+                                codigo_curso = Curso.obtener_curso_docente(id_curso)[4]
+                                modalidad = Curso.obtener_curso_docente(id_curso)[8]
+                                duracion = Curso.obtener_curso_docente(id_curso)[9]
+                                fecha_inicio = Curso.obtener_curso_docente(id_curso)[5]
+                                fecha_fin = Curso.obtener_curso_docente(id_curso)[6]
+                                horario = Curso.obtener_curso_docente(id_curso)[7]
+                                enlace_clase = Curso.obtener_curso_docente(id_curso)[13]
+                                enlace_grabaciones = Curso.obtener_curso_docente(id_curso)[14]
+                                cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
+                                # envio de infomación al correo
+                                enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo,nombres, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+                                if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
+                                    if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
+                                        flash('El estudiante se registro correctamente')
+                                        return redirect(url_for('estudiantes.registro_estudiantes'))
+                                    else:
+                                        flash("Ocurrio un error al registrar el estudiante")
+                                        return redirect(url_for('estudiantes.registro_estudiantes'))
+                                else:
+                                    flash('No se pudo registrar el estudiante')
+                                    return redirect(url_for('estudiantes.registro_estudiantes'))
                             else:
-                                flash("Ocurrio un error al registrar el estudiante")
+                                flash('Por favor asigna un docente al curso antes de registrar un estudiante')
                                 return redirect(url_for('estudiantes.registro_estudiantes'))
+
                         else:
                             flash('No se pudo registrar el estudiante')
                             return redirect(url_for('estudiantes.registro_estudiantes'))
 
-                       
                     else:
                         flash('No se pudo registrar el estudiante')
                         return redirect(url_for('estudiantes.registro_estudiantes'))
-
                 else:
-                    flash('No se pudo registrar el estudiante')
+                    flash('Por favor asigna un docente al curso antes de registrar un estudiante')
                     return redirect(url_for('estudiantes.registro_estudiantes'))
         else:
             flash('Todos los campos son obligatorios')
@@ -100,35 +132,53 @@ def estudiantes_excel():
                 # Recorreror las columnas y enviar la información
                 for index, row in df.iterrows():
                 #Verificar que el estudiante no se encuentre previamente registrado y omitir el la columna
-                    if Estudiante().verificacion_estudiantes(row[columnas[3]], current_user.id_cliente) == False:
-                        estudiante = Estudiante(row[columnas[0]], row[columnas[1]], row[columnas[2]], row[columnas[3]], row[columnas[4]], row[columnas[5]], row[columnas[6]], row[columnas[7]], current_user.id_cliente, "1")
-                        if estudiante.guardar_estudiante():
-                            # verificar si el estudiante se registro correctamente
-                            if Estudiante.verificacion_estudiantes(row[columnas[3]], current_user.id_cliente):
-                                # Se obtiene el id del estudiante
-                                id_estudiante = Estudiante.estudiante_id(row[columnas[3]], current_user.id_cliente)
+                    if Curso().obtener_curso_docente(id_curso) != None or Curso().obtener_curso_docente(id_curso) != False:
+                        if Estudiante().verificacion_estudiantes(row[columnas[3]], current_user.id_cliente) == False:
+                            estudiante = Estudiante(row[columnas[0]], row[columnas[1]], row[columnas[2]], row[columnas[3]], row[columnas[4]], row[columnas[5]], row[columnas[6]], row[columnas[7]], current_user.id_cliente, "1")
+                            if estudiante.guardar_estudiante():
+                                # verificar si el estudiante se registro correctamente
+                                if Estudiante.verificacion_estudiantes(row[columnas[3]], current_user.id_cliente):
+                                    # Se obtiene el id del estudiante
+                                    id_estudiante = Estudiante.estudiante_id(row[columnas[3]], current_user.id_cliente)
+                                    nombres_docente = Curso.obtener_curso_docente(id_curso)[0] + " " + Curso.obtener_curso_docente(id_curso)[1]
+                                    nombre_curso = Curso.obtener_curso_docente(id_curso)[3]
+                                    codigo_curso = Curso.obtener_curso_docente(id_curso)[4]
+                                    modalidad = Curso.obtener_curso_docente(id_curso)[8]
+                                    duracion = Curso.obtener_curso_docente(id_curso)[9]
+                                    fecha_inicio = Curso.obtener_curso_docente(id_curso)[5]
+                                    fecha_fin = Curso.obtener_curso_docente(id_curso)[6]
+                                    horario = Curso.obtener_curso_docente(id_curso)[7]
+                                    enlace_clase = Curso.obtener_curso_docente(id_curso)[13]
+                                    enlace_grabaciones = Curso.obtener_curso_docente(id_curso)[14]
+                                    cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
+                                    # Se envia el correo al estudiante
 
-                                # Se registra el estudiante en el curso
-                                if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
-                                    if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
-                                        pass
+                                    enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), row[columnas[4]], row[columnas[0]], nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+
+                                    # Se registra el estudiante en el curso
+                                    if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
+                                        if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
+                                            pass
+                                        else:
+                                            flash("Ocurrio un error al registrar el estudiante")
+                                            return redirect(url_for('estudiantes.registro_estudiantes'))
                                     else:
-                                        flash("Ocurrio un error al registrar el estudiante")
+                                        flash('No se pudo registrar el estudiante')
                                         return redirect(url_for('estudiantes.registro_estudiantes'))
-                                else:
-                                    flash('No se pudo registrar el estudiante')
-                                    return redirect(url_for('estudiantes.registro_estudiantes'))
 
-                            flash('El estudiante ' + str(row[columnas[3]]) + ' se registro correctamente')
-                            pass
+                                flash('El estudiante ' + str(row[columnas[3]]) + ' se registro correctamente')
+                                pass
+                            else:
+                                pass
                         else:
+                            flash('Ya se encuentra registrado ' + str(row[columnas[3]]))
                             pass
                     else:
-                        flash('Ya se encuentra registrado ' + str(row[columnas[3]]))
-                        pass
+                        flash('Por favor asigne un docente al curso antes de registrar estudiantes')
+                        return redirect(url_for('estudiantes.registro_estudiantes'))
                 return redirect(url_for('estudiantes.registro_estudiantes'))
         except Exception as e:
-            print(e)
+            print("El error es aquí",e)
             flash('No se pudo procesar el excel, verifica el formato de las columnas')
             return redirect(url_for('estudiantes.registro_estudiantes'))
 
@@ -179,13 +229,39 @@ def asignar_estudiantes():
             if estudiantes.verificacion_estudiantes(num_doc, current_user.id_cliente):
                 id_estudiante = estudiantes.estudiante_id(num_doc, current_user.id_cliente)
                 if id_estudiante>0:
-                    if estudiantes.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, fecha_inicio, fecha_fin):
-                        estudiantes.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente)
-                        estudiantes.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente)
-                        flash('El estudiante se asigno correctamente')
-                        return redirect(url_for('estudiantes.estudiantes_curso'))
+                    if estudiantes.verificar_asignacion_curso(id_curso, id_estudiante, current_user.id_cliente)==False:
+                        if Curso.obtener_curso_docente(id_curso):
+                            if estudiantes.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, fecha_inicio, fecha_fin):
+                                estudiantes.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente)
+                                estudiantes.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente)
+                                # Variables para enviar el correo
+                                nombres_docente = Curso.obtener_curso_docente(id_curso)[0] + " " + Curso.obtener_curso_docente(id_curso)[1]
+                                nombre_curso = Curso.obtener_curso_docente(id_curso)[3]
+                                codigo_curso = Curso.obtener_curso_docente(id_curso)[4]
+                                modalidad = Curso.obtener_curso_docente(id_curso)[8]
+                                duracion = Curso.obtener_curso_docente(id_curso)[9]
+                                fecha_inicio = Curso.obtener_curso_docente(id_curso)[5]
+                                fecha_fin = Curso.obtener_curso_docente(id_curso)[6]
+                                horario = Curso.obtener_curso_docente(id_curso)[7]
+                                enlace_clase = Curso.obtener_curso_docente(id_curso)[13]
+                                enlace_grabaciones = Curso.obtener_curso_docente(id_curso)[14]
+                                cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
+                                nombre_estudiante = estudiantes.obtener_estudiante(id_estudiante)[0]
+                                correo = estudiantes.obtener_estudiante(id_estudiante)[3]
+
+                                enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+
+
+                                flash('El estudiante se asigno correctamente')
+                                return redirect(url_for('estudiantes.estudiantes_curso'))
+                            else:
+                                flash('No se pudo asignar el estudiante')
+                                return redirect(url_for('estudiantes.estudiantes_curso'))
+                        else:
+                            flash('Por favor asigna un docente al curso antes de asignar estudiantes')
+                            return redirect(url_for('estudiantes.estudiantes_curso'))
                     else:
-                        flash('No se pudo asignar el estudiante')
+                        flash('El estudiante ya se encuentra asignado al curso')
                         return redirect(url_for('estudiantes.estudiantes_curso'))
             else:
                 flash('El estudiante no se encuentra registrado')
@@ -220,26 +296,51 @@ def estudiantes_curso_excel():
                 numero_de_filas = df.count()
                 # Se trae cupo del curso de la base de datos
                 curso_indice = Curso()
-                print("Número de filas", numero_de_filas.values[0])
-                if numero_de_filas.values[0] == curso_indice.obtener_curso(id_curso)[10]:
+                # print("Número de filas", numero_de_filas.values[0])
+                # if numero_de_filas.values[0] == curso_indice.obtener_curso(id_curso)[10]:
                     # Recorreror las columnas y enviar la información
-                    for index, row in df.iterrows():
+                for index, row in df.iterrows():
                         #Verificar que el estudiante no se encuentre previamente registrado y omitir el la columna
                         estudiante = Estudiante()
                         if estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente) != False:
-                            if estudiante.asignar_estudiante_curso(id_curso, estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), current_user.id_cliente, fecha_inicio, fecha_fin) and estudiante.generar_info_asistencia(estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), id_curso, current_user.id_cliente) and estudiante.generar_info_calificaciones(estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), id_curso, current_user.id_cliente):
-                                flash('El estudiante ' + str(row[columnas[0]]) + ' se asigno correctamente ')
-                                pass
+                            # Hacer validación si el estudiante ya se encuentra asignado al curso y omitir el registro
+                            if Estudiante().verificar_asignacion_curso(id_curso, estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), current_user.id_cliente) == False:
+                                if Curso.obtener_curso_docente(id_curso):
+                                    if estudiante.asignar_estudiante_curso(id_curso, estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), current_user.id_cliente, fecha_inicio, fecha_fin) and estudiante.generar_info_asistencia(estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), id_curso, current_user.id_cliente) and estudiante.generar_info_calificaciones(estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente), id_curso, current_user.id_cliente):
+                                            # Variables para enviar el correo
+                                        id_estudiante = estudiante.estudiante_id(row[columnas[0]], current_user.id_cliente)
+                                        nombres_docente = Curso.obtener_curso_docente(id_curso)[0] + " " + Curso.obtener_curso_docente(id_curso)[1]
+                                        nombre_curso = Curso.obtener_curso_docente(id_curso)[3]
+                                        codigo_curso = Curso.obtener_curso_docente(id_curso)[4]
+                                        modalidad = Curso.obtener_curso_docente(id_curso)[8]
+                                        duracion = Curso.obtener_curso_docente(id_curso)[9]
+                                        fecha_inicio = Curso.obtener_curso_docente(id_curso)[5]
+                                        fecha_fin = Curso.obtener_curso_docente(id_curso)[6]
+                                        horario = Curso.obtener_curso_docente(id_curso)[7]
+                                        enlace_clase = Curso.obtener_curso_docente(id_curso)[13]
+                                        enlace_grabaciones = Curso.obtener_curso_docente(id_curso)[14]
+                                        cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
+                                        nombre_estudiante = estudiante.obtener_estudiante(id_estudiante)[0]
+                                        correo = estudiante.obtener_estudiante(id_estudiante)[3]
+
+                                        enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+                                        flash('El estudiante ' + str(row[columnas[0]]) + ' se asigno correctamente ')
+                                        pass
+                                    else:
+                                        pass
+                                else:
+                                    flash('Por favor asigna un docente al curso antes de registrar a los estudiantes.')
+                                    pass
                             else:
+                                flash('El estudiante ' + str(row[columnas[0]]) + ' ya se encuentra registrado en el curso')
                                 pass
                         else:
-                            flash('El estudiante ' + str(row[columnas[1]]) + ' no se encuentra registrado')
+                            flash('El estudiante ' + str(row[columnas[0]]) + ' no se encuentra registrado')
                             pass
-                    
-                    return redirect(url_for('estudiantes.estudiantes_curso'))
-                else:
-                    flash('El número de estudiantes en el excel no coincide con el cupo del curso')
-                    return redirect(url_for('estudiantes.estudiantes_curso'))
+                return redirect(url_for('estudiantes.estudiantes_curso'))
+                # else:
+                #     flash('El número de estudiantes en el excel no coincide con el cupo del curso')
+                #     return redirect(url_for('estudiantes.estudiantes_curso'))
         except Exception as e:
             print(e)
             flash('No se pudo procesar el excel, verifica el formato de las columnas')

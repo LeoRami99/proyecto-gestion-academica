@@ -14,7 +14,15 @@ cursos = Blueprint('cursos', __name__, template_folder='templates', url_prefix='
 @login_required
 def index():
     if current_user.rol == 'AD':
-        return render_template('cursos.html')
+        docente = Docente()
+        docentes = docente.obtenerDocentesCliente(current_user.id_cliente)
+        lista_docentes = []
+        for indice in docentes:
+            if indice[7]==1:
+                lista_docentes.append(indice)
+            else:
+                pass
+        return render_template('cursos.html', docentes=lista_docentes)
     else:
         return redirect(url_for('inicio.index'))
 
@@ -38,22 +46,48 @@ def registrar_curso():
         estado_curso = request.form['estado_curso']
         id_cliente = request.form['id_cliente']
         last_id = Curso.obtener_id_curso()
-
-
-        
-
-        if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
-            codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
-            curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
-            if curso.guardar_curso():
-                flash('Curso registrado correctamente')
-                return redirect(url_for('cursos.listar_cursos'))
+        docente = request.form['docente']
+        print(docente)
+        if docente == '':
+            if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
+                codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
+                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
+                if curso.guardar_curso():
+                    flash('Curso registrado correctamente')
+                    return redirect(url_for('cursos.listar_cursos'))
+                else:
+                    flash('Error al registrar curso')
+                    return redirect(url_for('cursos.index'))
             else:
-                flash('Error al registrar curso')
+                flash('Por favor, complete los campos')
                 return redirect(url_for('cursos.index'))
         else:
-            flash('Por favor, complete los campos')
-            return redirect(url_for('cursos.index'))
+            if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
+                codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
+                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
+                if curso.guardar_curso():
+                    # obtener el id del curso que se acaba de registrar
+                    id_curso = Curso.obtener_curso_id(codigo_curso)
+                    if id_curso:
+                        if curso.asignar_docente_curso(id_curso, docente, current_user.id_cliente, fecha_inicio, fecha_fin):
+                            flash('Curso registrado correctamente')
+                            return redirect(url_for('cursos.listar_cursos'))
+                        else:
+                            flash('Error al asignar docente al curso')
+                            return redirect(url_for('cursos.index'))
+                    else:
+                        flash('Error al obtener id del curso')
+                        return redirect(url_for('cursos.index'))
+
+                    # flash('Curso registrado correctamente')
+                    # return redirect(url_for('cursos.listar_cursos'))
+                else:
+                    flash('Error al registrar curso')
+                    return redirect(url_for('cursos.index'))
+            else:
+                flash('Por favor, complete los campos')
+                return redirect(url_for('cursos.index'))
+            
     else:
         flash('Error al registrar curso')
         return redirect(url_for('cursos.index'))
@@ -272,6 +306,23 @@ def estado_curso():
     else:
         flash('Error al cerrar curso')
         return redirect(url_for('cursos.listar_cursos'))
+
+@cursos.route("/activar-curso", methods=['POST'])
+def reactivar_curso():
+    if request.method == 'POST':
+        id_curso = request.form['id_curso']
+        id_cliente = current_user.id_cliente
+        if id_curso:
+            curso = Curso()
+            if curso.reactivar_curso(id_curso, current_user.id_cliente):
+                flash('Curso reactivado correctamente')
+                return redirect(url_for('cursos.listar_cursos'))
+            else:
+                flash('Error al reactivar curso')
+                return redirect(url_for('cursos.listar_cursos'))
+        else:
+            flash('Error al reactivar curso')
+            return redirect(url_for('cursos.listar_cursos'))
        
 
 

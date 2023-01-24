@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_wtf.csrf import CSRFProtect
+from flask_mail import Mail
 
 from flask_login import LoginManager
 # Instancias de los Blueprint
@@ -11,13 +12,14 @@ from app.estudiantes.estudiantes import estudiantes
 from app.docentes.docentes import docentes
 from app.admin.admins import admin
 
+
 # inicio de sesion
 from .login.logueo import Usuario
 # from .formularios.usuario import Usuario
 
 
 # from app.correos.correo import correos
-
+mail = Mail()
 
 def createApp():
     app=Flask(__name__)
@@ -31,14 +33,13 @@ def createApp():
     login_manager.login_view = 'login_page.login'
     login_manager.init_app(app)
     app.secret_key = 'mysecretkey'
-    # app.config['MAIL_SERVER']='smtp.gmail.com'
-    # app.config['MAIL_PORT'] = 465
-    # app.config['MAIL_USERNAME'] = 'correos@gmail.com'
-    # app.config['MAIL_PASSWORD'] = ''
-    # app.config['MAIL_USE_TLS'] = False
-    # app.config['MAIL_USE_SSL'] = True
-    # mail = Mail()
-    # mail.init_app(app)
+    app.config['MAIL_SERVER']='smtp.gmail.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = 'fomalhautudecproyectos@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'tcet ejwe udhe elzd'
+    app.config['MAIL_USE_TLS'] = False
+    app.config['MAIL_USE_SSL'] = True
+    mail.init_app(app)
     
     @login_manager.user_loader
     def load_user(nombre_usuario):
@@ -53,5 +54,7 @@ def createApp():
     app.register_blueprint(clientes)
     app.register_blueprint(estudiantes)
     app.register_blueprint(docentes)
+
+
 
     return app

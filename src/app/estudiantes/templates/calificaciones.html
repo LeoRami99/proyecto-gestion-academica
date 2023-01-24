@@ -175,31 +175,33 @@
       </thead>
       <tbody>
         {% for calif in calificaciones %}
+        {{calif}}
         <tr>
           <td><input type="hidden" name="num_doc" id="" value="{{calif[2]}}">{{calif[2]}}</td>
           <td>{{calif[1]}}</td> 
           <td>{{calif[0]}}</td>
-          <td><input type="number" class="form-control" name="calif_1" value="{{calif[3]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_2" value="{{calif[4]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_3" value="{{calif[5]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_4" value="{{calif[6]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_5" value="{{calif[7]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_6" value="{{calif[8]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_7" value="{{calif[9]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_8" value="{{calif[10]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_9" value="{{calif[11]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_10" value="{{calif[12]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="text" class="form-control" name="observaciones" value="{{calif[13]}}"></td>
+          <td><input type="number" class="form-control" name="calif_1" value="{{calif[4]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_2" value="{{calif[5]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_3" value="{{calif[6]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_4" value="{{calif[7]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_5" value="{{calif[8]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_6" value="{{calif[9]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_7" value="{{calif[10]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_8" value="{{calif[11]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_9" value="{{calif[12]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="number" class="form-control" name="calif_10" value="{{calif[13]}}" min="0" max="5" step="0.01"></td>
+          <td><input type="text" class="form-control" name="observaciones" value="{{calif[14]}}"></td>
         </tr>
         {%endfor%}
       </tbody>
     </table>
-   
     <button type="submit" class="btn btn-card"
-      onclick="return confirm('¿Seguro/a quieres actualizar las calificaciones?')">Enviar</button>
+    onclick="return confirm('¿Seguro/a quieres actualizar las calificaciones?')">Enviar</button>
+    {%if current_user.rol == "AD"%}
     <button type="button" class="btn btn-card" data-bs-toggle="modal" data-bs-target="#subir_excel">
       Subir archivo excel
     </button>
+    {%endif%}
 </form>
 <form action="{{url_for('estudiantes.descargar_calificaciones')}}" method="post">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

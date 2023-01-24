@@ -254,6 +254,12 @@
                 data-bs-custom-class="custom-tooltip" data-bs-title="Finalizar el curso"
                 onclick="return confirm('¿Desea finalizar el curso ahora mismo?')"><i class="bi bi-flag"></i></button>
             </form>
+            <form action="{{url_for('estudiantes.index')}}" method="post" class="m-1">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <input type="hidden" name="id_curso" value="{{curso[0]}}">
+              <button type="submit" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i class="bi bi-people"></i></button>
+            </form>
           </div>
           {%else%}
           {% endif %}

@@ -4,7 +4,6 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-
   /* background-size: cover; */
 }
 .fondo_form_login{
@@ -115,7 +114,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  border: 9px solid #868ce8;
+  border: 9px solid #6aa7e8;
   animation: spinner-bulqg1 0.8s infinite linear alternate,
   spinner-oaa3wk 1.6s infinite linear;
   /* Centrar en la pantalla */
@@ -293,8 +292,8 @@
   width: 30px;
   height: 30px;
   line-height: 30px;
-  background: #f7ea32;
-  color: #003269;
+  background: #ffffff;
+  color: #000000;
   text-decoration: none;
   margin: 0 5px;
   border-radius: 50%;
@@ -303,12 +302,16 @@
   transition: all 0.3s ease;
 }
 .holder a:hover{
-  background: #003269;
-  color: #f7ea32;
+  background: #6aa7e8;
+  color: #ffffff;
 }
 .holder a.active{
-  background: #003269;
-  color: #f7ea32;
+  background: #6aa7e8;
+  color: #ffffff;
+}
+.holder a.active:hover{
+  background: #6aa7e8;
+  color: #ffffff;
 }
 
 .tuclase {
