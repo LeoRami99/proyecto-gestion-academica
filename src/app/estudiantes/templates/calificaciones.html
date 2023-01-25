@@ -169,13 +169,12 @@
           <th>Calificación 7</th>
           <th>Calificación 8</th>
           <th>Calificación 9</th>
-          <th>Nota final</th>
+          <th>Calificación final</th>
           <th>Observaciones</th>
         </tr>
       </thead>
       <tbody>
         {% for calif in calificaciones %}
-        {{calif}}
         <tr>
           <td><input type="hidden" name="num_doc" id="" value="{{calif[2]}}">{{calif[2]}}</td>
           <td>{{calif[1]}}</td> 

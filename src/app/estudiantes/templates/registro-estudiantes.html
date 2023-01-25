@@ -201,7 +201,7 @@
               </div>
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="ciudad" class="form-label">Ciudad</label>
+                  <label for="ciudad" class="form-label">Ciudad/Dirección</label>
                   <input type="text" class="form-control p-2" id="ciudad" name="ciudad" placeholder="Ciudad" required>
                 </div>
               </div>
@@ -269,7 +269,7 @@
                 <th>Correo</th>
                 <th>Teléfono</th>
                 <th>Teléfono fijo</th>
-                <th>Ciudad</th>
+                <th>Ciudad/Dirección</th>
               </tr>
               <tr>
                 <td>1</td>
@@ -280,7 +280,7 @@
                 <td>prueba@correo.com</td>
                 <td>3002100123</td>
                 <td>123456789</td>
-                <td>Bogotá</td>
+                <td>Bogotá/Cll...36</td>
               </tr>
             </table>
           </div>
@@ -310,4 +310,57 @@
 
 
 
+
+
+
+<script>
+  $(document).ready(function() {
+    $("#form").validate({
+      rules: {
+        nombres: "required",
+        apellidos: "required",
+        tipo_doc: "required",
+        num_doc: {
+          required: true,
+          number: true
+        },
+        correo: {
+          required: true,
+          email: true
+        },
+        telefono: {
+          required: true,
+          number: true
+        },
+        tel_fijo: {
+          required: true,
+          number: true
+        },
+        ciudad: "required"
+      },
+      messages: {
+        nombres: "Ingrese sus nombres",
+        apellidos: "Ingrese sus apellidos",
+        tipo_doc: "Seleccione un tipo de documento",
+        num_doc: {
+          required: "Ingrese su número de documento",
+          number: "Solo se permiten números"
+        },
+        correo: {
+          required: "Ingrese su correo",
+          email: "Ingrese un correo valido",
+        },
+        telefono: {
+          required: "Ingrese su telefono",
+          number: "Solo se permiten números"
+        },
+        tel_fijo: {
+          required: "Ingrese su teléfono fijo",
+          number: "Solo se permiten números"
+        },
+        ciudad: "Ingrese su ciudad"
+      }
+    });
+  });
+</script>
 {%endblock%}

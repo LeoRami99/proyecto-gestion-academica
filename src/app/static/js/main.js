@@ -1,3 +1,9 @@
+console.log('%c¡Alto! ', 'color: red; font-size: 40px');
+console.log('%cEste es un espacio para desarrolladores. No intentes nada fuera de lo normal. ', 'color: red; font-size: 20px');
+
+
+
+
 // Jquery de DataTables para la tabla de docentes
 $(document).ready(function () {
   $("#tabla_docentes").DataTable({
@@ -85,6 +91,43 @@ $(document).ready(function () {
   });
 });
 
+
+// Recorrer las filas de la tabla
+$(document).ready(function() {
+  // Asignar el evento "change" a todos los campos de calificaciones
+  $("input[name^='calif_']").on("change", function() {
+      // Obtener la fila de la tabla donde se encuentra el campo modificado
+      var row = $(this).closest("tr");
+      // Inicializar las sumas de las calificaciones en 0
+      var sum_corte_1 = 0;
+      var sum_corte_2 = 0;
+      var sum_corte_3 = 0;
+      // Recorrer las columnas de calificaciones del primer corte
+      row.find("input[name='calif_1'], input[name='calif_2'], input[name='calif_3']").each(function() {
+          // Sumar los valores de las calificaciones
+          sum_corte_1 += parseFloat($(this).val());
+      });
+      // Recorrer las columnas de calificaciones del segundo corte
+      row.find("input[name='calif_4'], input[name='calif_5'], input[name='calif_6']").each(function() {
+          // Sumar los valores de las calificaciones
+          sum_corte_2 += parseFloat($(this).val());
+      });
+      // Recorrer las columnas de calificaciones del tercer corte
+      row.find("input[name='calif_7'], input[name='calif_8'], input[name='calif_9']").each(function() {
+          // Sumar los valores de las calificaciones
+          sum_corte_3 += parseFloat($(this).val());
+      });
+      // Calcular el promedio final multiplicando cada corte por su porcentaje y sumando los resultados
+      var average = ((sum_corte_1/3) * 0.3) + ((sum_corte_2/3) * 0.3) + ((sum_corte_3/3) * 0.4);
+      // Actualizar el valor de la columna "Calificación final" con el promedio calculado
+      row.find("input[name='calif_10']").val(average.toFixed(2));
+    });
+});
+$(document).ready(function() {
+  $("input[name='calif_10']").attr("readonly", true);
+});
+
+
 // Restringir el uso de la consola del navegador
 // document.addEventListener("contextmenu", (event) => event.preventDefault());
 // document.addEventListener("keydown", (event) => {
@@ -119,7 +162,29 @@ $(document).ready(function () {
     },
   });
 });
-// cuando carga la tabla se ve cortada, por eso se usa el scrollX
+
+const buttons = document.querySelectorAll(".btn-card");
+const colors = ['#ff6961','#77dd77','#84b6f4'];
+
+for (let i = 0; i < buttons.length; i++) {
+    const originalColor = buttons[i].style.backgroundColor;
+    buttons[i].addEventListener("mouseover", function() {
+    this.style.backgroundColor = getRandomColor();
+  });
+    buttons[i].addEventListener("mouseout", function() {
+    this.style.backgroundColor = originalColor;
+  });
+}
+
+function getRandomColor() {
+  let randomNum = Math.floor(Math.random() * 3);
+  return colors[randomNum];
+}
+
+
+
+
+
 
 
 

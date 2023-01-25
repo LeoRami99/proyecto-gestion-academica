@@ -292,12 +292,13 @@ class Curso():
                 WHERE asignacion_docente_curso.id_curso = {0}""".format(id_curso)
             cursor.execute(sql)
             filas = cursor.fetchone()
-            if filas is None:
-                return False
+            print("Hola esta es la consulta de los docentes por curso:", filas)
+            if cursor.rowcount == 0:
+                return None
             else:
                 return filas
         except Exception as e:
-            print(e)
+            print("prueba de error", e)
             return False
 
 

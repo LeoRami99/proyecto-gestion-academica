@@ -22,7 +22,7 @@
         </li>
       </ul> -->
   </div>
-  <div class="d-flex">
+  <div class="d-flex float-left">
     <!-- <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-light me-2" role="button"
       aria-pressed="true">Cerrar sesión</a> -->
     <button class="btn t" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
@@ -135,7 +135,9 @@
   </div>
 </div>#}
 
-<section class="bienvenida">
+<section id="bienvenida" class="bienvenida">
+  <div id="particles-js"></div>
+  <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
   <!-- Header -->
   <div class="px-4 py-5 my-5 text-center">
     <!-- <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt=""
@@ -163,9 +165,11 @@
   </div>
 </section>
 <section id="options">
+  
+  <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
   <div class="container">
     <div class="text-center">
-      <h1 class="text-white">Opciones</h1>
+      <h1 class="text-white mt-2">Opciones</h1>
       <hr>
     </div>
     <!-- Cards para cada apartado -->

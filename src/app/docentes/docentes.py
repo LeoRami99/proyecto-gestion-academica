@@ -53,7 +53,7 @@ def registrar():
                     return redirect(url_for('docentes.index'))
         else:
             flash('Por favor complete todos los campos')
-            return redirect(url_for('docentes.index'))
+            return redirect(url_for('docentes.registroDocentes'))
     else:
         return redirect(url_for('docentes.index'))
 

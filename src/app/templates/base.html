@@ -40,6 +40,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Styles base  -->
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
+  <!-- styles parallax -->
+  <link href="https://marrio-h.github.io/universal-parallax/demo/universal-parallax/dist/universal-parallax.min.css" rel="stylesheet">
 </head>
 
 <body class="fondo-pagina d-flex flex-column h-100">
@@ -67,7 +69,7 @@
         <hr>
         <div class="">
           <div class="text-center">
-            <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-dark me-2" role="button"
+            <a href="{{url_for('login_page.logout')}}" class="btn btn-card me-2" role="button"
               aria-pressed="true">Cerrar sesión</a>
             <hr>
           </div>
@@ -181,11 +183,11 @@
   <!-- Section for content of page -->
   <main>
     <div class="d-flex flex-column" style="min-height: 100vh">
-      <div class="container">
+      <!-- <div class="container"> -->
         {% block content %}
         
         {% endblock %}
-      </div>
+      <!-- </div> -->
     </div>
 </main>
 
@@ -193,7 +195,7 @@
   
 <!-- Section for footer -->
 <!-- footer -->
-<footer class="text-center text-white fondo_navbar sticky-bottom">
+<footer class="text-center text-white fondo_navbar">
   <!-- Grid container -->
  
   <!-- Grid container -->
@@ -202,7 +204,7 @@
   <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     Powered by:
     <a class="text-white" href="">
-      <!-- <img src="{{url_for('static', filename='imgs/logo-cymetrya-white.png')}}" alt="" width="100px"> -->
+      <img src="{{url_for('static', filename='imgs/logo-cymetrya-white.png')}}" alt="" width="100px">
     </a>
   </div>
   <!-- Copyright -->
@@ -220,6 +222,8 @@
     });
 
   </script>
+  <!-- link de validación de campos -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
   <!-- link js datatables -->
   <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/fc-4.2.1/datatables.js"></script>
   <!-- Scripts del sistema -->
@@ -237,6 +241,19 @@
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
   </script>
+  <!-- parallax -->
+  <script src="https://marrio-h.github.io/universal-parallax/dist/universal-parallax.min.js"></script>
+  <script>
+    new universalParallax().init();
+  </script>
+  <script src="{{url_for('static', filename='js/particles.js')}}"></script>
+  <script>
+    particlesJS.load('particles-js', "{{url_for('static', filename='js/particlesjs-config.json')}}", function () {
+        console.log('callback - particles.js config loaded');
+    });
+</script>
+  
+
   <!-- Bootstrap link js -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
 
