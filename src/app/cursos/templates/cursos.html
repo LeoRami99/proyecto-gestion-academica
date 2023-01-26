@@ -239,11 +239,18 @@
                     placeholder="Enlace del formulario de asistencias" required>
                 </div>
               </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="ubicacion" class="form-label">Ubicación</label>
+                  <input type="text" class="form-control p-2" id="ubicacion" name="ubicacion"
+                    placeholder="Ubicación" required>
+                </div>
+              </div>
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="docente" class="form-label">Docente</label>
-                  <select name="docente" id="docente" class="form-select">
-                    <option value="">Sin Asignar</option>
+                  <select name="docente" id="docente" class="form-select select_docente">
+                    <option value="" selected="True">Sin Asignar</option>
                     {%for docente in docentes%}
                       <option value="{{docente[0]}}">{{docente[9]}} | {{docente[2]}} {{docente[3]}} | {{docente[10]}}</option>
                     {%endfor%}
@@ -275,4 +282,9 @@
   </div>
 </div>
 
+<script>
+$(document).ready(function() {
+  $('.select_docente').select2();
+});
+</script>
 {%endblock%}

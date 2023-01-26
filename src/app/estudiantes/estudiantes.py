@@ -125,18 +125,21 @@ def estudiantes_excel():
                 df = pd.read_excel(excel)
                 # Se obtiene el nombre de las columnas
                 columnas = df.columns
+                df.dropna(how='all', inplace=True)
+                print(df)
                 # Recorreror las columnas y enviar la información
                 for index, row in df.iterrows():
                     # se verifica que se halla asignado un docente al curso
+                    print(row)
                     if Curso().obtener_curso_docente(id_curso) != None:
                         #Verificar que el estudiante no se encuentre previamente registrado y omitir el la columna
-                        if Estudiante().verificacion_estudiantes(row[columnas[3]], current_user.id_cliente) == False:
-                            estudiante = Estudiante(row[columnas[0]], row[columnas[1]], row[columnas[2]], row[columnas[3]], row[columnas[4]], row[columnas[5]], row[columnas[6]], row[columnas[7]], current_user.id_cliente, "1")
+                        if Estudiante().verificacion_estudiantes(int(row[columnas[3]]), current_user.id_cliente) == False:
+                            estudiante = Estudiante(row[columnas[0]], row[columnas[1]], row[columnas[2]], int(row[columnas[3]]), row[columnas[4]], int(row[columnas[5]]), int(row[columnas[6]]), row[columnas[7]], current_user.id_cliente, "1")
                             if estudiante.guardar_estudiante():
                                 # verificar si el estudiante se registro correctamente
-                                if Estudiante.verificacion_estudiantes(row[columnas[3]], current_user.id_cliente):
+                                if Estudiante.verificacion_estudiantes(int(row[columnas[3]]), current_user.id_cliente):
                                     # Se obtiene el id del estudiante
-                                    id_estudiante = Estudiante.estudiante_id(row[columnas[3]], current_user.id_cliente)
+                                    id_estudiante = Estudiante.estudiante_id(int(row[columnas[3]]), current_user.id_cliente)
                                     nombres_docente = Curso.obtener_curso_docente(id_curso)[0] + " " + Curso.obtener_curso_docente(id_curso)[1]
                                     nombre_curso = Curso.obtener_curso_docente(id_curso)[3]
                                     codigo_curso = Curso.obtener_curso_docente(id_curso)[4]
@@ -163,12 +166,13 @@ def estudiantes_excel():
                                         flash('No se pudo registrar el estudiante')
                                         return redirect(url_for('estudiantes.registro_estudiantes'))
 
-                                flash('El estudiante ' + str(row[columnas[3]]) + ' se registro correctamente')
+                                flash('El estudiante ' + str(int(row[columnas[3]])) + ' se registro correctamente')
                                 pass
                             else:
+                                flash('No se pudo registrar el estudiante')
                                 pass
                         else:
-                            flash('Ya se encuentra registrado ' + str(row[columnas[3]]))
+                            flash('Ya se encuentra registrado ' + str(int(row[columnas[3]])))
                             pass
                     else:
                         flash('Por favor asigne un docente al curso antes de registrar estudiantes')

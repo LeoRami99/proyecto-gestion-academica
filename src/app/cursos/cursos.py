@@ -47,14 +47,22 @@ def registrar_curso():
         id_cliente = request.form['id_cliente']
         last_id = Curso.obtener_id_curso()
         docente = request.form['docente']
+        ubicacion = request.form['ubicacion']
         print(docente)
         if docente == '':
-            if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
+            if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente and ubicacion:
                 codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
-                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
+                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente, ubicacion)
                 if curso.guardar_curso():
-                    flash('Curso registrado correctamente')
-                    return redirect(url_for('cursos.listar_cursos'))
+                    # Se hace el registro del curso y se asigna las campos a la fecha de cierre
+                    if curso.asignar_cierre_curso(curso.obtener_curso_id(codigo_curso), current_user.id_cliente):
+                        flash('Curso registrado correctamente')
+                        return redirect(url_for('cursos.listar_cursos'))
+                    else:
+                        flash('El curso se genero correctamente, pero no se pudo asignar la fecha de cierre')
+                        return redirect(url_for('cursos.index'))
+                    # flash('Curso registrado correctamente')
+                    # return redirect(url_for('cursos.listar_cursos'))
                 else:
                     flash('Error al registrar curso')
                     return redirect(url_for('cursos.index'))
@@ -62,9 +70,9 @@ def registrar_curso():
                 flash('Por favor, complete los campos')
                 return redirect(url_for('cursos.index'))
         else:
-            if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente:
+            if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente and ubicacion:
                 codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
-                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente)
+                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente, ubicacion)
                 if curso.guardar_curso():
                     # obtener el id del curso que se acaba de registrar
                     id_curso = Curso.obtener_curso_id(codigo_curso)
@@ -274,9 +282,10 @@ def actualizar_curso():
         enlace_clase = request.form['enlace_clase']
         enlace_grabacion = request.form['enlace_grabacion']
         enlace_formulario = request.form['enlace_formulario']
+        ubicacion = request.form['ubicacion']
         print(id_curso, nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, duracion, intensidad_horaria, cantidad_sesiones, cupo, enlace_clase, enlace_grabacion, enlace_formulario)
-        if id_curso and nombre_curso and codigo_curso and fecha_inicio and fecha_fin and horario and duracion and intensidad_horaria and cantidad_sesiones and cupo and enlace_clase and enlace_grabacion and enlace_formulario:
-            curso = Curso(nombre_curso=nombre_curso, codigo_curso=codigo_curso, fecha_incio=fecha_inicio, fecha_fin=fecha_fin, horario=horario, duracion=duracion, intensidad_horaria=intensidad_horaria, cantidad_sesiones=cantidad_sesiones, cupo_curso=cupo, enlace_clase=enlace_clase, enlace_grabaciones=enlace_grabacion, enlace_form_asistencia=enlace_formulario)
+        if id_curso and nombre_curso and codigo_curso and fecha_inicio and fecha_fin and horario and duracion and intensidad_horaria and cantidad_sesiones and cupo and enlace_clase and enlace_grabacion and enlace_formulario and ubicacion:
+            curso = Curso(nombre_curso=nombre_curso, codigo_curso=codigo_curso, fecha_incio=fecha_inicio, fecha_fin=fecha_fin, horario=horario, duracion=duracion, intensidad_horaria=intensidad_horaria, cantidad_sesiones=cantidad_sesiones, cupo_curso=cupo, enlace_clase=enlace_clase, enlace_grabaciones=enlace_grabacion, enlace_form_asistencia=enlace_formulario, ubicacion=ubicacion)
             if curso.actualizar_curso(id_curso):
                 flash('Curso actualizado correctamente')
                 return redirect(url_for('cursos.listar_cursos'))
@@ -326,13 +335,6 @@ def reactivar_curso():
        
 
 
-        
-
-       
-
-
-
-
 
 ##########################################################################
 # --------------------- Rutas para la consulta ajax -------------------- #
@@ -347,6 +349,7 @@ def consultar_curso():
         curso = Curso()
         curso = curso.obtener_curso(id_curso)
         date_format = "%Y-%m-%d"
+        print("Aqui estoy haciendo la consulta",curso)
         curso_json = {
             'nombre_curso': curso[1],
             'codigo_curso': curso[2],
@@ -360,7 +363,8 @@ def consultar_curso():
             'cupo_curso': curso[10],
             'enlace_clase': curso[11],
             'enlace_grabaciones': curso[12],
-            'enlace_asistencia': curso[13]
+            'enlace_asistencia': curso[13],
+            'ubicacion': curso[16]
         }
         return curso_json
     else:

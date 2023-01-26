@@ -217,15 +217,17 @@
           <b>Enlace del formulario:</b> <a href="{{curso[13]}}" target="_blank">{{curso[13]}}</a>
           {% endif %}
           <br>
+          <b>Ubicación:</b> {{curso[16]}}  
+          <br>
           {%if current_user.rol=="AD"%}
-          <b>Docente: </b> {{curso[16]}}
+          <b>Docente: </b> {{curso[17]}}
           <br>
           {% else %}
           {%endif%}
           {%if current_user.rol=="AD"%}
-          <b>Estudiantes: </b> {{curso[17]}}
+          <b>Estudiantes: </b> {{curso[18]}}
           {% else %}
-          <b>Estudiantes: </b> {{curso[16]}}
+          <b>Estudiantes: </b> {{curso[18]}}
           {%endif%}
         </div>
         <div class="card-footer">
@@ -343,6 +345,11 @@
             <input type="text" class="form-control" id="enlace_formulario" name="enlace_formulario"
               placeholder="Enlace del formulario" required>
           </div>
+          <div class="mb-3">
+            <label for="ubicacion" class="form-label">Ubicación</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion"
+              placeholder="Ubicación" required>
+          </div>
 
 
       </div>
@@ -390,6 +397,7 @@
         modal.find('.modal-body input#enlace_clase').val(curso.enlace_clase)
         modal.find('.modal-body input#enlace_grabacion').val(curso.enlace_grabaciones)
         modal.find('.modal-body input#enlace_formulario').val(curso.enlace_asistencia)
+        modal.find('.modal-body input#ubicacion').val(curso.ubicacion)
 
       }
 

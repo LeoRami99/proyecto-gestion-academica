@@ -3,7 +3,7 @@ from conection_mysql import obtener_conexion
 
 
 class Curso():
-    def __init__(self, nombre_curso=None, codigo_curso=None, fecha_incio=None, fecha_fin=None, horario=None, modalidad=None, duracion=None, intensidad_horaria=None, cantidad_sesiones=None, cupo_curso=None, enlace_clase=None, enlace_grabaciones=None, enlace_form_asistencia=None, estado=None, id_cliente=None):
+    def __init__(self, nombre_curso=None, codigo_curso=None, fecha_incio=None, fecha_fin=None, horario=None, modalidad=None, duracion=None, intensidad_horaria=None, cantidad_sesiones=None, cupo_curso=None, enlace_clase=None, enlace_grabaciones=None, enlace_form_asistencia=None, estado=None, id_cliente=None, ubicacion=None):
         self.nombre_curso = nombre_curso
         self.codigo_curso = codigo_curso
         self.fecha_incio = fecha_incio
@@ -19,13 +19,14 @@ class Curso():
         self.enlace_form_asistencia = enlace_form_asistencia
         self.estado = estado
         self.id_cliente = id_cliente
+        self.ubicacion = ubicacion
 
     def guardar_curso(self):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """INSERT INTO curso (nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad, duracion, intensidad_horaria, cantidad_sesiones, cupo_curso, enlace_clase, enlace_grabaciones, formulario_asistencia, estado_curso, id_cliente) 
-            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}')""".format(self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, self.id_cliente)
+            sql = """INSERT INTO curso (nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad, duracion, intensidad_horaria, cantidad_sesiones, cupo_curso, enlace_clase, enlace_grabaciones, formulario_asistencia, estado_curso, id_cliente, lugar_presencial) 
+            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}')""".format( self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, self.id_cliente, self.ubicacion)
             cursor.execute(sql)
             conn.commit()
             return True
@@ -62,8 +63,8 @@ class Curso():
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_inicio = '{2}', fecha_fin = '{3}', horario = '{4}', duracion= '{5}', intensidad_horaria = '{6}', cantidad_sesiones = '{7}', cupo_curso = '{8}', enlace_clase = '{9}', enlace_grabaciones = '{10}', formulario_asistencia = '{11}' WHERE id = {12}""".format(
-                self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, id)
+            sql = """UPDATE curso SET nombre_curso = '{0}', codigo_curso = '{1}', fecha_inicio = '{2}', fecha_fin = '{3}', horario = '{4}', duracion= '{5}', intensidad_horaria = '{6}', cantidad_sesiones = '{7}', cupo_curso = '{8}', enlace_clase = '{9}', enlace_grabaciones = '{10}', formulario_asistencia = '{11}' , lugar_presencial = '{12}' WHERE id = {13}""".format(
+                self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.ubicacion, id)
             cursor.execute(sql)
             conn.commit()
             return True
@@ -252,19 +253,52 @@ class Curso():
             print(e)
             return False
 
+    """ 
+    funciones para la asignación del cierre del curso cuando se registre
+    el curso
+    
+    """
+
+    @classmethod
+    def asignar_cierre_curso(self, id_curso, id_cliente):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = """INSERT INTO cierre_cursos (id_curso, id_cliente) VALUES ('{0}', '{1}')""".format(id_curso, id_cliente)
+            cursor.execute(sql)
+            conn.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
     @classmethod
     def cerrar_curso(self, id_curso, id_cliente):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """UPDATE curso SET estado_curso = 0 WHERE id = '{0}' AND id_cliente = {1}""".format(
-                id_curso, id_cliente)
+            sql = """UPDATE curso SET estado_curso = 0 WHERE id = '{0}' AND id_cliente = {1}""".format(id_curso, id_cliente)
             cursor.execute(sql)
             conn.commit()
             return True
         except Exception as e:
             print("Aqui es el erro:", e)
             return False
+    @classmethod
+    def fecha_cerrar_curso(self, id_curso, id_cliente, fecha_cierre):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql="""UPDATE cierre_cursos SET fecha_cierre = '{0}' WHERE id_curso = '{1}' AND id_cliente = {2}""".format(fecha_cierre, id_curso, id_cliente)
+            cursor.execute(sql)
+            conn.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+    """ Fin funciones de cierre de curso """
+
+
 
     @classmethod
     def reactivar_curso(sefl, id_curso, id_cliente):
@@ -292,7 +326,6 @@ class Curso():
                 WHERE asignacion_docente_curso.id_curso = {0}""".format(id_curso)
             cursor.execute(sql)
             filas = cursor.fetchone()
-            print("Hola esta es la consulta de los docentes por curso:", filas)
             if cursor.rowcount == 0:
                 return None
             else:
