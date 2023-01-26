@@ -252,4 +252,44 @@ class Estudiante():
       except Exception as e:
         print(e)
         return False
+
+    """ Metodos para eliminar estudiantes de un curso tanto en la tabla asignacion_estudiantes_curso como en la tabla asistencias y calificaciones """
+
+
+    @classmethod
+    def eliminar_estudiante_curso(self, id_curso, id_estudiante, id_cliente):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = "DELETE FROM asignacion_estudiantes_curso WHERE id_curso='{0}' AND id_estudiante='{1}' AND id_cliente='{2}'".format(id_curso, id_estudiante, id_cliente)
+        cursor.execute(sql)
+        conn.commit()
+        return True
+      except Exception as e:
+        print(e)
+        return False
+    def eliminar_estudiante_asistencia(self, id_curso, id_estudiante, id_cliente):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = "DELETE FROM asistencias WHERE id_curso='{0}' AND id_estudiante='{1}' AND id_cliente='{2}'".format(id_curso, id_estudiante, id_cliente)
+        cursor.execute(sql)
+        conn.commit()
+        return True
+      except Exception as e:
+        print(e)
+        return False
+    def eliminar_estudiante_calificacion(self, id_curso, id_estudiante, id_cliente):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = "DELETE FROM calificaciones WHERE id_curso='{0}' AND id_estudiante='{1}' AND id_cliente='{2}'".format(id_curso, id_estudiante, id_cliente)
+        cursor.execute(sql)
+        conn.commit()
+        return True
+      except Exception as e:
+        print(e)
+        return False
+
+  
       

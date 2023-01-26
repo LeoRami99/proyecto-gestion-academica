@@ -63,6 +63,7 @@
               <th>Número de teléfono</th>
               <th>Número de teléfono fijo</th>
               <th>Ciudad y dirección</th>
+              <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -76,6 +77,14 @@
               <td>{{estudiante[6]}}</td>
               <td>{{estudiante[7]}}</td>
               <td>{{estudiante[8]}}</td>
+              <td>
+                <form action="{{url_for('estudiantes.eliminar_estudiante')}}" method="post">
+                  <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                  <input type="hidden" name="id_estudiante" value="{{estudiante[0]}}">
+                  <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                  <button type="submit" class="btn btn-danger" name="eliminar_estudiante">Eliminar</button>
+                </form>
+              </td>
             </tr>
             {%endfor%}
           </tbody>

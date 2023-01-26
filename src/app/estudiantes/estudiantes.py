@@ -26,13 +26,34 @@ def index():
     if request.method == 'POST':
         id_curso = request.form['id_curso']
         if id_curso:
-            curso= Curso().obtener_curso(id_curso)
+            curso = Curso().obtener_curso(id_curso)
             estudiante = estudiante.obtener_estudiantes_curso(id_curso)
             return render_template('estudiantes.html', estudiantes=estudiante, curso=curso)
     else:
         flash('No se pudo obtener los estudiantes')
         return redirect(url_for('inicio.index'))
     # return render_template('estudiantes.html')
+@estudiantes.route('/eliminar-estudiante', methods=['POST'])
+@login_required
+def eliminar_estudiante():
+    if request.method == 'POST':
+        id_estudiante = request.form['id_estudiante']
+        id_curso = request.form['id_curso']
+        if id_estudiante and id_curso:
+            estudiante = Estudiante()
+            if estudiante.eliminar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente) and estudiante.eliminar_estudiante_asistencia(id_curso, id_estudiante, current_user.id_cliente) and estudiante.eliminar_estudiante_calificacion(id_curso, id_estudiante, current_user.id_cliente):
+                flash('Estudiante eliminado del curso correctamente')
+                return redirect(url_for('cursos.listar_cursos'))
+            else:
+                flash('No se pudo eliminar el estudiante')
+                return redirect(url_for('cursos.listar_cursos'))
+        else:
+            flash('No se pudo eliminar el estudiante')
+            return redirect(url_for('cursos.listar_cursos'))
+    else:
+        flash('No se pudo eliminar el estudiante')
+        return redirect(url_for('cursos.listar_cursos'))
+
 @estudiantes.route('/registro-estudiantes')
 @login_required
 def registro_estudiantes():

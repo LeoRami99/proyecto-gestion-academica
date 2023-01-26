@@ -1,5 +1,6 @@
 import io
 from time import strftime
+from datetime import datetime
 from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash, Response, send_file
 from flask_login import login_required, current_user
 from .curso import Curso
@@ -48,7 +49,6 @@ def registrar_curso():
         last_id = Curso.obtener_id_curso()
         docente = request.form['docente']
         ubicacion = request.form['ubicacion']
-        print(docente)
         if docente == '':
             if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente and ubicacion:
                 codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
@@ -78,8 +78,12 @@ def registrar_curso():
                     id_curso = Curso.obtener_curso_id(codigo_curso)
                     if id_curso:
                         if curso.asignar_docente_curso(id_curso, docente, current_user.id_cliente, fecha_inicio, fecha_fin):
-                            flash('Curso registrado correctamente')
-                            return redirect(url_for('cursos.listar_cursos'))
+                            if curso.asignar_cierre_curso(id_curso, current_user.id_cliente):
+                                flash('Curso registrado correctamente')
+                                return redirect(url_for('cursos.listar_cursos'))
+                            else:
+                                flash('El curso se genero correctamente, pero no se pudo asignar la fecha de cierre')
+                                return redirect(url_for('cursos.index'))
                         else:
                             flash('Error al asignar docente al curso')
                             return redirect(url_for('cursos.index'))
@@ -300,7 +304,7 @@ def estado_curso():
         if id_curso:
             curso = Curso()
             if curso.estado_curso(id_curso, current_user.id_cliente):
-                if curso.cerrar_curso(id_curso, current_user.id_cliente):
+                if curso.cerrar_curso(id_curso, current_user.id_cliente) and curso.fecha_cerrar_curso(id_curso, current_user.id_cliente, datetime.now()):
                    flash('Curso cerrado correctamente')
                    return redirect(url_for('cursos.listar_cursos'))
                 else:
