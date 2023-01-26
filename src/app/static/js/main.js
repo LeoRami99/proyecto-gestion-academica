@@ -1,15 +1,14 @@
 console.log('%c¡Alto! ', 'color: red; font-size: 40px');
 console.log('%cEste es un espacio para desarrolladores. No intentes nada fuera de lo normal. ', 'color: red; font-size: 20px');
 
-
-
-
 // Jquery de DataTables para la tabla de docentes
 $(document).ready(function () {
   $("#tabla_docentes").DataTable({
     fixedColumns: {
       leftColumns: 1,
     },
+    // color de las letras de la tabla 
+    
     scrollX: true,
     scrollY: "500px",
     scrollCollapse: true,

@@ -180,7 +180,9 @@
                   <span class="alert alert-danger">Inactivo</span>
                 {%endif%}
               </td>
-              <td>{{docente[10]}}</td>
+              <td class="overflow-y-auto">
+                <div style="width: 200px; word-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">{{docente[10]}}</div>
+                </td>
               <td>
                 <div class="btn-group" role="group">
                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_docente" data-bs-whateve="{{docente[0]}}"><i class="bi bi-pencil-square"></i> Editar</button>
