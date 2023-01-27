@@ -397,9 +397,10 @@ def asistencia_estudiantes():
                    pass
     return render_template('asistencia_calificacion.html', cursos=lista_cursos_activos)
     # return render_template('asistencia_calificacion.html', cursos=lista_cursos_activos)
-@estudiantes.route('/asistencia-estudiantes/<id_curso>')
+@estudiantes.route('/asistencia-estudiantes', methods=['GET', 'POST'])
 @login_required
-def asistencia_estudiantes_id(id_curso):
+def asistencia_estudiantes_id():
+    id_curso = request.args.get('id_curso')
     estudiante = Estudiante()
     lista_asistencia = estudiante.obtener_asistencia_curso(id_curso, current_user.id_cliente)
     lista_estudiante_asistencia=[]
@@ -440,7 +441,7 @@ def enviar_asistencia():
         return redirect(url_for('estudiantes.asistencia_estudiantes_id', id_curso=id_curso))
     else:
         flash('No se actualiza la asistencia')
-        return redirect(url_for('estudiantes.asistencia_estudiantes'))
+        return redirect(url_for('estudiantes.asistencia_estudiantes', id_curso=id_curso))
 @estudiantes.route('/enviar-asistencia-excel', methods=['POST'])
 @login_required
 def enviar_asistencia_excel():
@@ -472,9 +473,10 @@ def enviar_asistencia_excel():
             return redirect(url_for('estudiantes.asistencia_estudiantes_id', id_curso=id_curso))
 
 
-@estudiantes.route('/calificaciones-estudiantes/<id_curso>/')
+@estudiantes.route('/calificaciones-estudiantes/', methods=['GET'])
 @login_required
-def calificaciones_estudiantes_id(id_curso):
+def calificaciones_estudiantes_id():
+    id_curso = request.args.get('id_curso')
     estudiante = Estudiante()
     lista_calificaciones = estudiante.obtener_calificaciones_curso(id_curso, current_user.id_cliente)
     lista_estudiante_calificaciones=[]
