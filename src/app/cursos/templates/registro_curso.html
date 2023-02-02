@@ -1,0 +1,119 @@
+{%extends "base.html"%}
+{%block title%}Cursos{%endblock%}
+{% block navbar %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" style="color:#ffffff;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:#ffffff;">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:#ffffff;">Pricing</a>
+        </li>
+      </ul> -->
+  </div>
+  <div class="d-flex">
+    <!-- <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-light me-2" role="button"
+      aria-pressed="true">Cerrar sesión</a> -->
+    <button class="btn t" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample">
+      <i class="bi bi-list" style="font-size: 30px; color: #ffffff;"></i>
+    </button>
+  </div>
+  </div>
+</nav>
+{% endblock %}
+{%block content%}
+
+
+
+<!-- titulo -->
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center mt-5 text-white" data-aos="fade-down" data-aos-duration="1000">Registro de curso</h1>
+    </div>
+  </div>
+  <!-- Formulario con 10 inputs organizados horizontalmente y verticalmente -->
+  <div class="row" data-aos="fade-up" data-aos-duration="1000">
+    <div class="col-12">
+      <form action="{{url_for('cursos.registrar_curso_maste_bd')}}" method="POST" class="m-5 bg-light p-5 rounded border shadow">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="nombre_curso" class="form-label">Nombre del curso</label>
+                  <input type="text" class="form-control p-2" id="nombre_curso" name="nombre_curso"
+                    placeholder="Nombre del curso" required>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="duracion_curso" class="form-label">Duración del curso</label>
+                  <input type="text" class="form-control p-2" id="duracion_curso" name="duracion_curso"
+                    placeholder="Duración del curso" min="1" required>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="cupo_curso" class="form-label">Cupo del curso</label>
+                  <input type="number" class="form-control p-2" id="cupo_curso" name="cupo_curso"
+                    placeholder="Cupo del curso" min="1" required>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="cantidad_notas" class="form-label">Cantidad notas</label>
+                  <input type="number" class="form-control p-2" id="cantidad_notas" name="cantidad_notas" max="9" min="0" required placeholder="Cantidad notas">
+                </div>
+              </div>
+              <!-- Aqui se comenta y se deja en 0 por defecto -->
+              <!-- <div class="col-12 col-md-6 col-lg-4"> -->
+                <!-- <div class="mb-3"> -->
+                  <!-- <label for="cantidad_asistencias" class="form-label">Cantidad asistencias</label> -->
+                  <input type="hidden" class="form-control p-2" id="cantidad_asistencias" name="cantidad_asistencias" max="30" min="1 " required placeholder="Cantidad asistencias" value="0">
+                <!-- </div> -->
+              <!-- </div> -->
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="cantidad_asis_aprobar" class="form-label">Cantidad aprobar asistencias</label>
+                  <input type="number" class="form-control p-2" id="cantidad_asis_aprobar" name="cantidad_asis_aprobar" max="100" min="1 " required placeholder="Cantidad aprobar asistencias">
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <!-- <label for="nombre" class="form-label">Nombre</label> -->
+                  <input type="hidden" class="form-control p-2" id="id_cliente" name="id_cliente"
+                    value="{{current_user.id_cliente}}">
+                </div>
+              </div>
+              <!-- Boton de enviar -->
+              <div class="col-12 mb-3 text-center">
+                <button type="submit" class="btn btn-card p-2 w-25">Enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $('.select_docente').select2();
+});
+</script>
+{%endblock%}

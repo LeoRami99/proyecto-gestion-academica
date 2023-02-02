@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -151,8 +151,8 @@
   </div>
   <!-- Lista de cursos en cards-->
   <!-- Barra de busqueda para filtrar las cards -->
-  
-  <div class="row">
+
+  <!-- <div class="row">
     <div class="col-12">
       <div class="container-fluid">
         <div class="row float-start">
@@ -167,12 +167,12 @@
           aria-describedby="addon-wrapping">
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 
 
-  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
+  {# <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
     {% for curso in cursos%}
     {% if curso[14] == 1 %}
     <div class="col mb-5">
@@ -217,7 +217,7 @@
           <b>Enlace del formulario:</b> <a href="{{curso[13]}}" target="_blank">{{curso[13]}}</a>
           {% endif %}
           <br>
-          <b>Ubicación:</b> {{curso[16]}}  
+          <b>Ubicación:</b> {{curso[16]}}
           <br>
           {%if current_user.rol=="AD"%}
           <b>Docente: </b> {{curso[17]}}
@@ -260,7 +260,8 @@
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
               <input type="hidden" name="id_curso" value="{{curso[0]}}">
               <button type="submit" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i class="bi bi-people"></i></button>
+                data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i
+                  class="bi bi-people"></i></button>
             </form>
           </div>
           {%else%}
@@ -273,7 +274,138 @@
     {% endfor %}
   </div>
   <!-- Paginacion de las cards de los cursos -->
+</div>#}
+<div class="container">
+
+  <table class="table bg-light text-center" id="tabla_curso" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Código curso</th>
+        <th>Fecha de inicio</th>
+        <th>Fecha de finalización</th>
+        <th>Horario</th>
+        <th>Modalidad</th>
+        <th>Duración</th>
+        <th>Intensidad horaria</th>
+        <th>Cantidad de sesiones</th>
+        <th>Cupo del curso</th>
+        <th>Enlace de la clase</th>
+        <th>Enlace de las grabaciones</th>
+        <th>Enlace del formulario</th>
+        <th>Sede y aula</th>
+        {%if current_user.rol=="AD"%}
+        <th>Docente</th>
+        {%endif%}
+        <th>Estudiantes</th>
+        <th>Estado</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for curso in cursos%}
+      {%if curso[14]==1%}
+      <tr>
+        <td>{{curso[1]}}</td>
+        <td>{{curso[2]}}</td>
+        <td>{{curso[3]}}</td>
+        <td>{{curso[4]}}</td>
+        <td>{{curso[5]}}</td>
+        <td>{{curso[6]}}</td>
+        <td>{{curso[7]}}</td>
+        <td>{{curso[8]}}</td>
+        <td>{{curso[9]}}</td>
+        <td>{{curso[10]}}</td>
+        <td><a href="{{curso[11]}}" target="_blank">{{curso[11]}}</a></td>
+        <td><a href="{{curso[12]}}" target="_blank">{{curso[12]}}</a></td>
+        <td><a href="{{curso[13]}}" target="_blank">{{curso[13]}}</a></td>
+        <td><div style="max-height: 100px; overflow: scroll;">{{curso[16]}}</div></td>
+        {%if current_user.rol == "AD"%}
+        <td>{{curso[18]}}</td>
+        {%endif%}
+        {%if current_user.rol == "AD"%}
+        <td>{{curso[19]}}</td>
+        {%else%}
+        <td>{{curso[18]}}</td>
+        {%endif%}
+        {%if curso[14] == 1%}
+        <td>
+          <div class="alert alert-success">Activo</div>
+        </td>
+        {%else%}
+        {%endif%}
+        <!-- acciones -->
+        <td>
+          <div class="dropdown-center">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="bi bi-gear-wide-connected"></i> Opciones
+            </button>
+            <ul class="dropdown-menu">
+              {%if current_user.rol == "AD"%}
+              <div class="btn-group float-end" role="group" aria-label="Botones de edición">
+                <button type="button" class="btn btn-outline-primary m-1 rounded" data-bs-toggle="modal"
+                  data-bs-target="#modal_curso" data-bs-whateve="{{curso[0]}}"><i class="bi bi-pencil"></i></button>
+                <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
+                  <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-custom-class="custom-tooltip"
+                    data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
+                      class="bi bi-filetype-xls"></i></button>
+                  <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                </form>
+                <form action="{{url_for('cursos.estado_curso')}}" method="post" class="m-1">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                  <button type="submit" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="Finalizar el curso"
+                    onclick="return confirm('¿Desea finalizar el curso ahora mismo?')"><i
+                      class="bi bi-flag"></i></button>
+                </form>
+                <form action="{{url_for('estudiantes.index')}}" method="post" class="m-1">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                  <button type="submit" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i
+                      class="bi bi-people"></i></button>
+                </form>
+              </div>
+              {%else%}
+                <div class="btn-group" role="group" aria-label="Botones de edición">
+                  <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
+                    <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
+                        class="bi bi-filetype-xls"></i></button>
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                  </form>
+                  <form action="{{url_for('estudiantes.index')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                    <button type="submit" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i
+                        class="bi bi-people"></i></button>
+                  </form>
+                </div>
+              {% endif %}
+            </ul>
+          </div>
+        </td>
+      </tr>
+      {%else%}
+      {%endif%}
+      {%endfor%}
+    </tbody>
+
+
+  </table>
+
 </div>
+
+
 
 
 <!-- Modal para editar la información del curso -->
@@ -289,14 +421,14 @@
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
           <input type="hidden" id="id_curso" name="id_curso">
           <div class="mb-3">
-            <label for="nombre_curso" class="form-label">Nombre del curso</label>
-            <input type="text" class="form-control" id="nombre_curso" name="nombre_curso" placeholder="Nombre del curso"
+            <!-- <label for="nombre_curso" class="form-label">Nombre del curso</label> -->
+            <input type="hidden" class="form-control" id="nombre_curso" name="nombre_curso" placeholder="Nombre del curso"
               required>
           </div>
 
           <div class="mb-3">
-            <label for="codigo_curso" class="form-label">Código del curso</label>
-            <input type="text" class="form-control" id="codigo_curso" name="codigo_curso" placeholder="Código del curso"
+            <!-- <label for="codigo_curso" class="form-label">Código del curso</label> -->
+            <input type="hidden" class="form-control" id="codigo_curso" name="codigo_curso" placeholder="Código del curso"
               required>
           </div>
           <div class="mb-3">
@@ -310,11 +442,14 @@
           </div>
           <div class="mb-3">
             <label for="horario" class="form-label">Horario</label>
-            <input type="text" class="form-control" id="horario" name="horario" placeholder="Horario" required>
+            <select name="horario" id="horario" class="form-select">
+              <option value="Lunes-Viernes 6-9 pm">Lunes-Viernes 6-9 pm</option>
+              <option value="Lunes-Jueves 6-9 pm">Lunes-Jueves 6-9 pm</option>
+            </select>
           </div>
           <div class="mb-3">
-            <label for="duracion" class="form-label">Duración</label>
-            <input type="text" class="form-control" id="duracion" name="duracion" placeholder="Duración" required>
+            <!-- <label for="duracion" class="form-label">Duración</label> -->
+            <input type="hidden" class="form-control" id="duracion" name="duracion" placeholder="Duración" required>
           </div>
           <div class="mb-3">
             <label for="intensidad_horaria" class="form-label">Intensidad horaria</label>
@@ -322,13 +457,13 @@
               placeholder="Intensidad horaria" required>
           </div>
           <div class="mb-3">
-            <label for="cantidad_sesiones" class="form-label">Cantidad de sesiones</label>
-            <input type="text" class="form-control" id="cantidad_sesiones" name="cantidad_sesiones"
+            <!-- <label for="cantidad_sesiones" class="form-label">Cantidad de sesiones</label> -->
+            <input type="hidden" class="form-control" id="cantidad_sesiones" name="cantidad_sesiones"
               placeholder="Cantidad de sesiones" required>
           </div>
           <div class="mb-3">
-            <label for="cupo" class="form-label">Cupo</label>
-            <input type="text" class="form-control" id="cupo" name="cupo" placeholder="Cupo" required>
+            <!-- <label for="cupo" class="form-label">Cupo</label> -->
+            <input type="hidden" class="form-control" id="cupo" name="cupo" placeholder="Cupo" required>
           </div>
           <div class="mb-3">
             <label for="enlace_clase" class="form-label">Enlace de la clase</label>
@@ -347,8 +482,7 @@
           </div>
           <div class="mb-3">
             <label for="ubicacion" class="form-label">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion"
-              placeholder="Ubicación" required>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Ubicación" required>
           </div>
 
 

@@ -3,7 +3,7 @@ from conection_mysql import obtener_conexion
 
 
 class Curso():
-    def __init__(self, nombre_curso=None, codigo_curso=None, fecha_incio=None, fecha_fin=None, horario=None, modalidad=None, duracion=None, intensidad_horaria=None, cantidad_sesiones=None, cupo_curso=None, enlace_clase=None, enlace_grabaciones=None, enlace_form_asistencia=None, estado=None, id_cliente=None, ubicacion=None):
+    def __init__(self, nombre_curso=None, codigo_curso=None, fecha_incio=None, fecha_fin=None, horario=None, modalidad=None, duracion=None, intensidad_horaria=None, cantidad_sesiones=None, cupo_curso=None, enlace_clase=None, enlace_grabaciones=None, enlace_form_asistencia=None, estado=None, id_cliente=None, ubicacion=None, id_reg_curso=None):
         self.nombre_curso = nombre_curso
         self.codigo_curso = codigo_curso
         self.fecha_incio = fecha_incio
@@ -20,18 +20,19 @@ class Curso():
         self.estado = estado
         self.id_cliente = id_cliente
         self.ubicacion = ubicacion
+        self.id_reg_curso = id_reg_curso
 
     def guardar_curso(self):
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """INSERT INTO curso (nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad, duracion, intensidad_horaria, cantidad_sesiones, cupo_curso, enlace_clase, enlace_grabaciones, formulario_asistencia, estado_curso, id_cliente, lugar_presencial) 
-            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}')""".format( self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, self.id_cliente, self.ubicacion)
+            sql = """INSERT INTO curso (nombre_curso, codigo_curso, fecha_inicio, fecha_fin, horario, modalidad, duracion, intensidad_horaria, cantidad_sesiones, cupo_curso, enlace_clase, enlace_grabaciones, formulario_asistencia, estado_curso, id_cliente, lugar_presencial, id_reg_cursos) 
+            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', '{16}')""".format( self.nombre_curso, self.codigo_curso, self.fecha_incio, self.fecha_fin, self.horario, self.modalidad, self.duracion, self.intensidad_horaria, self.cantidad_sesiones, self.cupo_curso, self.enlace_clase, self.enlace_grabaciones, self.enlace_form_asistencia, self.estado, self.id_cliente, self.ubicacion, self.id_reg_curso)
             cursor.execute(sql)
             conn.commit()
             return True
         except Exception as e:
-            print(e)
+            print("error al guarda:", e)
             return False
 
     def obtener_cursos(self, id_cliente):
@@ -46,7 +47,51 @@ class Curso():
         except Exception as e:
             print(e)
             return False
-
+    # reigstro y consulta de cursos maestros
+    def obtener_reg_curso(self):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = "SELECT * FROM reg_cursos"
+            cursor.execute(sql)
+            cursos = cursor.fetchall()
+            if cursos is None:
+                return False
+            else:
+                return cursos
+        except Exception as e:
+            print(e)
+            return False
+    @classmethod
+    def obtener_reg_curso_id(self, id):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = "SELECT * FROM reg_cursos WHERE id='{0}'".format(id)
+            cursor.execute(sql)
+            cursos = cursor.fetchone()
+            if cursos is None:
+                return False
+            else:
+                return cursos
+        except Exception as e:
+            print(e)
+            return False
+    @classmethod
+    def guardar_curso_master(self, nombre_curso, duracion_curso, cupo_curso, cantidad_notas, cantidad_asistencias, cantidad_asis_aprobar, id_cliente ):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = """INSERT INTO reg_cursos (nombre_curso, duracion_curso, cupo_curso, cantidad_notas, cantidad_asistencias, max_asistencia, id_cliente) 
+            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')""".format(nombre_curso, duracion_curso, cupo_curso, cantidad_notas, cantidad_asistencias, cantidad_asis_aprobar, id_cliente)
+            cursor.execute(sql)
+            conn.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+    
+    @classmethod
     def obtener_curso(self, id):
         try:
             conn = obtener_conexion()
@@ -170,13 +215,13 @@ class Curso():
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """SELECT asignacion_estudiantes_curso.id_estudiante, ((calificaciones.nota1 + calificaciones.nota2 + calificaciones.nota3) / 3) * 0.3 as corte1, ((calificaciones.nota4 + calificaciones.nota5 + calificaciones.nota6) / 3) * 0.3 as corte2, ((calificaciones.nota7 + calificaciones.nota8 + calificaciones.nota9) / 3)* 0.4 as corte3
+            sql = """SELECT asignacion_estudiantes_curso.id_estudiante, (calificaciones.nota1 + calificaciones.nota2 + calificaciones.nota3 + calificaciones.nota4 + calificaciones.nota5+ calificaciones.nota6 + calificaciones.nota7 + calificaciones.nota8 + calificaciones.nota9+ calificaciones.nota10) as nota
                 FROM asignacion_estudiantes_curso 
                 INNER JOIN calificaciones ON asignacion_estudiantes_curso.id_estudiante = calificaciones.id_estudiante 
                 AND asignacion_estudiantes_curso.id_curso = calificaciones.id_curso 
-                WHERE asignacion_estudiantes_curso.id_curso = {0}""".format(id_curso)
+                WHERE asignacion_estudiantes_curso.id_curso={0}""".format(id_curso)
             cursor.execute(sql)
-            filas = cursor.fetchall()
+            filas = cursor.fetchall()   
             return filas
         except Exception as e:
             print(e)
@@ -214,30 +259,41 @@ class Curso():
     @classmethod
     def estado_curso(self, id_curso, id_cliente):
         try:
-            cantidad_estudiantes = self.count_estudiantes_curso(
-                id_curso, id_cliente)
+
+            cantidad_estudiantes = self.count_estudiantes_curso(id_curso, id_cliente)
             notas_estudiantes = self.consulta_notas_curso(id_curso)
             lista_notas_finales = []
             lista_asistencia_estudiante = []
             lista_result_condiciones = []
+            # se obtiene los datos necesarios para las calificaciones y notas
+            id_reg_curso=self.obtener_curso(id_curso)[17]
+            infomacion_reg_curso = self.obtener_reg_curso_id(id_reg_curso)
+            max_asistencias = infomacion_reg_curso[6]
+            max_notas = infomacion_reg_curso[4]
+            
+            # información de los porcentajes de cierre del curso
+            
             for indice in notas_estudiantes:
                 # colocar el id y la asistencia
-                lista_asistencia_estudiante.append(
-                    [indice[0], self.asistencia_estudiante_curso(indice[0], id_curso)])
+                lista_asistencia_estudiante.append([indice[0], self.asistencia_estudiante_curso(indice[0], id_curso)])
+            
+
 
             for indice in notas_estudiantes:
                 # colocar el id y la nota final
                 lista_notas_finales.append(
-                    [indice[0], float(indice[1])+float(indice[2])+float(indice[3])])
+                    [indice[0], float(indice[1]/max_notas)])
+            
 
             for indice in zip(lista_notas_finales, lista_asistencia_estudiante):
-                if indice[0][1] >= 3.0 and indice[1][1] >= 66:
+                print("Esta son las notas de los estudiantes:", indice)
+                if indice[0][1] >= 3.0 and indice[1][1] >= max_asistencias:
                     lista_result_condiciones.append([indice[0][0], True])
-                elif indice[0][1] < 3.0 and indice[1][1] >= 66:
+                elif indice[0][1] < 3.0 and indice[1][1] >= max_asistencias:
                     lista_result_condiciones.append([indice[0][0], False])
-                elif indice[0][1] >= 3.0 and indice[1][1] < 66:
+                elif indice[0][1] >= 3.0 and indice[1][1] < max_asistencias:
                     lista_result_condiciones.append([indice[0][0], False])
-                elif indice[0][1] < 3.0 and indice[1][1] < 66:
+                elif indice[0][1] < 3.0 and indice[1][1] < max_asistencias:
                     lista_result_condiciones.append([indice[0][0], True])
             # se hace que cuando todos esten en verdadero retornar verdadero para confirmar el cambio del curso
             contador = 0
@@ -333,5 +389,47 @@ class Curso():
         except Exception as e:
             print("prueba de error", e)
             return False
-
-
+    """ solo se obtiene el estado del curso al que se le pasa el id """
+    @classmethod
+    def obtener_estado_curso(self, id_curso):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = """SELECT estado_curso FROM curso WHERE id = {0}""".format(id_curso)
+            cursor.execute(sql)
+            filas = cursor.fetchone()
+            if cursor.rowcount == 0:
+                return 0
+            else:
+                return filas[0]
+        except Exception as e:
+            print("prueba de error", e)
+            return False
+    # Traer la calificaciones y las asistencias de los estudiantes asignados de los estudiantes para enviar un correo.
+    @classmethod
+    def calificacion_final(self, id_curso):
+        try:
+            conn = obtener_conexion()
+            cursor = conn.cursor()
+            sql = """SELECT estudiantes.id, estudiantes.nombre, estudiantes.apellido , estudiantes.correo, calificaciones.nota10 FROM calificaciones JOIN estudiantes ON calificaciones.id_estudiante = estudiantes.id WHERE calificaciones.id_curso={0}""".format(id_curso)
+            cursor.execute(sql)
+            filas = cursor.fetchone()
+            if cursor.rowcount == 0:
+                return None
+            else:
+                return filas[0]
+        except Exception as e:
+            print("prueba de error", e)
+            return False
+    # @classmethod
+    # # def asistencia_final(self, id_curso)
+    # #     try:
+    # #         conn = obtener_conexion()
+    # #         cursor = conn.cursor()
+            
+    # #         cursor.execute(sql)
+    # #         filas = cursor.fetchone()
+    # #         if cursor.rowcount == 0:
+    # #             return None
+    # #         else:
+    # #             return filas[0]

@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -140,7 +140,7 @@
        <h1 class="text-center mt-5 text-white" data-aos="fade-down" data-aos-duration="1000">Asistencia y calificaciones</h1>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
      <div class="col-12">
       <div class="container-fluid">
         <div class="row float-start">
@@ -155,19 +155,51 @@
            aria-describedby="addon-wrapping">
        </div>
      </div>
-   </div>
+   </div> -->
 
 
-  <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
-    {% for curso in cursos%}
-    <div class="col">
+  <!-- <div class="row row-cols-1 row-cols-md-3 g-4" id="listado"> -->
+    <div class="table-responsive">
+      
+      <table class="table bg-light text-center table-hover" id="tabla_asistencia_calificaciones" style="width: 100%;">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Código</th>
+            <th scope="col">Fecha de inicio</th>
+            <th scope="col">Fecha de fin</th>
+            <th>Asistencia y calificaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for curso in cursos%}
+          <tr>
+          <td colspan="1">{{curso[1]}}</td>
+          <td colspan="1">{{curso[2]}}</td>
+          <td colspan="1">{{curso[3]}}</td>
+          <td colspan="1">{{curso[4]}}</td>
+          <td colspan="1">
+            <div class="text-center">
+              
+              <a href="{{url_for('estudiantes.asistencia_estudiantes_id', id_curso=curso[0])}}" class="btn btn-card me-2"
+              role="button" aria-pressed="true">Asistencia</a>
+              <a href="{{url_for('estudiantes.calificaciones_estudiantes_id', id_curso=curso[0])}}" class="btn btn-card me-2"
+              role="button" aria-pressed="true">Calificaciones</a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+    {#<div class="col">
       <div class="card">
         <div class="card-header">
           <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}} | {{curso[2]}}</h5>
         </div>
-
+        
         <div class="card-body">
-
+          
           <!-- se asigna mediante un select al docente -->
           <h5 class="">
             Código curso: {{curso[2]}}
@@ -189,9 +221,9 @@
 
         </div>
       </div>
-    </div>
-    {% endfor %}
-  </div>
+    </div>#}
+   
+  <!-- </div> -->
 
 
 

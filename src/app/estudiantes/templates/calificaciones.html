@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema </a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea </a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -76,11 +76,14 @@
               <!-- Lista de botonos -->
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
+                  <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-award"></i> Cursos</a>
                   {%if current_user.rol == "AD"%}
-                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
+                  <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-check-circle"></i> Registrar curso</a>
 
-                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
+                  <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-person-add"></i> Asignar Docentes</a>
                   {%endif%}
                 </div>
               </div>
@@ -99,9 +102,11 @@
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
                   {%if current_user.rol == "AD"%}
-                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
+                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-person-add"></i> Registrar estudiantes</a>
                   {%endif%}
-                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
+                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
                 </div>
               </div>
             </div>
@@ -118,8 +123,10 @@
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i class="bi bi-people"></i> Docentes</a>
-                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
+                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-people"></i> Docentes</a>
+                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i
+                      class="bi bi-plus-circle"></i> Registrar docentes</a>
                 </div>
               </div>
             </div>
@@ -141,74 +148,82 @@
 
 <!-- Lista de curso -->
 
-
-<form action="{{url_for('estudiantes.calificaciones_estudiantes')}}" method="post">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-  <input type="hidden" name="id_curso" value="{{id_curso}}">
-  <div class="table-responsive">
-    <!-- tabla con numero de documento, apellido, nombre y calificaciones separadas por 3 cortes y dentro de cada corte tiene 3 subcolumnas-->
-    <table class="table text-center table-bordered table-light" id="tabla_calificaciones_estudiante">
-      <thead>
-        <tr>
-          <th colspan="3">Datos estudiantes</th>
-          <th colspan="3">Corte 1</th>
-          <th colspan="3">Corte 2</th>
-          <th colspan="3">Corte 3</th>
-          <th colspan="2"></th>
-        </tr>
-        <tr>
-          <th>Número de documeto</th>
-          <th>Apellido</th>
-          <th>Nombre</th>
-          <th>Calificación 1</th>
-          <th>Calificación 2</th>
-          <th>Calificación 3</th>
-          <th>Calificación 4</th>
-          <th>Calificación 5</th>
-          <th>Calificación 6</th>
-          <th>Calificación 7</th>
-          <th>Calificación 8</th>
-          <th>Calificación 9</th>
-          <th>Calificación final</th>
-          <th>Observaciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for calif in calificaciones %}
-        <tr>
-          <td><input type="hidden" name="num_doc" id="" value="{{calif[2]}}">{{calif[2]}}</td>
-          <td>{{calif[1]}}</td> 
-          <td>{{calif[0]}}</td>
-          <td><input type="number" class="form-control" name="calif_1" value="{{calif[4]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_2" value="{{calif[5]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_3" value="{{calif[6]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_4" value="{{calif[7]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_5" value="{{calif[8]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_6" value="{{calif[9]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_7" value="{{calif[10]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_8" value="{{calif[11]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_9" value="{{calif[12]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="number" class="form-control" name="calif_10" value="{{calif[13]}}" min="0" max="5" step="0.01"></td>
-          <td><input type="text" class="form-control" name="observaciones" value="{{calif[14]}}"></td>
-        </tr>
-        {%endfor%}
-      </tbody>
-    </table>
-    <button type="submit" class="btn btn-card"
-    onclick="return confirm('¿Seguro/a quieres actualizar las calificaciones?')">Enviar</button>
-    {%if current_user.rol == "AD"%}
-    <button type="button" class="btn btn-card" data-bs-toggle="modal" data-bs-target="#subir_excel">
-      Subir archivo excel
-    </button>
+<div class="container">
+  <!-- Se hace validación de envios por parte de otros roles para el formulario -->
+  {%if current_user.rol == "AD" or current_user.rol=="DOC"%}
+  <form action="{{url_for('estudiantes.calificaciones_estudiantes')}}" method="post">
+    {%else%}
+    <form action="#" method="post"></form>
     {%endif%}
-</form>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="hidden" name="id_curso" value="{{id_curso}}">
+    <div class="table-responsive">
+      <!-- tabla con numero de documento, apellido, nombre y calificaciones separadas por 3 cortes y dentro de cada corte tiene 3 subcolumnas-->
+      <table class="table bg-light" id="tabla_calificaciones_estudiante" style="width: 100%;">
+        <thead>
+          <!-- <tr>
+            <th colspan="3">Datos estudiantes</th>
+            <th colspan="3">Corte 1</th>
+            <th colspan="3">Corte 2</th>
+            <th colspan="3">Corte 3</th>
+            <th colspan="2"></th>
+          </tr> -->
+          <tr>
+            <th>Número de documeto</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            {%for i in range(parametro_curso)%}
+            <th>Calificación {{i+1}}</th>
+            {%endfor%}
+            <th>Calificación final</th>
+
+            <!-- {% for j in range(parametro_curso+5, 15) %}
+              <th>Calificación {{j-4}}</th>
+              {% endfor %} -->
+            <!-- <th>observaciones</th> -->
+            <!-- <th>Calificación final</th> -->
+            <!-- <th>Observaciones</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for calif in calificaciones %}
+          <tr>
+            <td><input type="hidden" name="num_doc" id="" value="{{calif[2]}}">{{calif[2]}}</td>
+            <td>{{calif[1]}}</td>
+            <td>{{calif[0]}}</td>
+            {% for i in range(5, parametro_curso+5) %}
+            <td><input type="number" name="calif_{{i-4}}" value="{{calif[i]}}" class="form-control" min="0" max="5"
+                step="0.01"></td>
+            {% endfor %}
+            {% for j in range(parametro_curso+5, 14) %}
+            <input type="hidden" name="calif_{{j-4}}" value="0">
+            {% endfor %}
+
+            <td><input type="number" class="form-control" name="calif_10" value="{{calif[-1]}}" readonly></td>
+            <input type="hidden" class="form-control" name="observaciones" value="-">
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+      {%if current_user.rol == "AD" or current_user.rol=="DOC"%}
+      <button type="submit" class="btn btn-card"
+        onclick="return confirm('¿Seguro/a quieres actualizar las calificaciones?')">Enviar</button>
+      {%endif%}
+      {%if current_user.rol == "AD"%}
+      <button type="button" class="btn btn-card" data-bs-toggle="modal" data-bs-target="#subir_excel">
+        Subir archivo excel
+      </button>
+      {%endif%}
+  </form>
+</div>
 <form action="{{url_for('estudiantes.descargar_calificaciones')}}" method="post">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   <input type="hidden" name="id_curso" value="{{id_curso}}">
   <button type="submit" class="btn btn-card">Descargar calificaciones</button>
 </form>
 
 </div>
+<input type="hidden" value="{{parametro_curso}}" id="parametro_nota">
 
 
 <!-- Modal -->
@@ -222,39 +237,40 @@
       <div class="modal-body text-center">
         <h4><span class="badge bg-success">Por favor sube el excel de la siguiente forma:</span></h4>
         <div class="table-responsive">
-        <table class="table table-bordered">
-          <tr>
-            <th>Número de documento</th>
-            <th>Calificación 1</th>
-            <th>Calificación 2</th>
-            <th>Calificación 3</th>
-            <th>Calificación 4</th>
-            <th>Calificación 5</th>
-            <th>Calificación 6</th>
-            <th>Calificación 7</th>
-            <th>Calificación 8</th>
-            <th>Calificación 9</th>
-            <th>Calificación final</th>
-            <th>Observaciones</th>
-          </tr>
-          <tr>
-            <td>1234567890</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>Ninguna</td>
-          </tr>
-        </table>
-      </div>
-        <form action="{{url_for('estudiantes.calificaciones_estudiantes_excel')}}" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <table class="table table-bordered">
+            <tr>
+              <th>Número de documento</th>
+              <th>Calificación 1</th>
+              <th>Calificación 2</th>
+              <th>Calificación 3</th>
+              <th>Calificación 4</th>
+              <th>Calificación 5</th>
+              <th>Calificación 6</th>
+              <th>Calificación 7</th>
+              <th>Calificación 8</th>
+              <th>Calificación 9</th>
+              <th>Calificación final</th>
+              <th>Observaciones</th>
+            </tr>
+            <tr>
+              <td>1234567890</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
+              <td>Ninguna</td>
+            </tr>
+          </table>
+        </div>
+        <form action="{{url_for('estudiantes.calificaciones_estudiantes_excel')}}" method="POST"
+          enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
           <div class="mb-3">
             <input type="hidden" name="id_curso" value="{{id_curso}}">
             <label for="excel" class="form-label">Subir archivo</label>
@@ -266,5 +282,9 @@
     </div>
   </div>
 </div>
+
+
+<!-- hacer el promedio de notas -->
+
 
 {%endblock%}

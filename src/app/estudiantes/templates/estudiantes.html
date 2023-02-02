@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema | {{current_user.nombre}}</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea | {{current_user.nombre}}</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -47,10 +47,10 @@
 
 
 <!-- Tabla para verificar la información ver la información de los estudiantes por curso -->
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="col-12" data-aos="zoom-in" data-aos-duration="1000">
-      <div class="table-responsive">
+      
 
         <table class="table table-hover table-light" id="tabla_estudiante">
           <thead>
@@ -62,7 +62,11 @@
               <th>Correo</th>
               <th>Número de teléfono</th>
               <th>Número de teléfono fijo</th>
-              <th>Ciudad y dirección</th>
+              <th>Ciudad</th>
+              <th>Dirección</th>
+              <th>Sexo</th>
+              <th>Fecha de nacimiento</th>
+              <th>Educación</th>
               <th>Opciones</th>
             </tr>
           </thead>
@@ -77,20 +81,31 @@
               <td>{{estudiante[6]}}</td>
               <td>{{estudiante[7]}}</td>
               <td>{{estudiante[8]}}</td>
+              <td>{{estudiante[14]}}</td>
+              <td>{{estudiante[11]}}</td>
+              <td>{{estudiante[12]}}</td>
+              <td>{{estudiante[13]}}</td>
+              
               <td>
+                {% if current_user.rol == 'AD' %}
                 <form action="{{url_for('estudiantes.eliminar_estudiante')}}" method="post">
                   <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                   <input type="hidden" name="id_estudiante" value="{{estudiante[0]}}">
                   <input type="hidden" name="id_curso" value="{{curso[0]}}">
                   <button type="submit" class="btn btn-danger" name="eliminar_estudiante">Eliminar</button>
                 </form>
+                {% else %}
+                <div class="alert alert-danger">
+                  No disponible
+                </div>
+                {% endif %}
               </td>
             </tr>
             {%endfor%}
           </tbody>
         </table>
       </div>
-    </div>
+    
   </div>
 </div>
 

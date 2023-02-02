@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -35,148 +35,107 @@
 {% endblock %}
 {%block content%}
 
-<!-- Offcanva  -->
-{#<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div>
-      <div class="d-flex">
-        <script src="https://cdn.lordicon.com/fudrjiwc.js"></script>
-        <lord-icon src="https://cdn.lordicon.com/dxjqoygy.json" trigger="hover"
-          colors="primary:#121331,secondary:#6aa7e8" style="width:100px;height:100px" class="rounded-circle">
-        </lord-icon>
-        <div class="ms-3">
-          <h5>{{current_user.nombre}} {{current_user.apellido}}</h5>
-        </div>
-      </div>
-      <hr>
-      <div class="">
-        <div class="text-center">
-          <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-dark me-2" role="button"
-            aria-pressed="true">Cerrar sesión</a>
-          <hr>
-        </div>
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-            {%if current_user.rol=="DOC" or current_user.rol=="AD"%}
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingOne">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    <i class="bi bi-mortarboard"></i>
-                    <strong>
-                      Cursos
-                    </strong>
-                  </button>
-                </h2>
 
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                  data-bs-parent="#accordionFlushExample">
-                  <!-- Lista de botonos -->
-                  <div class="accordion-body">
-                    <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-
-                      <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
-                      {%if current_user.rol == "AD"%}
-                        <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
-                        <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
-                      {%endif%}
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            {%endif%}
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                <i class="bi bi-person"></i> <strong> Gestión estudiantes</strong>
-              </button>
-            </h2>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-              data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">
-                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  {%if current_user.rol == "AD" or current_user.rol=="ADM"%}
-                  <a href="{{url_for('estudiantes.registro_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Registrar estudiantes</a>
-                  {%endif%}
-                  {%if current_user.rol=="DOC" or current_user.rol=="AD"%}
-                  <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" type="button" class="btn btn-card"><i class="bi bi-card-checklist"></i> Asistencia y calificaciones</a>
-                  {%endif%}
-                </div>
-              </div>
-            </div>
-          </div>
-          {%if current_user.rol == "AD"%}
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                <i class="bi bi-people"></i> <strong>Docentes</strong>
-              </button>
-            </h2>
-            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-              data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">
-                <div class="btn-group-vertical w-100 g-3" role="group" aria-label="Vertical button group">
-                  <a href="{{url_for('docentes.index')}}" type="button" class="btn btn-card"><i class="bi bi-people"></i> Docentes</a>
-                  <a href="{{url_for('docentes.registroDocentes')}}" type="button" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar docentes</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          {%endif%}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>#}
 
 <section id="bienvenida" class="bienvenida">
-  <div id="particles-js"></div>
-  <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
+  <!-- <div id="particles-js"></div> -->
+  <!-- <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div> -->
   <!-- Header -->
-  <div class="px-4 py-5 my-5 text-center">
-    <!-- <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt=""
-      width="72" height="57"> -->
-    <h1 class="display-5 fw-bold tuclase">Bienvenido/a {{current_user.nombre}}</h1>
-    <div class="col-lg-6 mx-auto">
-      <div class="animate__animated animate__pulse animate__infinite animate__slower">
+  <div class="container">
 
-        <img src="{{url_for('static', filename='imgs/inicio_image.png')}}" class="img-fluid" alt="...">
+    <div class="row">
+      <div class="col-12 mt-3 mb-1 text-white">
+        <h1 class="">Resumen</h1>
+        <h6>Estado actual del sistema</h6>
       </div>
-      <p class="lead mb-4">
-
-      </p>
-      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <a href="#options"><script src="https://cdn.lordicon.com/fudrjiwc.js"></script>
-          <lord-icon
-              src="https://cdn.lordicon.com/rxufjlal.json"
-              trigger="hover"
-              colors="primary:#ffffff"
-              style="width:50px;height:50px">
-          </lord-icon>
-        </a>
+    </div>
+    <div class="row">
+      <div class="col-xl-3 col-sm-6 col-12" > 
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body student-card ">
+              <div class="media d-flex row">
+                <div class="align-self-center col">
+                  <i class="bi bi-people-fill float-start" style="font-size: 40pt;"></i>
+                </div>
+                <div class="media-body text-right col">
+                  <h3>{{conteo_estudiantes}}</h3>
+                  <span>Estudiantes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body curso-card">
+              <div class="media d-flex row">
+                <div class="align-self-center col">
+                  <i class="bi bi-mortarboard-fill float-start" style="font-size: 40pt;"></i>
+                </div>
+                <div class="media-body text-right col">
+                  <h3>{{conteo_curso}}</h3>
+                  <span>Cursos activos</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body curso-fin-card">
+              <div class="media d-flex row">
+                <div class="align-self-center col">
+                  <i class="bi bi-archive-fill float-start" style="font-size: 40pt;"></i>
+                </div>
+                <div class="media-body text-right col">
+                  <h3>{{conteo_cursos_finalizados}}</h3>
+                  <span>Cursos cerrados</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body docente-card">
+              <div class="media d-flex row">
+                <div class="align-self-center col">
+                  <i class="bi bi bi-person-workspace float-start" style="font-size: 40pt;"></i>
+                  <img src="https://iconos8.es/icon/oYto3gDewkU6/llamada-de-conferencia" alt="">
+                </div>
+                <div class="media-body text-right col">
+                  <h3>{{conteo_docentes}}</h3>
+                  <span>Docentes activos</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</section>
-<section id="options">
-  
-  <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
-  <div class="container">
-    <div class="text-center">
-      <h1 class="text-white mt-2">Opciones</h1>
+  <br>  
+  </section>
+  <section id="options">
+    
+    <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
+    <div class="container">
+      <div class="">
+        <h1 class="text-white mt-2">Opciones</h1>
       <hr>
     </div>
     <!-- Cards para cada apartado -->
-    <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 mt-2">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mt-2">
       <!-- Card de cursos  -->
-      {%if current_user.rol == "AD" or current_user.rol=="DOC"%}
-        <div class="col" data-aos="fade-right" data-aos-duration="1000">
+      {%if current_user.rol == "AD" or current_user.rol=="DOC" or current_user.rol == "ADV"%}
+        <div class="col" data-aos="fade-left" data-aos-duration="1000">
           <div class="card card-custom bg-white border-white border-0">
             <div class="card-custom-img"
               style="background-image: url(https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_960_720.jpg);">
@@ -193,14 +152,16 @@
             </div>
             <div class="card-footer" style="background: inherit; border-color: inherit;">
               <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-award"></i> Cursos activos </a>
-              <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos finalizados </a>
+              <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos cerrados </a>
 
               <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
               {%if current_user.rol== "AD"%}
-                <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar
-                curso</a>
-                <a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
-                Asignar docente</a>
+                <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-calendar-check"></i> Programación
+                cursos</a>
+                <a href="{{url_for('cursos.registrar_curso_master')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar
+                  cursos</a>
+                {#<a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
+                Asignar docente</a>#}
               {%endif%}
 
             </div>
@@ -208,8 +169,8 @@
         </div>
       {%endif%}
       <!-- Card de Estudiantes -->
-      {%if current_user.rol== "AD" or current_user.rol== "DOC" or current_user.rol== "ADM"%}
-        <div class="col" data-aos="fade-left" data-aos-duration="1000">
+      {%if current_user.rol== "AD" or current_user.rol== "DOC" or current_user.rol== "ADM" or current_user.rol == "ADV"%}
+        <div class="col" data-aos="fade-up" data-aos-duration="1000">
           <div class="card card-custom bg-white border-white border-0">
             <div class="card-custom-img"
               style="background-image: url(https://cdn.pixabay.com/photo/2017/07/31/11/21/people-2557396_960_720.jpg);">
@@ -229,7 +190,7 @@
                   class="bi bi-person-add"></i> Registrar estudiantes</a>
               <!-- <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a> -->
               {%endif%}
-              {%if current_user.rol == "AD" or current_user.rol== "DOC"%}
+              {%if current_user.rol == "AD" or current_user.rol== "DOC" or current_user.rol == "ADV"%}
               <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" class="btn btn-card"><i
                   class="bi bi-card-checklist"></i> Asistencia y Calificaciones</a>
               {%endif%}

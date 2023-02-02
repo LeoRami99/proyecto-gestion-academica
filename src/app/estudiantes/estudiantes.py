@@ -72,9 +72,13 @@ def guardar_estudiante():
         telefono = request.form['telefono']
         tel_fijo = request.form['tel_fijo']
         ciudad = request.form['ciudad']
+        direccion = request.form['direccion']
+        sexo = request.form['sexo']
+        fecha_nacimiento = request.form['fecha_nacimiento']
+        nivel_educacion = request.form['nivel_educacion']
         id_curso = request.form['id_curso']
-        if nombres and apellidos and tipo_doc and num_doc and correo and telefono and tel_fijo and ciudad:
-            estudiante = Estudiante(nombres, apellidos, tipo_doc, num_doc, correo, telefono, tel_fijo, ciudad, current_user.id_cliente, "1")
+        if nombres and apellidos and tipo_doc and num_doc and correo and telefono and tel_fijo and ciudad and direccion and sexo and fecha_nacimiento and nivel_educacion and id_curso:
+            estudiante = Estudiante(nombres, apellidos, tipo_doc, num_doc, correo, telefono, tel_fijo, ciudad, current_user.id_cliente, "1", sexo  , fecha_nacimiento, nivel_educacion, direccion)
             if Estudiante.verificacion_estudiantes(num_doc, current_user.id_cliente):
                 flash('El estudiante ya se encuentra registrado')
                 return redirect(url_for('estudiantes.registro_estudiantes'))
@@ -98,8 +102,9 @@ def guardar_estudiante():
                             enlace_clase = Curso.obtener_curso_docente(id_curso)[13]
                             enlace_grabaciones = Curso.obtener_curso_docente(id_curso)[14]
                             cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
+                            ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
                                 # envio de infomación al correo
-                            enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo,nombres, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+                            enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo,nombres, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
                             if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
                                 if Estudiante.generar_info_asistencia(id_estudiante, id_curso, current_user.id_cliente) and Estudiante.generar_info_calificaciones(id_estudiante, id_curso, current_user.id_cliente):
                                     flash('El estudiante se registro correctamente')
@@ -151,16 +156,30 @@ def estudiantes_excel():
                 # Recorreror las columnas y enviar la información
                 for index, row in df.iterrows():
                     # se verifica que se halla asignado un docente al curso
-                    print(row)
+                    """ 
+                    row[0] tipo de documento
+                    row[1] número de documento
+                    row[2] apellidos
+                    row[3] nombres
+                    row[4] fecha de nacimiento
+                    row[5] sexo
+                    row[6] nivel educativo
+                    row[7] telefono
+                    row[8] correo
+                    row[9] ciudad
+                    row[10] dirección
+                    
+                     """
+
                     if Curso().obtener_curso_docente(id_curso) != None:
                         #Verificar que el estudiante no se encuentre previamente registrado y omitir el la columna
                         if Estudiante().verificacion_estudiantes(int(row[columnas[3]]), current_user.id_cliente) == False:
-                            estudiante = Estudiante(row[columnas[0]], row[columnas[1]], row[columnas[2]], int(row[columnas[3]]), row[columnas[4]], int(row[columnas[5]]), int(row[columnas[6]]), row[columnas[7]], current_user.id_cliente, "1")
+                            estudiante = Estudiante(nombres=row[columnas[3]], apellidos=row[columnas[2]], tipo_doc=row[columnas[0]], num_doc=int(row[columnas[1]]), correo=row[columnas[8]], telefono=int(row[columnas[7]]), tel_fijo=int(0), ciudad=row[columnas[9]], id_cliente=current_user.id_cliente, estado="1", sexo=row[columnas[5]], fecha_nacimiento=row[columnas[4]], nivel_educativo=row[columnas[6]], direccion=row[columnas[10]])
                             if estudiante.guardar_estudiante():
                                 # verificar si el estudiante se registro correctamente
-                                if Estudiante.verificacion_estudiantes(int(row[columnas[3]]), current_user.id_cliente):
+                                if Estudiante.verificacion_estudiantes(int(row[columnas[1]]), current_user.id_cliente):
                                     # Se obtiene el id del estudiante
-                                    id_estudiante = Estudiante.estudiante_id(int(row[columnas[3]]), current_user.id_cliente)
+                                    id_estudiante = Estudiante.estudiante_id(int(row[columnas[1]]), current_user.id_cliente)
                                     nombres_docente = Curso.obtener_curso_docente(id_curso)[0] + " " + Curso.obtener_curso_docente(id_curso)[1]
                                     nombre_curso = Curso.obtener_curso_docente(id_curso)[3]
                                     codigo_curso = Curso.obtener_curso_docente(id_curso)[4]
@@ -172,9 +191,10 @@ def estudiantes_excel():
                                     enlace_clase = Curso.obtener_curso_docente(id_curso)[13]
                                     enlace_grabaciones = Curso.obtener_curso_docente(id_curso)[14]
                                     cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
+                                    ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
                                     # Se envia el correo al estudiante
 
-                                    enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), row[columnas[4]], row[columnas[0]], nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+                                    enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), row[columnas[8]], row[columnas[3]], nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
 
                                     # Se registra el estudiante en el curso
                                     if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
@@ -270,8 +290,9 @@ def asignar_estudiantes():
                                 cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
                                 nombre_estudiante = estudiantes.obtener_estudiante(id_estudiante)[0]
                                 correo = estudiantes.obtener_estudiante(id_estudiante)[3]
+                                ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
 
-                                enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+                                enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
 
 
                                 flash('El estudiante se asigno correctamente')
@@ -344,8 +365,9 @@ def estudiantes_curso_excel():
                                         cantidad_sesiones = Curso.obtener_curso_docente(id_curso)[11]
                                         nombre_estudiante = estudiante.obtener_estudiante(id_estudiante)[0]
                                         correo = estudiante.obtener_estudiante(id_estudiante)[3]
+                                        ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
 
-                                        enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones)
+                                        enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
                                         flash('El estudiante ' + str(row[columnas[0]]) + ' se asigno correctamente ')
                                         pass
                                     else:
@@ -373,12 +395,12 @@ def estudiantes_curso_excel():
 @login_required
 def asistencia_estudiantes():
     curso = Curso()
-    
+
     cursos =curso.obtener_cursos(current_user.id_cliente)
     # Solo va a mostrar los cursos activos
     asig_doc = curso.obtener_cursos_docente(current_user.id)
     lista_cursos_activos=[]
-    if current_user.rol == "AD":
+    if current_user.rol == "AD" or current_user.rol == "ADV":
         for indice in curso.obtener_cursos(current_user.id_cliente):
             if indice[14]==1:
                 lista_cursos_activos.append(indice)
@@ -401,16 +423,19 @@ def asistencia_estudiantes():
 @login_required
 def asistencia_estudiantes_id():
     id_curso = request.args.get('id_curso')
-    estudiante = Estudiante()
-    lista_asistencia = estudiante.obtener_asistencia_curso(id_curso, current_user.id_cliente)
-    lista_estudiante_asistencia=[]
-    for indice in lista_asistencia:
-        # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
-        estudiante_info = estudiante.obtener_estudiante(indice[1])
-        # print("id del estudiante",indice[0])
-        lista_estudiante_asistencia.append(estudiante_info+indice[4:34])
-        
-    return render_template('asistencia.html', asistencia=lista_estudiante_asistencia, id_curso=id_curso)
+    if Curso().obtener_estado_curso(id_curso) > 0:
+        estudiante = Estudiante()
+        lista_asistencia = estudiante.obtener_asistencia_curso(id_curso, current_user.id_cliente)
+        lista_estudiante_asistencia=[]
+        for indice in lista_asistencia:
+            # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
+            estudiante_info = estudiante.obtener_estudiante(indice[1])
+            # print("id del estudiante",indice[0])
+            lista_estudiante_asistencia.append(estudiante_info + indice[4:35]) 
+        return render_template('asistencia.html', asistencia=lista_estudiante_asistencia, id_curso=id_curso)
+    else:
+        flash('No se puede ingresar a las asistencias del curso, el curso está finalizado o no existe')
+        return redirect(url_for('estudiantes.asistencia_estudiantes'))
 
 @estudiantes.route('/enviar-asistencia', methods=['POST'])
 @login_required
@@ -425,13 +450,15 @@ def enviar_asistencia():
         for indice in range(30):
            lista_asistencias.append(request.form.getlist('asistencia_'+str(indice+1)))
         # se envia a la base de datos
+        lista_asistencias.append(request.form.getlist('observaciones'))
         estudiante = Estudiante()
+        print(lista_asistencias)
         # print(lista_asistencias[0])
         for indice in range(len(lista_asistencias[0])):
             
 
             # Condifición con 33 datos para el envio de información
-            if estudiante.actualizar_asistencia(estudiante.estudiante_id(lista_asistencias[0][indice], current_user.id_cliente), current_user.id_cliente, id_curso, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice]) == True:
+            if estudiante.actualizar_asistencia(estudiante.estudiante_id(lista_asistencias[0][indice], current_user.id_cliente), current_user.id_cliente, id_curso, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice], lista_asistencias[31][indice])==True:
                 # print((lista_asistencias[0][indice], current_user.id_cliente), id_curso, current_user.id_cliente, lista_asistencias[1][indice], lista_asistencias[2][indice], lista_asistencias[3][indice], lista_asistencias[4][indice], lista_asistencias[5][indice], lista_asistencias[6][indice], lista_asistencias[7][indice], lista_asistencias[8][indice], lista_asistencias[9][indice], lista_asistencias[10][indice], lista_asistencias[11][indice], lista_asistencias[12][indice], lista_asistencias[13][indice], lista_asistencias[14][indice], lista_asistencias[15][indice], lista_asistencias[16][indice], lista_asistencias[17][indice], lista_asistencias[18][indice], lista_asistencias[19][indice], lista_asistencias[20][indice], lista_asistencias[21][indice], lista_asistencias[22][indice], lista_asistencias[23][indice], lista_asistencias[24][indice], lista_asistencias[25][indice], lista_asistencias[26][indice], lista_asistencias[27][indice], lista_asistencias[28][indice], lista_asistencias[29][indice], lista_asistencias[30][indice])
                 flash('Se actualizo la asistencia del estudiante ' + str(lista_asistencias[0][indice]))
                 pass
@@ -477,15 +504,33 @@ def enviar_asistencia_excel():
 @login_required
 def calificaciones_estudiantes_id():
     id_curso = request.args.get('id_curso')
-    estudiante = Estudiante()
-    lista_calificaciones = estudiante.obtener_calificaciones_curso(id_curso, current_user.id_cliente)
-    lista_estudiante_calificaciones=[]
-    for indice in lista_calificaciones:
-        # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
-        estudiante_info = estudiante.obtener_estudiante(indice[2])
-        lista_estudiante_calificaciones.append(estudiante_info+indice[4:15])
-        
-    return render_template('calificaciones.html', calificaciones=lista_estudiante_calificaciones, id_curso=id_curso)
+    # este parametro de curso es para las calificaciones
+    try:
+        parametro_curso = Curso().obtener_reg_curso_id(Curso.obtener_curso(id_curso)[17])[4]
+        if parametro_curso != None:
+            if Curso().obtener_estado_curso(id_curso) > 0:
+                estudiante = Estudiante()
+                lista_calificaciones = estudiante.obtener_calificaciones_curso_id(id_curso, current_user.id_cliente)
+                lista_estudiante_calificaciones=[]
+                for indice in lista_calificaciones:
+                    estudiante_info = estudiante.obtener_estudiante(indice[0])
+                    # agregar calif_10 que es la ultima calificacion
+                    nota_final = indice[-1]
+                    lista_estudiante_calificaciones.append(estudiante_info+indice[:parametro_curso+1]+(nota_final,))
+
+
+
+                    # reemplazar el id del del estudiante por el nombre y el apellido y agregar el numero de documento
+                    # estudiante_info = estudiante.obtener_estudiante(indice[2])
+                    # # lista_estudiante_calificaciones.append(estudiante_info+indice[parametro_curso])
+                    # lista_estudiante_calificaciones = [estudiante_info + indice[4:parametro_curso+5] for indice in lista_calificaciones]
+                return render_template('calificaciones.html', calificaciones=lista_estudiante_calificaciones, id_curso=id_curso, parametro_curso=parametro_curso)
+            else:
+                flash('No se puede ingresar a las calificaciones del curso, el curso no esta activo')
+                return redirect(url_for('estudiantes.asistencia_estudiantes'))
+    except Exception as e:
+        flash('No se puede ingresar a las calificaciones del curso, el curso no esta activo')
+        return redirect(url_for('estudiantes.asistencia_estudiantes'))
 
 @estudiantes.route('/calificaciones-estudiantes', methods=['POST'])
 @login_required

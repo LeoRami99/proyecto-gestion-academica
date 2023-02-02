@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -148,7 +148,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12" data-aos="zoom-in" data-aos-duration="1000">
-        <table class="table bg-light table-hover" id="tabla_docentes">
+        <table class="table bg-light table-hover" id="tabla_docentes" style="width: 100%;">
           <thead>
             <tr>
               <th scope="col">Número de documento</th>
@@ -159,7 +159,7 @@
               <th scope="col">Teléfono</th>
               <th scope="col">Teléfono fijo</th>
               <th scope="col">Estado</th>
-              <th scope="col">Profesión</th>
+              <th scope="col">Especialización</th>
               <th scope="col">Acciones</th>
             </tr>
           </thead>
@@ -186,7 +186,7 @@
               <td>
                 <div class="btn-group" role="group">
                   <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_docente" data-bs-whateve="{{docente[0]}}"><i class="bi bi-pencil-square"></i> Editar</button>
-                  <a href="{{url_for('docentes.eliminar', id_docente=docente[0])}}" class="btn btn-outline-danger" onclick="return confirm('¿Seguro/a quieres eliminar a este docente?')"><i class="bi bi-trash"></i> Eliminar</a>
+                  {#<a href="{{url_for('docentes.eliminar', id_docente=docente[0])}}" class="btn btn-outline-danger" onclick="return confirm('¿Seguro/a quieres eliminar a este docente?')"><i class="bi bi-trash"></i> Eliminar</a>#}
               </td>
             </tr>
             {% endfor %}

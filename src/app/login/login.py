@@ -30,8 +30,12 @@ def login_sistem():
                 usuario = user.login(conn)
                 if usuario != None:
                     if usuario.contrasena is True:
-                        login_user(usuario)
-                        return redirect(url_for('inicio.index'))
+                        if usuario.estado >0:
+                            login_user(usuario)
+                            return redirect(url_for('inicio.index'))
+                        else:
+                            flash('Usuario inactivo')
+                            return redirect(url_for('login_page.login'))
                     else:
                         flash('Usuario o contraseña incorrectos')
                         return redirect(url_for('login_page.login'))

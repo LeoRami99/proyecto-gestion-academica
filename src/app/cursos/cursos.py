@@ -11,10 +11,11 @@ import xlwt
 
 cursos = Blueprint('cursos', __name__, template_folder='templates', url_prefix='/')
 
-@cursos.route('/registro_curso')
+@cursos.route('/programacion_curso')
 @login_required
 def index():
-    if current_user.rol == 'AD':
+    if current_user.rol == 'AD' or current_user.rol == "ADV":
+
         docente = Docente()
         docentes = docente.obtenerDocentesCliente(current_user.id_cliente)
         lista_docentes = []
@@ -23,7 +24,7 @@ def index():
                 lista_docentes.append(indice)
             else:
                 pass
-        return render_template('cursos.html', docentes=lista_docentes)
+        return render_template('cursos.html', docentes=lista_docentes, cursos=Curso().obtener_reg_curso())
     else:
         return redirect(url_for('inicio.index'))
 
@@ -31,16 +32,20 @@ def index():
 @login_required
 def registrar_curso():
     if request.method == 'POST':
+        # se obtiene el nombre del curso pero se pasa el paramaetro de id por lo que se hace una consulta
         nombre_curso= request.form['nombre_curso']
+        curso_master = Curso.obtener_reg_curso_id(nombre_curso)
         # codigo_curso = request.form['codigo_curso']
         fecha_inicio = request.form['fecha_inicio']
         fecha_fin = request.form['fecha_final']
         horario = request.form['horario_curso']
         modalidad_curso = request.form['modalidad_curso']
-        duracion_curso = request.form['duracion_curso']
+        # Se traen los datos para reemplazar duración del curso
+        duracion_curso = curso_master[2]
         intensidad_horaria = request.form['intensidad_horaria']
         cantidad_sesion = request.form['cantidad_sesiones']
-        cupo_curso = request.form['cupo_curso']
+        # Se traen los datos para reemplazar el cupo del curso
+        cupo_curso = curso_master[3]
         enlace_clase = request.form['enlace_clase']
         enlace_grabaciones = request.form['enlace_grabaciones']
         enlace_form_asistencia = request.form['enlace_form_asistencia']
@@ -49,10 +54,14 @@ def registrar_curso():
         last_id = Curso.obtener_id_curso()
         docente = request.form['docente']
         ubicacion = request.form['ubicacion']
+        # Se traen el id del curso maestro para guardarlo en la programación del curso
+        id_reg_curso = curso_master[0]
+        print("registro de curso:", id_reg_curso)
         if docente == '':
             if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente and ubicacion:
-                codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
-                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente, ubicacion)
+                # Se trae el nombre del curso maestro 
+                codigo_curso = acronimo(curso_master[1])+"-"+strftime("%Y")+str(last_id + 1)
+                curso = Curso(curso_master[1].title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente, ubicacion, id_reg_curso)
                 if curso.guardar_curso():
                     # Se hace el registro del curso y se asigna las campos a la fecha de cierre
                     if curso.asignar_cierre_curso(curso.obtener_curso_id(codigo_curso), current_user.id_cliente):
@@ -71,8 +80,8 @@ def registrar_curso():
                 return redirect(url_for('cursos.index'))
         else:
             if nombre_curso and fecha_inicio and fecha_fin and horario and modalidad_curso and duracion_curso and intensidad_horaria and cantidad_sesion and cupo_curso and enlace_clase and enlace_grabaciones and enlace_form_asistencia and estado_curso and id_cliente and ubicacion:
-                codigo_curso = acronimo(nombre_curso)+"-"+strftime("%Y")+str(last_id + 1)
-                curso = Curso(nombre_curso.title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente, ubicacion)
+                codigo_curso = acronimo(curso_master[1])+"-"+strftime("%Y")+str(last_id + 1)
+                curso = Curso(curso_master[1].title(), codigo_curso, fecha_inicio, fecha_fin, horario, modalidad_curso, duracion_curso, intensidad_horaria, cantidad_sesion, cupo_curso, enlace_clase, enlace_grabaciones, enlace_form_asistencia, estado_curso, id_cliente, ubicacion, id_reg_curso)
                 if curso.guardar_curso():
                     # obtener el id del curso que se acaba de registrar
                     id_curso = Curso.obtener_curso_id(codigo_curso)
@@ -114,12 +123,47 @@ def acronimo(nombre_curso):
     acronimo = "".join(map(lambda x: x[0].upper(), palabras_relevantes))
     return acronimo
 
-        
+
+# registro de cursos master
+
+@cursos.route("/registrar_curso_master")
+def registrar_curso_master():
+    return render_template('registro_curso.html')
+
+
+
+@cursos.route('/registrar_curso_master_bd', methods=['POST'])
+def registrar_curso_maste_bd():
+    if request.method == 'POST':
+        nombre_curso = request.form['nombre_curso']
+        duracion_curso = request.form['duracion_curso']
+        cupo_curso = request.form['cupo_curso']
+        cantidad_notas = request.form['cantidad_notas']
+        cantidad_asistencias = request.form['cantidad_asistencias']
+        cantidad_asis_aprobar = request.form['cantidad_asis_aprobar']
+        id_cliente = request.form['id_cliente']
+
+        if nombre_curso and duracion_curso and cupo_curso and cantidad_notas and cantidad_asistencias and cantidad_asis_aprobar and id_cliente:
+            curso = Curso(nombre_curso, duracion_curso, cupo_curso, cantidad_notas, cantidad_asistencias, cantidad_asis_aprobar, id_cliente)
+            if Curso().guardar_curso_master(nombre_curso, duracion_curso, cupo_curso, cantidad_notas, cantidad_asistencias, cantidad_asis_aprobar, id_cliente):
+                flash('Curso registrado correctamente')
+                return redirect(url_for('cursos.index'))
+            else:
+                flash('Error al registrar curso')
+                return redirect(url_for('cursos.index'))
+        else:
+            flash('Por favor, complete los campos')
+            return redirect(url_for('cursos.index'))
+    else:
+        flash('Error al registrar curso')
+        return redirect(url_for('cursos.index'))
+
+# fin de cursos masters
 
 @cursos.route('/listar_cursos')
 @login_required
 def listar_cursos():
-    if current_user.rol == 'AD':
+    if current_user.rol == 'AD' or current_user.rol == "ADV":
         curso = Curso()
         cursos = curso.obtener_cursos(current_user.id_cliente)
         # Datos del docente
@@ -170,7 +214,7 @@ def listar_cursos():
 @cursos.route('/cursos-no-activos')
 @login_required
 def cursos_no_activos():
-    if current_user.rol == 'AD':
+    if current_user.rol == 'AD' or current_user.rol == "ADV":
         curso = Curso()
         cursos = curso.obtener_cursos(current_user.id_cliente)
         # Datos del docente
@@ -385,7 +429,7 @@ def generar_informe():
             curso = Curso()
             curso = curso.obtener_curso(id_curso)
             # colocar información del curso en la hoja
-            nombre_curso = curso[1]
+            nombre_curso = curso[1] 
             codigo_curso = curso[2]
             fecha_inicio = curso[3].strftime("%d/%m/%Y")
             fecha_fin = curso[4].strftime("%d/%m/%Y")
@@ -408,7 +452,7 @@ def generar_informe():
             # Colocar todos los bordes a las celdas y centrar el texto
             estilo_texto = xlwt.easyxf('align: wrap on, vert centre, horiz center; borders: left thin, right thin, top thin, bottom thin;')
 
-            hoja = libro.add_sheet(nombre_curso)
+            hoja = libro.add_sheet("Informe de curso")
             hoja.write(0, 0, 'Nombre del curso', estilo_inf_curso)
             hoja.write(0, 1, nombre_curso, estilo_texto)
             hoja.write(1, 0, 'Código del curso', estilo_inf_curso)
@@ -595,7 +639,7 @@ def generar_informe():
             salida.seek(0)
             return Response(salida, mimetype='application/vnd.ms-excel', headers={'Content-Disposition':'attachment;filename=informe_'+nombre_curso+'.xls'})
         except Exception as e:
-            flash('Error al generar el reporte')
+            flash('Error al generar el reporte'+ str(e))
             return redirect(url_for('cursos.listar_cursos'))
     else:
         return redirect(url_for('cursos.listar_cursos'))

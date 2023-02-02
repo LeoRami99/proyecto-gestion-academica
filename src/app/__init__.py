@@ -33,10 +33,10 @@ def createApp():
     login_manager.login_view = 'login_page.login'
     login_manager.init_app(app)
     app.secret_key = 'mysecretkey'
-    app.config['MAIL_SERVER']='smtp.gmail.com'
+    app.config['MAIL_SERVER']='mail.cymetria.com'
     app.config['MAIL_PORT'] = 465
-    app.config['MAIL_USERNAME'] = 'fomalhautudecproyectos@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'tcet ejwe udhe elzd'
+    app.config['MAIL_USERNAME'] = 'formacioncolsubsidio@cymetria.com'
+    app.config['MAIL_PASSWORD'] = 'ColCgsas8796'
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
     mail.init_app(app)

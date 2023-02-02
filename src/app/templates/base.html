@@ -58,7 +58,7 @@
   {% endblock %}
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Nombre del sistema</h5>
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Atenea</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
@@ -70,6 +70,15 @@
           </lord-icon>
           <div class="ms-3">
             <h5>{{current_user.nombre}} {{current_user.apellido}}</h5>
+            {%if current_user.rol=="AD"%}
+            <h6>Rol: Administrador</h6>
+            {%elif current_user.rol=="DOC"%}
+            <h6>Rol: Docente</h6>
+            {%elif current_user.rol=="ADM"%}
+            <h6>Rol: Administrador admisiones</h6>
+            {%elif current_user.rol=="ADV"%}
+            <h6>Rol: Administrador de visualización</h6>
+            {%endif%}
           </div>
         </div>
         <hr>
@@ -101,7 +110,7 @@
                         <a href="{{url_for('cursos.listar_cursos')}}" type="button" class="btn btn-card"><i class="bi bi-award"></i> Cursos</a>
                         {%if current_user.rol == "AD"%}
                           <a href="{{url_for('cursos.index')}}" type="button" class="btn btn-card"><i class="bi bi-check-circle"></i> Registrar curso</a>
-                          <a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>
+                          {#<a href="{{url_for('cursos.asignar_docente')}}" type="button" class="btn btn-card"><i class="bi bi-person-add"></i> Asignar Docentes</a>#}
                         {%endif%}
                       </div>
                     </div>
@@ -166,7 +175,7 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="toast float-end m-2" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header" style="background-color: #003265; color: #ffffff;">
+      <div class="toast-header" style="background-color: rgba(34, 152, 18, 0.682); color: #ffffff;">
         <strong class="me-auto">Nombre del sistema</strong>
         <!-- <button type="button" data-bs-dismiss="toast" aria-label="Close"> -->
         <a href="" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x-circle-fill"
@@ -236,6 +245,8 @@
   <script src="{{url_for('static', filename='js/main.js')}}"></script>
   <!-- AOS js -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Alert personalizadas -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   
 

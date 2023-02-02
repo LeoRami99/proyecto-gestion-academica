@@ -1,10 +1,10 @@
 {%extends "base.html"%}
-{%block title%}Cursos no activos / finalizados{%endblock%}
+{%block title%}Cursos cerrados{%endblock%}
 {% block navbar %}
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -134,19 +134,19 @@
 
 
 <!-- titulo -->
-<div class="container-fluid">
+<div class="container">
   <div class="row">
     <div class="col-12">
       <div class="text-center">
-        <h1 class="display-4 text-white">Cursos finalizados</h1>
+        <h1 class="display-4 text-white">Cursos cerrados</h1>
       </div>
     </div>
   </div>
   <!-- Lista de cursos en cards-->
   <!-- Barra de busqueda para filtrar las cards -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
-      <!-- Paginacion de las cards de los cursos -->
+       Paginacion de las cards de los cursos 
       <div class="container-fluid">
         <div class="row float-start">
           <div class="col-12">
@@ -160,15 +160,170 @@
           aria-describedby="addon-wrapping">
       </div>
     </div>
-  </div>
+  </div> -->
+  <div class="table-responsive">
 
-
+    <table class="table bg-light text-center" id="tabla_curso_cerrado" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Código curso</th>
+          <th>Fecha de inicio</th>
+          <th>Fecha de finalización</th>
+          <th>Horario</th>
+          <th>Modalidad</th>
+          <th>Duración</th>
+          <th>Intensidad horaria</th>
+          <th>Cantidad de sesiones</th>
+          <th>Cupo del curso</th>
+          <th>Enlace de la clase</th>
+          <th>Enlace de las grabaciones</th>
+          <th>Enlace del formulario</th>
+          <th>Sede y aula</th>
+          {%if current_user.rol == "AD"%}
+          <th>Docente</th>
+          {%endif%}
+          <th>Estudiantes</th>
+          <th>Estado</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for curso in cursos%}
+        {%if curso[14] == 0%}
+        <tr>
+          <td>{{curso[1]}}</td>
+          <td>{{curso[2]}}</td>
+          <td>{{curso[3]}}</td>
+          <td>{{curso[4]}}</td>
+          <td>{{curso[5]}}</td>
+          <td>{{curso[6]}}</td>
+          <td>{{curso[7]}}</td>
+          <td>{{curso[8]}}</td>
+          <td>{{curso[9]}}</td>
+          <td>{{curso[10]}}</td>
+          <td>{{curso[11]}}</td>
+          <td>{{curso[12]}}</td>
+          <td>{{curso[13]}}</td>
+          <td>{{curso[16]}}</td>
+          <td>{{curso[18]}}</td>
+          {%if current_user.rol == "AD"%}
+          <td>{{curso[19]}}</td>
+          {%endif%}
+          <td>
+          {%if curso[14] == 0%}
+            <div class="alert alert-danger">
+              Cerrado
+            </div>
+          {%else%}
+          {%endif%}
+          </td>
+          <td>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-gear-wide-connected"></i>   Opciones
+              </button>
+              {%if current_user.rol == "AD"%}
+              <ul class="dropdown-menu">
+                <div class="btn-group float-end" role="group" aria-label="Botones de edición">
+                  <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
+                        class="bi bi-filetype-xls"></i></button>
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                  </form>
+                  <form action="{{url_for('estudiantes.descargar_calificaciones')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                    <button type="submit" class="btn btn-outline-success" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-custom-class="custom-tooltip"
+                    data-bs-title="Descargar calificaciones"><i class="bi bi-clipboard-check"></i> </button>
+                  </form>
+                  <form action="{{url_for('estudiantes.descargar_asistencias')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                    <button type="submit" class="btn btn-outline-success" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Descargar asistencias"><i class="bi bi-list-check"></i></button>
+                  </form>
+                  <form action="{{url_for('cursos.reactivar_curso')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Reactivar el curso"><i class="bi bi-arrow-clockwise"></i></button>
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                  </form>
+                  <form action="{{url_for('estudiantes.index')}}" method="post" class="m-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                    <button type="submit" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i
+                        class="bi bi-people"></i></button>
+                  </form>
+                </div>
+              </ul>
+                {%else%}
+                <ul class="dropdown-menu">
+                  <div class="btn-group float-end" role="group" aria-label="Botones de edición">
+                    <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                      <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
+                          class="bi bi-filetype-xls"></i></button>
+                      <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                    </form>
+                    <form action="{{url_for('estudiantes.descargar_calificaciones')}}" method="post" class="m-1">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                      <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                      <button type="submit" class="btn btn-outline-success" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Descargar calificaciones"><i class="bi bi-clipboard-check"></i> </button>
+                    </form>
+                    <form action="{{url_for('estudiantes.descargar_asistencias')}}" method="post" class="m-1">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                      <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                      <button type="submit" class="btn btn-outline-success" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Descargar asistencias"><i class="bi bi-list-check"></i></button>
+                    </form>
+                    <form action="{{url_for('estudiantes.index')}}" method="post" class="m-1">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                      <input type="hidden" name="id_curso" value="{{curso[0]}}">
+                      <button type="submit" class="btn btn-outline-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip" data-bs-title="Ver información de los estudiantes"><i
+                          class="bi bi-people"></i></button>
+                    </form>
+                  </div>
+                </ul>
+                
+                {% endif %}
+            </div>
+          </td>
+      </tr>
+      {%endif%}
+      {%endfor%}
+      
+    </tbody>
+    
+    
+  </table>
+</div>
+  
+  
+  
+  
+  
+  
+  <!-- 
 
 
   <div class="row row-cols-1 row-cols-md-3 g-4" id="listado">
     {% for curso in cursos%}
     {% if curso[14] == 0 %}
-    <div class="col mb-5">
+    {#<div class="col mb-5">
       <div class="card">
         <div class="card-header">
           <h5 class="card-title titulo"><i class="bi bi-mortarboard"></i> {{curso[1]}} | {{curso[2]}}</h5>
@@ -231,7 +386,6 @@
           <div class="btn-group float-end" role="group" aria-label="Botones de edición">
             <form action="{{url_for('cursos.generar_informe')}}" method="post" class="m-1">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <!-- <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button> -->
               <button type="submit" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top"
                 data-bs-custom-class="custom-tooltip"
                 data-bs-title="Genera el reporte de calificaciones y asistencias en un archivo de excel"><i
@@ -264,11 +418,11 @@
           {% endif %}
         </div>
       </div>
-    </div>
+    </div>#}
     {%else%}
     {% endif %}
     {% endfor %}
-  </div>
+  </div> -->
   
 </div>
 

@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -147,20 +147,6 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 col-md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="nombres" class="form-label">Nombres</label>
-                  <input type="text" class="form-control p-2" id="nombres" name="nombres" placeholder="Nombres"
-                    required>
-                </div>
-              </div>
-              <div class="col-12 col md-6 col-lg-4">
-                <div class="mb-3">
-                  <label for="apellidos" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control p-2" id="apellidos" name="apellidos" placeholder="Apellidos"
-                    required>
-                </div>
-              </div>
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="tipo_doc" class="form-label">Tipo de documento</label>
@@ -182,8 +168,48 @@
               </div>
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="correo" class="form-label">Correo</label>
-                  <input type="email" class="form-control p-2" id="correo" name="correo" placeholder="Correo" required>
+                  <label for="apellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control p-2" id="apellidos" name="apellidos" placeholder="Apellidos"
+                    required>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="nombres" class="form-label">Nombres</label>
+                  <input type="text" class="form-control p-2" id="nombres" name="nombres" placeholder="Nombres"
+                    required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="fecha_nacimiento" class="form-label">Fecha nacimiento</label>
+                  <input type="date" class="form-control p-2" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Dirección" required>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="Sexo" class="form-label">Sexo</label>
+                  <select name="sexo" id="sexo" class="form-select" required>
+                    <option value="" selected>Seleccione un tipo de sexo</option>
+                    <option value="M">Hombre</option>
+                    <option value="F">Mujer</option>
+                    <option value="O">Otro</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="nivel_educacion" class="form-label">Nivel educativo</label>
+                  <select name="nivel_educacion" id="nivel_educacion" class="form-select" required>
+                    <option value="" selected>Seleccione un nivel de educación</option>
+                    <option value="Básica primaria">Educación Básica</option>
+                    <option value="Básica secundaria">Educación Media</option>
+                    <option value="Educación media">Educación Superior</option>
+                    <option value="Técnico">Técnico</option>
+                    <option value="Tecnólogo">Tecnólogo</option>
+                    <option value="Pregrado">Pregrado</option>
+                    <option value="Postgrado">Postgrado</option>
+                  </select>
                 </div>
               </div>
               <div class="col-12 col md-6 col-lg-4">
@@ -197,15 +223,33 @@
                 <div class="mb-3">
                   <label for="tel_fijo" class="form-label">Teléfono fijo</label>
                   <input type="text" class="form-control p-2" id="tel_fijo" name="tel_fijo" placeholder="Teléfono fijo"
-                    required>
+                    required readonly value="0">
                 </div>
               </div>
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
-                  <label for="ciudad" class="form-label">Ciudad/Dirección</label>
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="email" class="form-control p-2" id="correo" name="correo" placeholder="Correo" required>
+                </div>
+              </div>
+              
+              
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="ciudad" class="form-label">Ciudad</label>
                   <input type="text" class="form-control p-2" id="ciudad" name="ciudad" placeholder="Ciudad" required>
                 </div>
               </div>
+              <div class="col-12 col md-6 col-lg-4">
+                <div class="mb-3">
+                  <label for="direccion" class="form-label">Dirección</label>
+                  <input type="text" class="form-control p-2" id="direccion" name="direccion" placeholder="Dirección" required>
+                </div>
+              </div>
+              
+              
+              
+              
               <div class="col-12 col md-6 col-lg-4">
                 <div class="mb-3">
                   <label for="curso" class="form-label">Curso</label>
