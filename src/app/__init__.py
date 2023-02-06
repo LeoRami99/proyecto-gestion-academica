@@ -11,6 +11,7 @@ from app.clientes.clientes import clientes
 from app.estudiantes.estudiantes import estudiantes
 from app.docentes.docentes import docentes
 from app.admin.admins import admin
+from app.certificado.certificados import certificados
 
 
 # inicio de sesion
@@ -54,6 +55,7 @@ def createApp():
     app.register_blueprint(clientes)
     app.register_blueprint(estudiantes)
     app.register_blueprint(docentes)
+    app.register_blueprint(certificados)
 
 
 

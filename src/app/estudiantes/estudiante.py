@@ -308,5 +308,21 @@ class Estudiante():
         print(e)
         return False
 
+    """
+    Se crea un funciones de consulta e inserción para la subidad de asesor mediante el excel
+      """
+    @classmethod
+    def insertar_asesor (self, id_curso, id_cliente, id_estudiante, nombre_asesor):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = "INSERT INTO asesor (id_curso, id_cliente, id_estudiante, nombre_asesor) VALUES ('{0}', '{1}', '{2}', '{3}')".format(id_curso, id_cliente, id_estudiante, nombre_asesor)
+        cursor.execute(sql)
+        conn.commit()
+        return True
+      except Exception as e:
+        print(e)
+        return False
+
   
       

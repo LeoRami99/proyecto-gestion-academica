@@ -132,6 +132,7 @@
 
 <!-- Formulario de registro de estudiantes-->
 <!-- Lista de curso -->
+<input type="hidden" name="parametro_curso" value="{{parametro_curso}}" id="parametro_curso">
 <div class="container">
   {%if current_user.rol == "AD" or current_user.rol=="DOC"%}
   <form action="{{url_for('estudiantes.enviar_asistencia')}}" method="post">
@@ -178,6 +179,7 @@
             <th>Sesión 29</th>
             <th>Sesión 30</th>
             <th>Observaciones</th>
+            <th>Total Asistencias</th>
           </tr>
         </thead>
         <tbody>
@@ -369,6 +371,9 @@
             </td>
             <td>
               <textarea name="observaciones" id="observaciones">{{asis[34]}}</textarea>
+            </td>
+            <td>
+              <input type="text" class="form-control" name="total_asistencias" readonly>
             </td>
 
           </tr>

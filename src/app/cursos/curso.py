@@ -215,7 +215,7 @@ class Curso():
         try:
             conn = obtener_conexion()
             cursor = conn.cursor()
-            sql = """SELECT asignacion_estudiantes_curso.id_estudiante, (calificaciones.nota1 + calificaciones.nota2 + calificaciones.nota3 + calificaciones.nota4 + calificaciones.nota5+ calificaciones.nota6 + calificaciones.nota7 + calificaciones.nota8 + calificaciones.nota9+ calificaciones.nota10) as nota
+            sql = """SELECT asignacion_estudiantes_curso.id_estudiante, (calificaciones.nota1 + calificaciones.nota2 + calificaciones.nota3 + calificaciones.nota4 + calificaciones.nota5+ calificaciones.nota6 + calificaciones.nota7 + calificaciones.nota8 + calificaciones.nota9) as nota
                 FROM asignacion_estudiantes_curso 
                 INNER JOIN calificaciones ON asignacion_estudiantes_curso.id_estudiante = calificaciones.id_estudiante 
                 AND asignacion_estudiantes_curso.id_curso = calificaciones.id_curso 
@@ -281,8 +281,9 @@ class Curso():
 
             for indice in notas_estudiantes:
                 # colocar el id y la nota final
+                print("este es el maximo de notas", indice[1]/max_notas)
                 lista_notas_finales.append(
-                    [indice[0], float(indice[1]/max_notas)])
+                    [indice[0], round(indice[1]/max_notas, 2)])
             
 
             for indice in zip(lista_notas_finales, lista_asistencia_estudiante):
@@ -300,6 +301,7 @@ class Curso():
             for indice in lista_result_condiciones:
                 if indice[1] == True:
                     contador += 1
+                print("Este es el contador:", contador)
             if contador == cantidad_estudiantes and cantidad_estudiantes > 0:
                 return True
             else:

@@ -4,7 +4,7 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema | {{current_user.nombre}}</a>
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
     <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
@@ -34,6 +34,37 @@
 </nav>
 {% endblock %}
 {%block content%}
+<div class="container">
+  <!-- una card centrada en la pantall -->
+  <div class="col">
+    <div class="row">
+      <!-- centrar el card -->
+      <div class="col-12 col-md-6 col-lg-4 mx-auto mt-5">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-center">Validación de certificado</h5>
+            <hr>
+            <div class="border m-2 p-2 text-center rounded">
+              <h6>Inteligencia Artificial</h6>
+              <h6>Juan Leonardo Ramirez Velasquez</h6>
+              <h6>CC: 123456789</h6>
+              <h6>Fecha de expedición: 2021-10-10</h6>
+              
+            </div>
+            <hr>
+            <div class="alert alert-success text-center" role="alert">
+              <h5 class="alert-heading text-center">Este certificado es válido</h5>
+              <!-- <p>Estes certificado es válido</p> -->
+              <hr>
+              <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+              
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>
 
 
 

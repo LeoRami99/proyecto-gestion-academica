@@ -1,5 +1,8 @@
-console.log('%c¡Alto! ', 'color: red; font-size: 40px');
-console.log('%cEste es un espacio para desarrolladores. No intentes nada fuera de lo normal. ', 'color: red; font-size: 20px');
+console.log("%c¡Alto! ", "color: red; font-size: 40px");
+console.log(
+  "%cEste es un espacio para desarrolladores. No intentes nada fuera de lo normal. ",
+  "color: red; font-size: 20px"
+);
 
 // Jquery de DataTables para la tabla de docentes
 $(document).ready(function () {
@@ -7,14 +10,14 @@ $(document).ready(function () {
     fixedColumns: {
       leftColumns: 1,
     },
-    // color de las letras de la tabla 
-    
+    // color de las letras de la tabla
+
     scrollX: true,
     scrollY: "500px",
     scrollCollapse: true,
 
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, 50], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -38,13 +41,14 @@ $(document).ready(function () {
   $("#tabla_asistencia_estudiante").DataTable({
     fixedColumns: {
       leftColumns: 3,
+      rightColumns: 1,
     },
     scrollX: true,
     scrollY: "500px",
     scrollCollapse: true,
 
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, 50], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -68,15 +72,14 @@ $(document).ready(function () {
       leftColumns: 3,
     },
     // agregar un tamaño fijo a la tabla
-    
-    
+
+    scrollY: "500px",
     scrollX: true,
     scrollCollapse: true,
     // agregarle estilos
-    
 
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, 50], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -97,12 +100,12 @@ $(document).ready(function () {
   $("#tabla_curso").DataTable({
     scrollX: true,
     scrollCollapse: true,
-  //  Fijar la ultima columna
+    //  Fijar la ultima columna
     fixedColumns: {
       leftColumns: 0,
     },
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, 50], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -124,12 +127,12 @@ $(document).ready(function () {
   $("#tabla_curso_cerrado").DataTable({
     scrollX: true,
     scrollCollapse: true,
-  //  Fijar la ultima columna
+    //  Fijar la ultima columna
     fixedColumns: {
       leftColumns: 0,
     },
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 24], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -149,8 +152,8 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $("#tabla_asistencia_calificaciones").DataTable({
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, 50], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -167,8 +170,6 @@ $(document).ready(function () {
     },
   });
 });
-
-
 
 // // Recorrer las filas de la tabla
 // $(document).ready(function() {
@@ -205,23 +206,142 @@ $(document).ready(function () {
 //   $("input[name='calif_10']").attr("readonly", true);
 // });
 
-$(document).ready(function() {
-  $("input[name^='calif_'][name!='calif_10']").on("change", function() {  
-      var parametro_nota = document.getElementById("parametro_nota").value;
-      var row = $(this);
+// Calculo con inpust sin ocultar
+// $(document).ready(function() {
+//   $("input[name^='calif_'][name!='calif_10']").on("change", function() {
+//       var parametro_nota = document.getElementById("parametro_nota").value;
+//       var row = $(this);
+//       var suma_total = 0;
+//       row.closest("tr").find("input[name='calif_1'], input[name='calif_2'], input[name='calif_3'], input[name='calif_4'], input[name='calif_5'], input[name='calif_6'], input[name='calif_7'], input[name='calif_8'], input[name='calif_9']").each(function() {
+//         suma_total += parseFloat($(this).val());
+//       }
+//       );
+//       var promedio = suma_total/parametro_nota;
+//       row.closest("tr").find("input[name='calif_10']").val(promedio.toFixed(2));
+
+//   });
+// });
+
+$(document).ready(function () {
+  $("input[name^='calif_'][name!='calif_10']").on("change", function () {
+    var parametro_nota = document.getElementById("parametro_nota").value;
+    var table = $(this).closest("table");
+    table.find("tr").each(function () {
       var suma_total = 0;
-      row.closest("tr").find("input[name='calif_1'], input[name='calif_2'], input[name='calif_3'], input[name='calif_4'], input[name='calif_5'], input[name='calif_6'], input[name='calif_7'], input[name='calif_8'], input[name='calif_9']").each(function() {
-        suma_total += parseFloat($(this).val());
-      }
-      );
-      var promedio = suma_total/parametro_nota;
-      row.closest("tr").find("input[name='calif_10']").val(promedio.toFixed(2));
-      
-      
+      $(this)
+        .find("input[name^='calif_'][name!='calif_10']:visible")
+        .each(function () {
+          suma_total += parseFloat($(this).val());
+        });
+      $(this)
+        .find("input[name^='calif_'][name!='calif_10']:hidden")
+        .each(function () {
+          suma_total += parseFloat($(this).val());
+        });
+      var promedio = suma_total / parametro_nota;
+      $(this).find("input[name='calif_10']").val(promedio.toFixed(1));
+    });
   });
 });
 
+// seleccionar todos los inputs calif_10 y colocar un background color depedniendo de la nota y tambien seleccionar los que estan en las otras paginas de datatables para que tambien se coloreen
+// o cuando le de click a la paginacion de datatables que se coloreen los inputs calif_10
+$(document).ready(function () {
+  $("input[name='calif_10']").each(function () {
+    var nota = $(this).val();
+    if (nota < 3) {
+      $(this).css("background-color", "#ffa694");
+    } else if (nota >= 3) {
+      $(this).css("background-color", "#cbff94");
+    }
+  });
 
+  $("#tabla_calificaciones_estudiante")
+    .DataTable()
+    .on("draw", function () {
+      $("input[name^='calif_'][name!='calif_10']").on("change", function () {
+        var parametro_nota = document.getElementById("parametro_nota").value;
+        var table = $(this).closest("table");
+        table.find("tr").each(function () {
+          var suma_total = 0;
+          $(this)
+            .find("input[name^='calif_'][name!='calif_10']:visible")
+            .each(function () {
+              suma_total += parseFloat($(this).val());
+            });
+          $(this)
+            .find("input[name^='calif_'][name!='calif_10']:hidden")
+            .each(function () {
+              suma_total += parseFloat($(this).val());
+            });
+          var promedio = suma_total / parametro_nota;
+          $(this).find("input[name='calif_10']").val(promedio.toFixed(1));
+        });
+      });
+
+      $("input[name='calif_10']:visible").each(function () {
+        var nota = $(this).val();
+        if (nota < 3) {
+          $(this).css("background-color", "#ffa694");
+        } else if (nota >= 3) {
+          $(this).css("background-color", "#cbff94");
+        }
+      });
+    });
+});
+
+// Suma totoal de asistencias 
+$(document).ready(function () {
+  $("input[name^='asistencia_']").on("mouseover", function () {
+    var table = $(this).closest("table");
+    var parametro_curso =document.getElementById("parametro_curso").value;
+    table.find("tr").each(function () {
+      var suma_total = 0;
+      $(this)
+        .find("input[name^='asistencia_']:visible")
+        .each(function () {
+          suma_total += parseFloat($(this).val());
+          if (suma_total >= parametro_curso) {
+            // buscar el input de total_asistencias y colocarle un background color
+            $(this).find("input[name='total_asistencias']").css("background-color", "#cbff94");
+          }else if (suma_total < parametro_curso) {
+            $(this).find("input[name='total_asistencias']").css("background-color", "#ffa694");
+          }
+        });
+      $(this)
+        .find("input[name^='asistencia_']:hidden")
+        .each(function () {
+          suma_total += parseFloat($(this).val());
+        });
+      $(this).find("input[name='total_asistencias']").val(suma_total);
+    });
+  });
+  $("#tabla_asistencia_estudiante")
+    .DataTable()
+    .on("draw", function () {
+      $("input[name^='asistencia_']").on("mouseover", function () {
+        var table = $(this).closest("table");
+        table.find("tr").each(function () {
+          var suma_total = 0;
+          $(this)
+            .find("input[name^='asistencia_']:visible")
+            .each(function () {
+              suma_total += parseFloat($(this).val());
+            });
+          $(this)
+            .find("input[name^='asistencia_']:hidden")
+            .each(function () {
+              suma_total += parseFloat($(this).val());
+            });
+          $(this).find("input[name='total_asistencias']").val(suma_total);
+        });
+      });
+    }
+    );
+
+
+
+});
 
 
 // Restringir el uso de la consola del navegador
@@ -245,9 +365,8 @@ $(document).ready(function () {
     scrollY: "500px",
     scrollCollapse: true,
 
-
-    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, 50], "todo"],
-    iDisplayLength: 5,
+    aLengthMenu: [[5, 10, 25, -1], [5, 10, 20, "todo"], "todo"],
+    iDisplayLength: 10,
     language: {
       lengthMenu: "Mostrar _MENU_ registros por página",
       search: "Buscar",
@@ -266,14 +385,14 @@ $(document).ready(function () {
 });
 
 const buttons = document.querySelectorAll(".btn-card");
-const colors = ['#ff6961','#77dd77','#84b6f4'];
+const colors = ["#ff6961", "#77dd77", "#84b6f4"];
 
 for (let i = 0; i < buttons.length; i++) {
-    const originalColor = buttons[i].style.backgroundColor;
-    buttons[i].addEventListener("mouseover", function() {
+  const originalColor = buttons[i].style.backgroundColor;
+  buttons[i].addEventListener("mouseover", function () {
     this.style.backgroundColor = getRandomColor();
   });
-    buttons[i].addEventListener("mouseout", function() {
+  buttons[i].addEventListener("mouseout", function () {
     this.style.backgroundColor = originalColor;
   });
 }
@@ -282,13 +401,3 @@ function getRandomColor() {
   let randomNum = Math.floor(Math.random() * 3);
   return colors[randomNum];
 }
-
-
-
-
-
-
-
-
-
-
