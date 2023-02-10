@@ -175,9 +175,11 @@ def listar_cursos():
         # Condición para verificar si se asigno el docente al curso
         lista_cursos = []
         for curso_lista in cursos:
+            
             if curso.lista_curso_docente(curso_lista[0], current_user.id_cliente) != None:
                 # Se agrega el curso + el nombre del docente
                 cursoxdocente = docente.obtenerDocente(curso.lista_curso_docente(curso_lista[0], current_user.id_cliente)[3])
+                print("información del docente", cursoxdocente)
                 docente_nombre_apellido = cursoxdocente[2] + ' ' + cursoxdocente[3] 
                 # agregar el contador de estudiantes por curso
                 contador_estudiantes = estudiante.count_usuarios_cupo(curso_lista[0], current_user.id_cliente)

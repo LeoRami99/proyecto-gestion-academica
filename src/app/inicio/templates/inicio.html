@@ -5,30 +5,18 @@
 <nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
   <div class="container-fluid">
     <a class="navbar-brand" href="/" style="color:#ffffff;">Atenea</a>
-    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="bi bi-list"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" style="color:#ffffff;">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" style="color:#ffffff;">Features</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" style="color:#ffffff;">Pricing</a>
-        </li>
-      </ul> -->
-  </div>
-  <div class="d-flex float-left">
-    <!-- <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-light me-2" role="button"
-      aria-pressed="true">Cerrar sesión</a> -->
-    <button class="btn t" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-      aria-controls="offcanvasExample">
-      <i class="bi bi-list" style="font-size: 30px; color: #ffffff;"></i>
-    </button>
+
+    <div class="d-flex float-left">
+      <!-- <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-light me-2" role="button"
+          aria-pressed="true">Cerrar sesión</a> -->
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+        aria-controls="offcanvasExample">
+        <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+        <lord-icon src="https://cdn.lordicon.com/jtqpkhoh.json" trigger="morph"
+          colors="primary:#ffffff,secondary:#08a88a" stroke="25" style="width:30px;height:30px">
+        </lord-icon>
+      </button>
+    </div>
   </div>
   </div>
 </nav>
@@ -50,7 +38,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xl-3 col-sm-6 col-12" > 
+      <div class="col-xl-3 col-sm-6 col-12">
         <div class="card">
           <div class="card-content">
             <div class="card-body student-card ">
@@ -121,83 +109,88 @@
       </div>
     </div>
   </div>
-  <br>  
-  </section>
-  <section id="options">
-    
-    <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
-    <div class="container">
-      <div class="">
-        <h1 class="text-white mt-2">Opciones</h1>
+  <br>
+</section>
+<section id="options">
+
+  <div class="parallax" data-parallax-image="{{url_for('static', filename='imgs/hexagon.svg')}}"></div>
+  <div class="container">
+    <div class="">
+      <h1 class="text-white mt-2">Opciones</h1>
       <hr>
     </div>
     <!-- Cards para cada apartado -->
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mt-2">
       <!-- Card de cursos  -->
       {%if current_user.rol == "AD" or current_user.rol=="DOC" or current_user.rol == "ADV"%}
-        <div class="col" data-aos="fade-left" data-aos-duration="1000">
-          <div class="card card-custom bg-white border-white border-0">
-            <div class="card-custom-img"
-              style="background-image: url(https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_960_720.jpg);">
-            </div>
-            <div class="card-custom-avatar">
-              <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/2436/2436874.png" alt="Avatar" />
-            </div>
-            <div class="card-body" style="overflow-y: auto">
-              <h4 class="card-title"><i class="bi bi-mortarboard"></i> Cursos </h4>
-              <p class="card-text">
-                Gestiona los cursos que impartes, crea nuevos cursos, edita los cursos que ya tienes y
-                finaliza cursos.
-              </p>
-            </div>
-            <div class="card-footer" style="background: inherit; border-color: inherit;">
-              <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-award"></i> Cursos activos </a>
-              <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos cerrados </a>
+      <div class="col" data-aos="fade-left" data-aos-duration="1000">
+        <div class="card card-custom bg-white border-white border-0">
+          <div class="card-custom-img"
+            style="background-image: url(https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_960_720.jpg);">
+          </div>
+          <div class="card-custom-avatar">
+            <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/2436/2436874.png" alt="Avatar" />
+          </div>
+          <div class="card-body" style="overflow-y: auto">
+            <h4 class="card-title"><i class="bi bi-mortarboard"></i> Cursos </h4>
+            <p class="card-text">
+              Gestiona los cursos que impartes, crea nuevos cursos, edita los cursos que ya tienes y
+              finaliza cursos.
+            </p>
+          </div>
+          <div class="card-footer" style="background: inherit; border-color: inherit;">
+            <a href="{{url_for('cursos.listar_cursos')}}" class="btn btn-card"><i class="bi bi-award"></i> Cursos
+              activos </a>
+            <a href="{{url_for('cursos.cursos_no_activos')}}" class="btn btn-card"><i class="bi bi-archive"></i> Cursos
+              cerrados </a>
 
-              <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
-              {%if current_user.rol== "AD"%}
-                <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-calendar-check"></i> Programación
-                cursos</a>
-                <a href="{{url_for('cursos.registrar_curso_master')}}" class="btn btn-card"><i class="bi bi-plus-circle"></i> Registrar
-                  cursos</a>
-                {#<a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
-                Asignar docente</a>#}
-              {%endif%}
+            <!-- <a href="" class="btn btn-card"><i class="bi bi-x-circle"></i> Cursos activos</a> -->
+            {%if current_user.rol== "AD"%}
+            <a href="{{url_for('cursos.index')}}" class="btn btn-card"><i class="bi bi-calendar-check"></i> Programación
+              cursos</a>
+            <a href="{{url_for('cursos.registrar_curso_master')}}" class="btn btn-card"><i
+                class="bi bi-plus-circle"></i> Registrar
+              cursos</a>
+            {#<a href="{{url_for('cursos.asignar_docente')}}" class="btn btn-card"><i class="bi bi-person-add"></i>
+              Asignar docente</a>#}
+            {%endif%}
 
-            </div>
           </div>
         </div>
+      </div>
       {%endif%}
       <!-- Card de Estudiantes -->
-      {%if current_user.rol== "AD" or current_user.rol== "DOC" or current_user.rol== "ADM" or current_user.rol == "ADV"%}
-        <div class="col" data-aos="fade-up" data-aos-duration="1000">
-          <div class="card card-custom bg-white border-white border-0">
-            <div class="card-custom-img"
-              style="background-image: url(https://cdn.pixabay.com/photo/2017/07/31/11/21/people-2557396_960_720.jpg);">
-            </div>
-            <div class="card-custom-avatar">
-              <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/3068/3068421.png" alt="Avatar" />
-            </div>
-            <div class="card-body" style="overflow-y: auto">
-              <h4 class="card-title"><i class="bi bi-person"></i> Gestión de estudiantes</h4>
-              <p class="card-text">
-                Gestiona los estudiantes que tienes en tu curso, asigna notas y asistencias y registrar nuevos estudiantes.
-              </p>
-            </div>
-            <div class="card-footer" style="background: inherit; border-color: inherit;">
-              {%if current_user.rol == "AD" or current_user.rol== "ADM"%}
-              <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i
-                  class="bi bi-person-add"></i> Registrar estudiantes</a>
-              <!-- <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a> -->
-              {%endif%}
-              {%if current_user.rol == "AD" or current_user.rol== "DOC" or current_user.rol == "ADV"%}
-              <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" class="btn btn-card"><i
-                  class="bi bi-card-checklist"></i> Asistencia y Calificaciones</a>
-              {%endif%}
+      {%if current_user.rol== "AD" or current_user.rol== "DOC" or current_user.rol== "ADM" or current_user.rol ==
+      "ADV"%}
+      <div class="col" data-aos="fade-up" data-aos-duration="1000">
+        <div class="card card-custom bg-white border-white border-0">
+          <div class="card-custom-img"
+            style="background-image: url(https://cdn.pixabay.com/photo/2017/07/31/11/21/people-2557396_960_720.jpg);">
+          </div>
+          <div class="card-custom-avatar">
+            <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/3068/3068421.png" alt="Avatar" />
+          </div>
+          <div class="card-body" style="overflow-y: auto">
+            <h4 class="card-title"><i class="bi bi-person"></i> Gestión de estudiantes</h4>
+            <p class="card-text">
+              Gestiona los estudiantes que tienes en tu curso, asigna notas y asistencias y registrar nuevos
+              estudiantes.
+            </p>
+          </div>
+          <div class="card-footer" style="background: inherit; border-color: inherit;">
+            {%if current_user.rol == "AD" or current_user.rol== "ADM"%}
+            <a href="{{url_for('estudiantes.registro_estudiantes')}}" class="btn btn-card"><i
+                class="bi bi-person-add"></i> Registrar estudiantes</a>
+            <!-- <a href="{{url_for('estudiantes.estudiantes_curso')}}" class="btn btn-card"><i class="bi bi-person-vcard"></i> Asignar estudiantes al curso</a> -->
+            {%endif%}
+            {%if current_user.rol == "AD" or current_user.rol== "DOC" or current_user.rol == "ADV"%}
+            <a href="{{url_for('estudiantes.asistencia_estudiantes')}}" class="btn btn-card"><i
+                class="bi bi-card-checklist"></i> Asistencia y Calificaciones</a>
+            {%endif%}
 
-            </div>
           </div>
         </div>
+      </div>
       {%endif%}
       <!-- Card de Docentes -->
       {%if current_user.rol=="AD"%}

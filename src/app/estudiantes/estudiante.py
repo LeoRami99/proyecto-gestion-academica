@@ -310,7 +310,7 @@ class Estudiante():
 
     """
     Se crea un funciones de consulta e inserción para la subidad de asesor mediante el excel
-      """
+    """
     @classmethod
     def insertar_asesor (self, id_curso, id_cliente, id_estudiante, nombre_asesor):
       try:
@@ -320,6 +320,24 @@ class Estudiante():
         cursor.execute(sql)
         conn.commit()
         return True
+      except Exception as e:
+        print(e)
+        return False
+    @classmethod
+    def obtener_info_asesores(self, id_cliente):
+      try:
+        conn = obtener_conexion()
+        cursor = conn.cursor()
+        sql = """SELECT estudiantes.nombre, estudiantes.apellido, estudiantes.numero_doc, curso.nombre_curso, curso.codigo_curso, 
+                asesor.nombre_asesor 
+                FROM estudiantes 
+                JOIN asesor ON asesor.id_estudiante = estudiantes.id 
+                JOIN curso ON asesor.id_curso = curso.id 
+                WHERE asesor.id_cliente = '{0}'""".format(id_cliente)
+        cursor.execute(sql)
+        asesor = cursor.fetchall()
+        conn.commit()
+        return asesor
       except Exception as e:
         print(e)
         return False

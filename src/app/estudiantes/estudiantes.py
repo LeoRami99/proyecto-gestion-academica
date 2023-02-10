@@ -21,7 +21,7 @@ estudiantes = Blueprint('estudiantes', __name__, template_folder='templates', ur
 
 @estudiantes.route('/estudiantes', methods=['POST'])
 # @login_required
-def index():
+def index():  
     estudiante = Estudiante()
     if request.method == 'POST':
         id_curso = request.form['id_curso']
@@ -151,7 +151,7 @@ def estudiantes_excel():
                 df = pd.read_excel(excel)
                 # Se obtiene el nombre de las columnas
                 columnas = df.columns
-                df.dropna(how='all', inplace=True)
+                
                 print(df)
                 # Recorreror las columnas y enviar la información
                 for index, row in df.iterrows():
@@ -179,6 +179,7 @@ def estudiantes_excel():
                             if estudiante.guardar_estudiante():
                                 # verificar si el estudiante se registro correctamente
                                 if Estudiante.verificacion_estudiantes(int(row[columnas[1]]), current_user.id_cliente):
+                                    
                                     # objeto de bloque para la insercción de de asesor a la base de datos
                                     asesor = estudiante.insertar_asesor(id_curso, current_user.id_cliente, Estudiante.estudiante_id(int(row[columnas[1]]), current_user.id_cliente), row[columnas[11]])
                                     # Se obtiene el id del estudiante
@@ -197,7 +198,10 @@ def estudiantes_excel():
                                     ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
                                     # Se envia el correo al estudiante
 
-                                    enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), row[columnas[8]], row[columnas[3]], nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
+                                    # lista de estudiantes ya registrados
+                                    
+
+                                    # enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), row[columnas[8]], row[columnas[3]], nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
 
                                     # Se registra el estudiante en el curso
                                     if Estudiante.asignar_estudiante_curso(id_curso, id_estudiante, current_user.id_cliente, datetime.now(), datetime.now()):
@@ -207,15 +211,16 @@ def estudiantes_excel():
                                             flash("Ocurrio un error al registrar el estudiante")
                                             return redirect(url_for('estudiantes.registro_estudiantes'))
                                     else:
-                                        flash('No se pudo registrar el estudiante')
+                                        flash(str(int(row[columnas[1]])))
                                         return redirect(url_for('estudiantes.registro_estudiantes'))
 
                                 flash('El estudiante ' + str(int(row[columnas[1]])) + ' se registro correctamente')
                                 pass
                             else:
-                                flash('No se pudo registrar el estudiante')
+                                flash('No se pudo registrar el estudiante'+ row[columnas[1]])
                                 pass
                         else:
+                            # Agregar el estudiante a una lista para posteriormente descargar un txt
                             flash('Ya se encuentra registrado ' + str(int(row[columnas[1]])))
                             pass
                     else:
@@ -296,7 +301,7 @@ def asignar_estudiantes():
                                 correo = estudiantes.obtener_estudiante(id_estudiante)[3]
                                 ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
 
-                                enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
+                                # enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
 
 
                                 flash('El estudiante se asigno correctamente')
@@ -371,7 +376,7 @@ def estudiantes_curso_excel():
                                         correo = estudiante.obtener_estudiante(id_estudiante)[3]
                                         ubicacion_curso = Curso.obtener_curso_docente(id_curso)[18]
 
-                                        enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
+                                        # enviar_correo_estudiante(("Bienvenido al curso "+nombre_curso+" "+ codigo_curso), correo, nombre_estudiante, nombres_docente, nombre_curso, codigo_curso, modalidad, duracion, fecha_inicio, fecha_fin, horario, enlace_clase, enlace_grabaciones, cantidad_sesiones, ubicacion_curso)
                                         flash('El estudiante ' + str(row[columnas[0]]) + ' se asigno correctamente ')
                                         pass
                                     else:
@@ -733,3 +738,54 @@ def descargar_calificaciones():
         except Exception as e:
             flash("Error al generar el archivo excel")
             return redirect(url_for('estudiantes.calificaciones_estudiantes'))
+
+
+""" 
+Se crea un petición para descargar la información de los asesores en un archio excel
+
+ """
+@estudiantes.route('/descargar-asesores', methods=['POST'])
+def descarga_asesores():
+    asesores = Estudiante().obtener_info_asesores(current_user.id_cliente)
+    if asesores is False or None:
+        flash("No hay asesores registrados")
+        return redirect(url_for('estudiantes.asesores_estudiantes'))
+    else:
+        # Archivo excel que se va a descargar
+        salida = io.BytesIO()
+        # Se crea el libro de excel
+        libro = xlwt.Workbook()
+        # Se crea la hoja de excel
+        hoja = libro.add_sheet('Asesores')
+        
+        #aplicar estilos a los encabezados y colocar color de fondo y bordes
+
+        estilo = xlwt.easyxf('font: bold 1, color black; pattern: pattern solid, fore_colour gray25; align: horiz center; borders: left thin, right thin, top thin, bottom thin')
+        estilo_bordes = xlwt.easyxf('borders: left thin, right thin, top thin, bottom thin')
+        
+
+        
+        
+        # Se escriben los encabezados de la hoja de excel
+        hoja.write(0, 0, 'Nombre', estilo)
+        hoja.write(0, 1, 'Apellido', estilo)
+        hoja.write(0, 2, 'Número de identificación', estilo)
+        hoja.write(0, 3, 'Nombre del curso', estilo)
+        hoja.write(0, 4, 'Código del curso', estilo)
+        hoja.write(0, 5, 'Nombre del asesor', estilo)
+
+        # Se recorre la lista de asesores para escribirlos en la hoja de excel
+        for indice in range(len(asesores)):
+            hoja.write(indice+1, 0, asesores[indice][0], estilo_bordes)
+            hoja.write(indice+1, 1, asesores[indice][1], estilo_bordes)
+            hoja.write(indice+1, 2, asesores[indice][2], estilo_bordes)
+            hoja.write(indice+1, 3, asesores[indice][3], estilo_bordes)
+            hoja.write(indice+1, 4, asesores[indice][4], estilo_bordes)
+            hoja.write(indice+1, 5, asesores[indice][5], estilo_bordes)
+
+        # Se guarda el archivo excel
+        libro.save(salida)
+        # Se retorna el archivo excel
+        salida.seek(0)
+        return Response(salida, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=asesores.xls"})
+

@@ -1,0 +1,75 @@
+{%extends "base.html"%}
+{%block title%}Certificado{%endblock%}
+{% block navbar %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg sticky-top fondo_navbar" data-aos="fade-down" data-aos-duration="1000">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/" style="color:#ffffff;">Nombre del sistema sistema</a>
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" style="color:#ffffff;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:#ffffff;">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:#ffffff;">Pricing</a>
+        </li>
+      </ul> -->
+  </div>
+  <div class="d-flex">
+    <!-- <a href="{{url_for('login_page.logout')}}" class="btn btn-outline-light me-2" role="button"
+      aria-pressed="true">Cerrar sesión</a> -->
+    <!-- <button class="btn t" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample">
+      <i class="bi bi-list" style="font-size: 30px; color: #ffffff;"></i>
+    </button> -->
+  </div>
+  </div>
+</nav>
+{% endblock %}
+{%block content%}
+<div class="container">
+  <!-- una card centrada en la pantall -->
+  <div class="col">
+    <div class="row">
+      <!-- centrar el card -->
+      <div class="col-12 col-md-6 col-lg-4 mx-auto mt-5">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-center">
+              <i class="bi bi-award" style="font-size: 50pt;"></i>
+            </div>
+            <h5 class="card-title text-center">Descarga tú certificado</h5>
+            <form action="" method="post">
+              <div class="mb-3">
+                <label for="" class="form-label">Código del curso</label>
+                <input type="text"
+                  class="form-control" name="" id="" placeholder="Código del curso">
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Número de documento</label>
+                <input type="number" class="form-control" name="" id="" placeholder="Número de documento">
+                
+              </div>
+              <div class="d-flex justify-content-center">
+                <input type="submit" value="Enviar" class="btn btn-card w-50">
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+{%endblock%}
