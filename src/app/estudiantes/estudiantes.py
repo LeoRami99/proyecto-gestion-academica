@@ -143,7 +143,7 @@ def estudiantes_excel():
         id_curso = request.form['id_curso']
         # verificar que el archivo sea un excel
         try:
-            if not excel.filename.endswith('.xlsx'):
+            if not excel.filename.endswith('.xls'):
                 flash('El archivo no es un excel')
                 return redirect(url_for('estudiantes.registro_estudiantes'))
             else:
